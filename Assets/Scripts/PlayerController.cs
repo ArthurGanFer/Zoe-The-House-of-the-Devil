@@ -8,96 +8,95 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     //input fields
-    private ThirdPersonActionsAsset playerActionAsset;
+    private ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
 
     //movement fields
     private Rigidbody rb;
     [SerializeField]
-    private float movementForce = 1f;
+    private float movement_Force = 1f;
     [SerializeField]
-    private float jumpForce = 5f;
+    private float jump_Force = 5f;
     [SerializeField]
-    private float maxSpeed = 5f;
-    private Vector3 forceDirection = Vector3.zero;
+    private float max_Speed = 5f;
+    private Vector3 force_Direction = Vector3.zero;
 
     [SerializeField]
-    private Camera playerCamera;
+    private Camera player_Camera;
 
+    public bool Is_Grounded;
     [SerializeField]
-    private bool isGrounded;
-    [SerializeField]
-    private float distToGround;
+    private float dist_To_Ground;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        playerActionAsset = new ThirdPersonActionsAsset();
+        player_Action_Asset = new ThirdPersonActionsAsset();
     }
 
     private void OnEnable()
     {
-        playerActionAsset.Player.Jump.started += DoJump;
-        move = playerActionAsset.Player.Move;
-        playerActionAsset.Player.Enable();
+        player_Action_Asset.Player.Jump.started += Do_Jump;
+        move = player_Action_Asset.Player.Move;
+        player_Action_Asset.Player.Enable();
     }
 
     private void OnDisable()
     {
-        playerActionAsset.Player.Jump.started -= DoJump;
-        playerActionAsset.Player.Disable();
+        player_Action_Asset.Player.Jump.started -= Do_Jump;
+        player_Action_Asset.Player.Disable();
     }
 
-    private void DoJump(InputAction.CallbackContext obj)
+    private void Do_Jump(InputAction.CallbackContext obj)
     {
-        if (IsGrounded())
+        if (Check_Grounded())
         {
-            forceDirection += Vector3.up * jumpForce;
+            force_Direction += Vector3.up * jump_Force;
         }
     }
 
     private void FixedUpdate()
     {
-        forceDirection += move.ReadValue<Vector2>().x * GetCameraRight(playerCamera) * movementForce;
-        forceDirection += move.ReadValue<Vector2>().y * GetCameraForward(playerCamera) * movementForce;
+        force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
+        force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
 
-        rb.AddForce(forceDirection, ForceMode.Impulse);
-        forceDirection = Vector3.zero;
+        rb.AddForce(force_Direction, ForceMode.Impulse);
+        force_Direction = Vector3.zero;
 
         if (rb.velocity.y < 0f)
             rb.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
 
         Vector3 horizontalVelocity = rb.velocity;
         horizontalVelocity.y = 0;
-        if (horizontalVelocity.sqrMagnitude > maxSpeed * maxSpeed)
-            rb.velocity = horizontalVelocity.normalized * maxSpeed + Vector3.up * rb.velocity.y;
+        if (horizontalVelocity.sqrMagnitude > max_Speed * max_Speed)
+            rb.velocity = horizontalVelocity.normalized * max_Speed + Vector3.up * rb.velocity.y;
 
-        isGrounded = IsGrounded();
-        LookAt();
+        Is_Grounded = Check_Grounded();
+        Look_At();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private bool IsGrounded()
+    private bool Check_Grounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, dist_To_Ground + 0.1f);
     }
 
-    private Vector3 GetCameraForward(Camera playerCamera)
+    private Vector3 Get_Camera_Forward(Camera playerCamera)
     {
         Vector3 forward = playerCamera.transform.forward;
         forward.y = 0;
         return forward.normalized;
     }
 
-    private Vector3 GetCameraRight(Camera playerCamera)
+    private Vector3 Get_Camera_Right(Camera playerCamera)
     {
         Vector3 right = playerCamera.transform.right;
         right.y = 0;
         return right.normalized;
     }
 
-    private void LookAt()
+    private void Look_At()
     {
         if (!move.enabled)
             return;
