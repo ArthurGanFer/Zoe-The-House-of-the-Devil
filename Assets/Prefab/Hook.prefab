@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hook_Origin: {fileID: 0}
   hook_Speed: 50
-  max_Hook_Distance: 0
+  max_Hook_Distance: 100
   Main_Camera: {fileID: 0}
   Target_Position: {x: 0, y: 0, z: 0}
 --- !u!120 &6277777723153899543

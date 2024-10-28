@@ -1,19 +1,23 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Possession : MonoBehaviour
 {
-    public float raycastRange = 100f;  // Maximum distance for raycasting
-    public LayerMask targetLayer;     // Layer mask to filter what the raycast can hit
-    private GameObject controlledObject;  // The currently controlled object
-    private CharacterController characterController;
+    public float raycast_Range = 100f;  // Maximum distance for raycasting
+    public LayerMask target_Layer;     // Layer mask to filter what the raycast can hit
+    private GameObject controlled_Object;  // The currently controlled object
+    private PlayerController character_Controller;
+   
+    Cinemachine.CinemachineFreeLook free_Look;
 
     void Start()
     {
         // Assuming the playable character is the one the script is initially attached to
-        controlledObject = this.gameObject;
-        characterController = controlledObject.GetComponent<CharacterController>();
+        controlled_Object = this.gameObject;
+        character_Controller = controlled_Object.GetComponent<PlayerController>();
+        
     }
 
     void Update()
@@ -24,12 +28,12 @@ public class Possession : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, raycastRange, targetLayer))
+            if (Physics.Raycast(ray, out hit, raycast_Range, target_Layer))
             {
                 GameObject hitObject = hit.collider.gameObject;
 
-                // Check if the hit object is a valid new control target (has a CharacterController, for example)
-                if (hitObject != null && hitObject.GetComponent<CharacterController>() != null)
+                // Check if the hit object is a valid new control target (has a PlayerController, for example)
+                if (hitObject != null && hitObject.GetComponent<PlayerController>() != null)
                 {
                     TransferCharacterControl(hitObject);
                 }
@@ -37,36 +41,37 @@ public class Possession : MonoBehaviour
         }
 
         // Allow movement for the controlled object (if it's a character controller)
-        if (controlledObject != null && characterController != null)
+        if (controlled_Object != null && character_Controller != null)
         {
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-
-            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-            characterController.Move(movement * Time.deltaTime * 5f); // Move the controlled object
+           character_Controller.enabled = true;
         }
     }
 
     void TransferCharacterControl(GameObject newObject)
     {
-        if (newObject != controlledObject)
+        if (newObject != controlled_Object)
         {
             Debug.Log("Transferring control to: " + newObject.name);
 
             // Disable the character controller of the current object
-            if (characterController != null)
+            if (character_Controller != null)
             {
-                characterController.enabled = false;
+                character_Controller.enabled = false;
             }
 
             // Set the new controlled object and update its character controller
-            controlledObject = newObject;
-            characterController = controlledObject.GetComponent<CharacterController>();
-
-            // Enable the character controller for the new object
-            if (characterController != null)
+            controlled_Object = newObject;
+            character_Controller = controlled_Object.GetComponent<PlayerController>();
+            free_Look = Camera.main.GetComponent<CinemachineFreeLook>();
+            if (free_Look != null)
             {
-                characterController.enabled = true;
+                free_Look.LookAt=controlled_Object.transform;
+                free_Look.Follow=controlled_Object.transform;
+            }
+            // Enable the character controller for the new object
+            if (character_Controller != null)
+            {
+                character_Controller.enabled = true;
             }
         }
     }
