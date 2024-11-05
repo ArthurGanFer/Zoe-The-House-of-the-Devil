@@ -4,6 +4,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,8 +29,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float dist_To_Ground;
 
+    [SerializeField]
+    private bool is_hanging;
+
+    private float ledge_grab_cooldown = 1f;
+    private float ledge_grab_timer;
+
     private void Awake()
     {
+        ledge_grab_timer = 0;
         rb = GetComponent<Rigidbody>();
         player_Action_Asset = new ThirdPersonActionsAsset();
     }
@@ -49,14 +57,29 @@ public class PlayerController : MonoBehaviour
 
     private void Do_Jump(InputAction.CallbackContext obj)
     {
+        if (is_hanging)
+        {
+            rb.useGravity = true;
+            is_hanging = false;
+            force_Direction += Vector3.up * jump_Force;
+            ledge_grab_timer = 0;
+            StartCoroutine(Enable_Movement(0.25f));
+        } else
         if (Check_Grounded())
         {
             force_Direction += Vector3.up * jump_Force;
         }
     }
 
+    IEnumerator Enable_Movement(float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
+        move.Enable();
+    }
+
     private void FixedUpdate()
     {
+        Ledge_Grab();
         force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
         force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
 
@@ -75,6 +98,7 @@ public class PlayerController : MonoBehaviour
         Look_At();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        ledge_grab_timer += Time.fixedDeltaTime;
     }
 
     private bool Check_Grounded()
@@ -108,6 +132,44 @@ public class PlayerController : MonoBehaviour
             this.rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
         else
             rb.angularVelocity = Vector3.zero;
+    }
+
+    private void Ledge_Grab()
+    {
+        if (ledge_grab_timer < ledge_grab_cooldown)
+            return;
+        if (!Is_Grounded && !is_hanging)
+        {
+            RaycastHit down_hit;
+            Vector3 line_down_start = (transform.position + Vector3.up * 0.5f) + transform.forward;
+            Vector3 line_down_end = (transform.position + Vector3.up * 0.1f) + transform.forward;
+            Physics.Linecast(line_down_start, line_down_end, out down_hit, LayerMask.GetMask("Ground"));
+            Debug.DrawLine(line_down_start, line_down_end, Color.green);
+            
+            if (down_hit.collider != null)
+            {
+                RaycastHit forward_hit;
+                Vector3 line_forward_start = new Vector3(transform.position.x, down_hit.point.y-0.1f, transform.position.z);
+                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y-0.4f, transform.position.z) + transform.forward * 2f;
+                Physics.Linecast(line_forward_start, line_forward_end, out forward_hit, LayerMask.GetMask("Ground"));
+                Debug.DrawLine(line_forward_start, line_forward_end, Color.red);
+
+                if (forward_hit.collider != null)
+                {
+                    rb.useGravity = false;
+                    rb.velocity = Vector3.zero;
+                    
+                    is_hanging = true;
+                    move.Disable();
+                    // hanging animation
+                    Vector3 hang_position = new Vector3(forward_hit.point.x, down_hit.point.y, forward_hit.point.z);
+                    Vector3 offset = transform.forward * -0.1f + transform.up * -0.1f;
+                    hang_position += offset;
+                    transform.position = hang_position;
+                }
+                
+            }
+        }
     }
 
 }
