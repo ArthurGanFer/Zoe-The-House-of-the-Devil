@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool is_hanging;
 
-    private float ledge_grab_cooldown = 1f;
+    [SerializeField]
+    private float ledge_grab_cooldown = 0.3f;
     private float ledge_grab_timer;
 
     private void Awake()
