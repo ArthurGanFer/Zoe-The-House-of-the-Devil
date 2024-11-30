@@ -3,118 +3,96 @@ using UnityEngine;
 
 public class Grapple : MonoBehaviour
 {
-    // Public and private fields for controlling the grapple behavior
-    [SerializeField] float travel_Speed;       // Speed at which the player travels toward the hook
-    [SerializeField] float travel_Distance;    // Maximum distance the player can travel using the grapple
-    [SerializeField] GameObject hook_Prefab;   // Prefab of the hook shot to instantiate
-    [SerializeField] Transform hook_Transform; // The point where the hook will spawn from
+    [SerializeField] private float travel_Speed = 10f;       // Speed of pulling
+    [SerializeField] private float travel_Distance = 20f;    // Max distance for the grapple
+    [SerializeField] private GameObject hook_Prefab;         // Hook prefab
+    [SerializeField] private Transform hook_Transform;       // Origin point for the hook
 
-    private ThirdPersonActionsAsset test_Controls;       // Reference to a control script (For input management)
-    private Vector3 startpos;                  // Stores the initial position of the player
+    private Rigidbody rb;                                    // Rigidbody for the player
+    private HookShot hook_Shot;                              // Reference to the active hook
+    private bool is_travelling = false;                      // Is the player being pulled
+    private bool is_hooked = false;                          // Is the hook active
+    private Vector3 pull_direction;                         // Direction of pull
 
-    private HookShot hook_Shot;                // Instance of the hook shot
-    private bool is_travelling = false;        // Tracks if the player is currently being pulled by the hook
-    private Rigidbody rb;                      // Rigidbody for applying physics-based movement
-    public bool Is_Hooked = false;             // Tracks if the hook is currently active
+    private Vector3 startpos;                                // Starting position
 
-    // Initialize the test controls on object creation
-    private void Awake()
+    private void Start()
     {
-        test_Controls = new ThirdPersonActionsAsset();
+        rb = GetComponent<Rigidbody>();
+        startpos = transform.position;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        rb = GetComponent<Rigidbody>();    // Cache the Rigidbody component
-        is_travelling = false;             // Player is not travelling at the start
-        startpos = this.transform.position; // Store the starting position
+        // Input to activate or deactivate the hook
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            is_hooked = true;
+            Create_Hook();
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            is_hooked = false;
+            Stop_Pull();
+            Destroy_Hook();
+        }
+
+        // Reset position
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            transform.position = startpos;
+            Stop_Pull();
+        }
+
+        // Pulling logic
+        if (is_travelling && hook_Shot != null)
+        {
+            float distance = Vector3.Distance(transform.position, hook_Shot.transform.position);
+            if (distance < 0.5f || distance > travel_Distance) // Stop if too close or out of range
+            {
+                Stop_Pull();
+                Destroy_Hook();
+            }
+        }
     }
 
-    // Coroutine to apply pulling force towards the hook
     public IEnumerator Start_Pull()
     {
         is_travelling = true;
-        Debug.Log("Do Pulling");
-
-        Vector3 direction = (hook_Shot.transform.position - transform.position).normalized;
-        rb.AddForce(direction * travel_Speed, ForceMode.VelocityChange); // Apply force towards the hook
-
-        yield return new WaitForSeconds(8f); // Wait for 8 seconds before stopping the pull
-    }
-
-    // Update is called once per frame
-    void Update()
-    { /// Currently operating on hard coded options
-        // Toggle hook state based on key inputs
-        if (Input.GetKey(KeyCode.Q))
+        while (is_travelling && hook_Shot != null)
         {
-            Is_Hooked = true; // Activate hook
-        }
-        else if (Input.GetKey(KeyCode.R))
-        {
-            Is_Hooked = false; // Deactivate hook
-        }
+            // Calculate pull direction and move the player
+            pull_direction = (hook_Shot.transform.position - transform.position).normalized;
+            rb.AddForce(pull_direction,ForceMode.VelocityChange);
 
-        // Reset player position to starting position on key press
-        if (Input.GetKey(KeyCode.G))
-        {
-            transform.position = startpos;
-        }
-
-        // If no hook exists and hook is activated, instantiate a new hook
-        if (hook_Shot == null && Is_Hooked == true)
-        {
-            Debug.Log("Hook Activated");
-            is_travelling = false;
-
-            // Instantiate hook at the hook transform's position and initialize it
-            hook_Shot = Instantiate(hook_Prefab, hook_Transform.position, Quaternion.identity).GetComponent<HookShot>();
-            hook_Shot.Initialize(this, hook_Transform);
-
-            StopAllCoroutines(); // Stop any existing coroutines to avoid multiple pulls
-            StartCoroutine(Destroy_Hook_Life_Span()); // Start hook lifespan timer
-        }
-        // If hook exists but hook is deactivated, destroy the hook
-        else if (hook_Shot != null && Is_Hooked != true)
-        {
-            Debug.Log("Hook Deactivated");
-            Destroy_Hook();
-        }
-
-        // Stop execution if the player is not travelling or if the hook doesn't exist
-        if (!is_travelling || hook_Shot == null) return;
-
-        // Destroy hook if player exceeds travel distance
-        if (Vector3.Distance(transform.position, hook_Transform.position) >= travel_Distance)
-        {
-            Debug.Log("Exceeded Travel Distance");
-            Destroy_Hook();
-        }
-        // If hook is active, continue pulling the player
-        else if (hook_Shot != null && Is_Hooked == true)
-        {
-            StartCoroutine(Start_Pull());
+            yield return null; // Wait until the next frame
         }
     }
 
-    // Coroutine to destroy the hook after a certain lifespan (8 seconds)
-    private IEnumerator Destroy_Hook_Life_Span()
+    private void Stop_Pull()
     {
-        yield return new WaitForSeconds(8f);
-        Debug.Log("Hook Lifespan Ended");
-        Destroy_Hook();
-    }
-
-    // Destroys the hook object and resets related variables
-    public void Destroy_Hook()
-    {
-        if (hook_Shot == null) return; // Exit if no hook exists
         is_travelling = false;
-        Is_Hooked = false;
+        rb.velocity = Vector3.zero; // Stop all movement
+    }
 
-        // Destroy the hook object and clear reference
-        Destroy(hook_Shot.gameObject);
-        hook_Shot = null;
+    private void Create_Hook()
+    {
+        if (hook_Shot == null && is_hooked)
+        {
+            hook_Shot = Instantiate(hook_Prefab, hook_Transform.position, hook_Transform.rotation).GetComponent<HookShot>();
+            hook_Shot.Initialize(this, hook_Transform);
+        }
+    }
+
+  public void Destroy_Hook()
+    {
+        if (hook_Shot != null)
+        {
+            Destroy(hook_Shot.gameObject);
+            hook_Shot = null;
+        }
+        is_hooked = false;
+        Stop_Pull();
     }
 }
+
