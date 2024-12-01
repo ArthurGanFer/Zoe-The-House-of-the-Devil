@@ -7,7 +7,9 @@ public class SettingsManager : MonoBehaviour
 {
     public AudioMixer audioMixer;                   //Reference to our AudioMixer component
     public Camera mainCamera;                       //Reference to our Camera component
-    private PostProcessLayer postProcessLayer;      //Reference to our PostProcessLayer component
+    public PostProcessLayer postProcessLayer;       //Reference to our PostProcessLayer component
+
+    public bool monochrome;                         //A flag for if monochrome mode is on/off
 
     private static SettingsManager instance;        //Static instance of SettingsManager
 
@@ -31,11 +33,35 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (mainCamera == null)
+        {
+            AssignComponents();
+            return;
+        }
+
+        if (monochrome)
+        {
+            postProcessLayer.enabled = true;
+        }
+        else
+        {
+            postProcessLayer.enabled = false;
+        }
+    }
+
     void AssignComponents()
     {
         if (mainCamera == null) 
         { 
-            Debug.LogError("Main Camera is not assigned!"); 
+            mainCamera = FindObjectOfType<Camera>();
+
+            if (postProcessLayer == null)
+            {
+                postProcessLayer = mainCamera.GetComponent<PostProcessLayer>();
+            }
+
             return; 
         }
         else
@@ -55,7 +81,6 @@ public class SettingsManager : MonoBehaviour
         if (nextLevel != null)
         {
             SceneManager.LoadScene(nextLevel);
-            AssignComponents();
         }
         else
         {
@@ -63,9 +88,16 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    public void MonochromeMode(bool monochrome = false)
+    public void MonochromeMode(bool on)
     {
-        postProcessLayer.enabled = monochrome;
+        if (on)
+        {
+            monochrome = true;
+        }
+        if (!on)
+        {
+            monochrome = false;
+        }
     }
 
     public void SetVolume (float volume)
