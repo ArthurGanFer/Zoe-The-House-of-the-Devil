@@ -10,12 +10,20 @@ public class SettingsManager : MonoBehaviour
     public PostProcessLayer postProcessLayer;       //Reference to our PostProcessLayer component
 
     public bool monochrome;                         //A flag for if monochrome mode is on/off
+    public float currentVolume;                     //A float keeping track of our current volume
+
+    public int currentCoins;                       //An int keeping track of our current Coins        
 
     private static SettingsManager instance;        //Static instance of SettingsManager
 
-    static SettingsManager Instance
+    public static SettingsManager Instance
     {
         get { return instance; }
+    }
+
+    public int GetCurrentCoins()
+    {
+        return currentCoins;
     }
 
     void Awake()
@@ -76,6 +84,11 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    public void ChangeCoins(int coinsValue)
+    {
+        currentCoins += coinsValue;
+    }
+
     public void LoadLevel(string nextLevel = "TestLevel")
     {
         if (nextLevel != null)
@@ -103,6 +116,7 @@ public class SettingsManager : MonoBehaviour
     public void SetVolume (float volume)
     {
         audioMixer.SetFloat("volume", volume);
+        currentVolume = volume;
     }
 
     public void QuitGame(bool quit = false)
