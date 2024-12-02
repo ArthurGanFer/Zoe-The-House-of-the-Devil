@@ -12,6 +12,11 @@ public class GamePlay : GameState
             Debug.Log("Pause");
             return Pause_State;
         }
+        
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            DialogManager.instance.PlayCurrentSpeech();
+        }
 
         return this;
     }
