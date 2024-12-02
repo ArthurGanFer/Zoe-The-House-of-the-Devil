@@ -2290,6 +2290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 162a5bc54ebf08641a7ee6372a522114, type: 2}
   mainCamera: {fileID: 963194227}
+  postProcessLayer: {fileID: 0}
+  monochrome: 0
+  currentVolume: 0
 --- !u!4 &912349546
 Transform:
   m_ObjectHideFlags: 0
@@ -2452,7 +2455,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 963194228}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 96
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -2895,7 +2898,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level_Design
+          m_StringArgument: TestLevel
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &1059103361

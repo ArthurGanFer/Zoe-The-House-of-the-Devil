@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,6 +11,14 @@ public class PauseMenu : MonoBehaviour
     private SettingsManager settingsManager;    //A reference to our SettingsManager
 
     public static bool gameIsPaused = false;    //A flag for if the game is paused
+    [SerializeField]
+    private GameObject onButton;                //A reference to our on button GameObject
+    [SerializeField]
+    private GameObject offButton;               //A reference to our off button GameObject
+    [SerializeField]
+    private Slider volume;                      //A reference to our volume Slider
+    [SerializeField]
+    public TMP_Text coinText;
 
     private void Awake()
     {
@@ -29,6 +39,28 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
+
+        if (settingsManager != null)
+        {
+            if (settingsManager.monochrome)
+            {
+                onButton.SetActive(true);
+                offButton.SetActive(false);
+            }
+            else
+            {
+                onButton.SetActive(false);
+                offButton.SetActive(true);
+            }
+
+            volume.value = settingsManager.currentVolume;
+            DisplayCoinCount(settingsManager.currentCoins);
+        }
+    }
+
+    private void DisplayCoinCount(int coinCount)
+    {
+        coinText.text = string.Format("{00}", coinCount);
     }
 
     public void MonochromeMode(bool on)
