@@ -27,19 +27,18 @@ public class SoundFXManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void PlaySoundFX(AudioClip audioClip, Transform soundPosition, float volume = 1.0f)
+    public void PlaySoundFX(AudioClip audioClip)
     {
-        AudioSource audio_source = Instantiate(soundFX_Object, soundPosition.position, Quaternion.identity);
+        AudioSource audio_source = Instantiate(soundFX_Object, transform.position, Quaternion.identity);
         
         audio_source.clip = audioClip;
         
-        audio_source.volume = volume;
+        audio_source.volume = 1.0f;
         
         audio_source.Play();
         
         float clip_length = audio_source.clip.length;
         
         Destroy(audio_source.gameObject, clip_length);
-            
     }
 }
