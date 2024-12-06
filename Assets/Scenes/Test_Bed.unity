@@ -239,8 +239,8 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5.8211823, y: 1, z: 1.073939}
+  m_Center: {x: -2.4105911, y: 0, z: -0.03696928}
 --- !u!23 &516495122
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -406,7 +406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &625580600
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 625580599}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0794c3f3bb3b2d247b29c2c66a384a04, type: 3}
   m_Name: 
@@ -541,6 +541,8 @@ MonoBehaviour:
   player_Camera: {fileID: 963194227}
   Is_Grounded: 0
   dist_To_Ground: 0
+  is_hanging: 0
+  ledge_grab_cooldown: 0.3
 --- !u!114 &625580606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,7 +558,7 @@ MonoBehaviour:
   raycast_Range: 100
   target_Layer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
 --- !u!1 &641985766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,11 +1588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3fde5ef78b798e4284bb90800f0076e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  travel_Speed: 0.5
+  travel_Speed: 10
   travel_Distance: 100
   hook_Prefab: {fileID: 1734425231831966996, guid: 533abeee08ffdf145b74b9306d41819c, type: 3}
-  hook_Transform: {fileID: 1548237155}
-  Is_Hooked: 0
+  hook_Transform: {fileID: 1639446788}
 --- !u!114 &1639446783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1598,7 +1599,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639446781}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0794c3f3bb3b2d247b29c2c66a384a04, type: 3}
   m_Name: 
@@ -1609,6 +1610,8 @@ MonoBehaviour:
   player_Camera: {fileID: 963194227}
   Is_Grounded: 0
   dist_To_Ground: 0
+  is_hanging: 0
+  ledge_grab_cooldown: 0.3
 --- !u!54 &1639446784
 Rigidbody:
   m_ObjectHideFlags: 0
