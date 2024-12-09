@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float max_Speed = 5f;
     private Vector3 force_Direction = Vector3.zero;
+    public float walkThreshold = 0.1f; // Speed threshold for walking
+    public float runThreshold = 6f;  // Speed threshold for running 
 
     [SerializeField]
     private Camera player_Camera;
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float ledge_grab_cooldown = 0.3f;
     private float ledge_grab_timer;
+    public Animator animator;
 
     private void Awake()
     {
@@ -46,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         player_Action_Asset.Player.Jump.started += Do_Jump;
+        player_Action_Asset.Player.UseItem.started += Use_Item;
         move = player_Action_Asset.Player.Move;
         player_Action_Asset.Player.Enable();
     }
@@ -53,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         player_Action_Asset.Player.Jump.started -= Do_Jump;
+        player_Action_Asset.Player.UseItem.started -= Use_Item;
         player_Action_Asset.Player.Disable();
     }
 
@@ -69,6 +74,18 @@ public class PlayerController : MonoBehaviour
         if (Check_Grounded())
         {
             force_Direction += Vector3.up * jump_Force;
+        }
+    }
+    
+    private void Use_Item(InputAction.CallbackContext obj)
+    {
+        if (move.enabled)
+        {
+            Debug.Log("UseItem");
+        }
+        else
+        {
+            Debug.Log("Not used");
         }
     }
 
@@ -94,6 +111,25 @@ public class PlayerController : MonoBehaviour
         horizontalVelocity.y = 0;
         if (horizontalVelocity.sqrMagnitude > max_Speed * max_Speed)
             rb.velocity = horizontalVelocity.normalized * max_Speed + Vector3.up * rb.velocity.y;
+        
+        float horizontalSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
+        // Check if the speed is above the run threshold for running
+        if (horizontalSpeed >= runThreshold)
+        {
+            animator.SetBool("Run", true);  // Character is running
+            animator.SetBool("Walk", false); // Character is not walking
+        }
+        // Check if the speed is above the walk threshold for walking
+        else if (horizontalSpeed >= walkThreshold)
+        {
+            animator.SetBool("Run", false); // Character is not running
+            animator.SetBool("Walk", true); // Character is walking
+        }
+        else
+        {
+            animator.SetBool("Run", false);  // Character is idle
+            animator.SetBool("Walk", false); // Character is idle
+        }
 
         Is_Grounded = Check_Grounded();
         Look_At();
