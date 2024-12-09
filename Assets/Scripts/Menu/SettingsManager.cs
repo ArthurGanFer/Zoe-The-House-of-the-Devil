@@ -12,7 +12,7 @@ public class SettingsManager : MonoBehaviour
     public bool monochrome;                         //A flag for if monochrome mode is on/off
     public float currentVolume;                     //A float keeping track of our current volume
 
-    public int currentCoins;                       //An int keeping track of our current Coins        
+    public int currentCoins;                        //An int keeping track of our current Coins        
 
     private static SettingsManager instance;        //Static instance of SettingsManager
 
