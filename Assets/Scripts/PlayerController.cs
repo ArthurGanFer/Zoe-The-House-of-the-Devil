@@ -136,6 +136,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         ledge_grab_timer += Time.fixedDeltaTime;
+
+        LogRigidbodySpeed();
     }
 
     private bool Check_Grounded()
@@ -206,6 +208,19 @@ public class PlayerController : MonoBehaviour
                 }
                 
             }
+        }
+    }
+
+    private void LogRigidbodySpeed()
+    {
+        if (rb != null)
+        {
+            // Calculate the magnitude of the Rigidbody's velocity
+            Vector3 velocity = rb.velocity;
+            float horizontalSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
+
+            // Log the full velocity to track what's happening
+            Debug.Log("Horizontal Speed: " + horizontalSpeed);
         }
     }
 
