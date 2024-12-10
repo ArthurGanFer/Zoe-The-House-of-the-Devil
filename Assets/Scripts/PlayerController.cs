@@ -70,11 +70,15 @@ public class PlayerController : MonoBehaviour
             force_Direction += Vector3.up * jump_Force;
             ledge_grab_timer = 0;
             StartCoroutine(Enable_Movement(0.25f));
+            animator.SetBool("Jump", true);
         } else
         if (Check_Grounded())
         {
             force_Direction += Vector3.up * jump_Force;
+            animator.SetBool("Jump", true);
         }
+
+        
     }
     
     private void Use_Item(InputAction.CallbackContext obj)
@@ -97,6 +101,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        LogRigidbodySpeed();
+
         Ledge_Grab();
         force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
         force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
@@ -109,17 +115,23 @@ public class PlayerController : MonoBehaviour
 
         Vector3 horizontalVelocity = rb.velocity;
         horizontalVelocity.y = 0;
+
+        // Clamp horizontal velocity if it exceeds max speed
         if (horizontalVelocity.sqrMagnitude > max_Speed * max_Speed)
-            rb.velocity = horizontalVelocity.normalized * max_Speed + Vector3.up * rb.velocity.y;
-        
-        float horizontalSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
-        // Check if the speed is above the run threshold for running
+            horizontalVelocity = horizontalVelocity.normalized * max_Speed;
+
+        // Apply the clamped horizontal velocity while preserving vertical velocity
+        rb.velocity = horizontalVelocity + Vector3.up * rb.velocity.y;
+
+        // Use the already clamped horizontal velocity for speed calculations
+        float horizontalSpeed = horizontalVelocity.magnitude;
+
+        // Check speed thresholds for animations
         if (horizontalSpeed >= runThreshold)
         {
             animator.SetBool("Run", true);  // Character is running
             animator.SetBool("Walk", false); // Character is not walking
         }
-        // Check if the speed is above the walk threshold for walking
         else if (horizontalSpeed >= walkThreshold)
         {
             animator.SetBool("Run", false); // Character is not running
@@ -131,13 +143,33 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Walk", false); // Character is idle
         }
 
+
+
+
         Is_Grounded = Check_Grounded();
+
+        if (Is_Grounded && animator.GetBool("Jump"))
+        {
+            animator.SetBool("Jump", false);
+        }
+        
+        if (!Is_Grounded)
+        {
+            animator.SetBool("Jump", true);
+        }
+
+
+        if (!is_hanging && animator.GetBool("Climb"))
+        {
+            animator.SetBool("Climb", false);
+        }
+
         Look_At();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         ledge_grab_timer += Time.fixedDeltaTime;
 
-        LogRigidbodySpeed();
+        
     }
 
     private bool Check_Grounded()
@@ -184,6 +216,7 @@ public class PlayerController : MonoBehaviour
             Vector3 line_down_end = (transform.position + Vector3.up * 0.1f) + transform.forward;
             Physics.Linecast(line_down_start, line_down_end, out down_hit, LayerMask.GetMask("Ground"));
             Debug.DrawLine(line_down_start, line_down_end, Color.green);
+
             
             if (down_hit.collider != null)
             {
@@ -197,6 +230,10 @@ public class PlayerController : MonoBehaviour
                 {
                     rb.useGravity = false;
                     rb.velocity = Vector3.zero;
+
+                    animator.SetBool("Climb", true);
+
+                    animator.SetBool("Jump", false);
                     
                     is_hanging = true;
                     move.Disable();
@@ -209,19 +246,28 @@ public class PlayerController : MonoBehaviour
                 
             }
         }
+
+
     }
 
     private void LogRigidbodySpeed()
     {
         if (rb != null)
         {
-            // Calculate the magnitude of the Rigidbody's velocity
+            // Log Rigidbody velocity
             Vector3 velocity = rb.velocity;
+            Debug.Log($"Rigidbody Velocity: X={velocity.x}, Z={velocity.z}, Magnitude={velocity.magnitude}");
+
+            // Calculate horizontal speed
             float horizontalSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
 
-            // Log the full velocity to track what's happening
-            Debug.Log("Horizontal Speed: " + horizontalSpeed);
+            Debug.Log("Corrected Horizontal Speed: " + horizontalSpeed);
+        }
+        else
+        {
+            Debug.LogError("Rigidbody is null!");
         }
     }
+
 
 }
