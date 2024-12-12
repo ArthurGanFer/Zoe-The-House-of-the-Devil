@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
         LogRigidbodySpeed();
 
         Ledge_Grab();
+
         force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
         force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
 
@@ -193,17 +194,21 @@ public class PlayerController : MonoBehaviour
 
     private void Look_At()
     {
-        if (!move.enabled)
-            return;
+        if (!move.enabled) return;
 
         Vector3 direction = rb.velocity;
-        direction.y = 0f;
+        direction.y = 0f; // Ignore vertical movement
 
-        if (move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
-            this.rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        if (direction.sqrMagnitude > 0.1f) // Only rotate when moving
+        {
+            rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
         else
-            rb.angularVelocity = Vector3.zero;
+        {
+            rb.angularVelocity = Vector3.zero; // Prevent jittery rotations
+        }
     }
+
 
     private void Ledge_Grab()
     {
@@ -222,7 +227,7 @@ public class PlayerController : MonoBehaviour
             {
                 RaycastHit forward_hit;
                 Vector3 line_forward_start = new Vector3(transform.position.x, down_hit.point.y-0.1f, transform.position.z);
-                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y-0.4f, transform.position.z) + transform.forward * 2f;
+                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y-0.4f, transform.position.z) + transform.forward * 0.5f;
                 Physics.Linecast(line_forward_start, line_forward_end, out forward_hit, LayerMask.GetMask("Ground"));
                 Debug.DrawLine(line_forward_start, line_forward_end, Color.red);
 
@@ -268,6 +273,8 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Rigidbody is null!");
         }
     }
+
+
 
 
 }
