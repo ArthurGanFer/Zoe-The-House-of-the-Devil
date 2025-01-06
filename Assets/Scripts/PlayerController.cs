@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        LogRigidbodySpeed();
+        //LogRigidbodySpeed();
 
         Ledge_Grab();
 
@@ -255,24 +255,24 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void LogRigidbodySpeed()
-    {
-        if (rb != null)
-        {
-            // Log Rigidbody velocity
-            Vector3 velocity = rb.velocity;
-            Debug.Log($"Rigidbody Velocity: X={velocity.x}, Z={velocity.z}, Magnitude={velocity.magnitude}");
+    //private void LogRigidbodySpeed()
+    //{
+    //    if (rb != null)
+    //    {
+    //        // Log Rigidbody velocity
+    //        Vector3 velocity = rb.velocity;
+    //        Debug.Log($"Rigidbody Velocity: X={velocity.x}, Z={velocity.z}, Magnitude={velocity.magnitude}");
 
-            // Calculate horizontal speed
-            float horizontalSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
+    //        // Calculate horizontal speed
+    //        float horizontalSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
 
-            Debug.Log("Corrected Horizontal Speed: " + horizontalSpeed);
-        }
-        else
-        {
-            Debug.LogError("Rigidbody is null!");
-        }
-    }
+    //        Debug.Log("Corrected Horizontal Speed: " + horizontalSpeed);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Rigidbody is null!");
+    //    }
+    //}
 
 
 

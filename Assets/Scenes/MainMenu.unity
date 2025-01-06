@@ -2293,6 +2293,7 @@ MonoBehaviour:
   postProcessLayer: {fileID: 0}
   monochrome: 0
   currentVolume: 0
+  currentCoins: 0
 --- !u!4 &912349546
 Transform:
   m_ObjectHideFlags: 0
@@ -2898,7 +2899,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TestLevel
+          m_StringArgument: Game_Scene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &1059103361

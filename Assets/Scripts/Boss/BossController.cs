@@ -36,63 +36,64 @@ public class BossController : MonoBehaviour
             {
                 agent.SetDestination(target.position);
             }
-        } 
+        }
     }
 
     void IsPlayerInSight()
     {
-        Vector3 forward = transform.TransformDirection(Vector3.forward) * lookAheadDistance;
-        float halfAngle = lookAheadAngle / 2;
-        
-        for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
-        {
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
-            RaycastHit hit;
+        float detectionRadius = lookAheadDistance;
 
-            if (Physics.Raycast(transform.position, direction, out hit, lookAheadDistance, playerLayer))
+        // Get all colliders in the detection radius
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player"))
             {
-                if (hit.collider != null)
+                Vector3 directionToPlayer = (hit.transform.position - transform.position).normalized;
+                float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+
+                if (angleToPlayer <= lookAheadAngle / 2)
                 {
                     playerInSight = true;
-                    break;
+                    return; // Player is detected, stop checking
                 }
             }
-            else
-            {
-                playerInSight = false;
-            }
         }
+
+        playerInSight = false; // Player is not in sight
     }
 
-    private void OnDrawGizmos()
-    {
-        if (playerInSight)
-        {
-            Gizmos.color = Color.green;
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-        }
 
-        Vector3 forward = transform.forward;
-        float halfAngle = lookAheadAngle / 2;
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = playerInSight ? Color.green : Color.red;
 
-        for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
-        {
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward; 
-            Gizmos.DrawRay(transform.position, direction * lookAheadDistance);
-        }
-    }
+    //    float halfAngle = lookAheadAngle / 2;
+    //    Vector3 forward = transform.forward;
+    //    float[] heights = { 2.0f, 1.0f, 0.5f }; // Match the heights used in your logic
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Gets Here");
+    //    foreach (float height in heights)
+    //    {
+    //        Vector3 origin = transform.position + Vector3.up * height;
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            SceneManager.LoadScene("EndScreen");
-            Debug.Log("Player Dead!");
-        }
-    }
+    //        for (float angle = -halfAngle; angle <= halfAngle; angle += 5.0f) // Use larger steps for visualization
+    //        {
+    //            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
+    //            Gizmos.DrawRay(origin, direction * lookAheadDistance);
+    //        }
+    //    }
+    //}
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Debug.Log("Player touched by boss! Game Over!");
+
+    //        SceneManager.LoadScene("Game_Scene");
+    //    }
+    //}
+
 }
