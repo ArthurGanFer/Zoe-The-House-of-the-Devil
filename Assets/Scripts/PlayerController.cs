@@ -9,11 +9,11 @@ using Color = UnityEngine.Color;
 public class PlayerController : MonoBehaviour
 {
     //input fields
-    private ThirdPersonActionsAsset player_Action_Asset;
+    public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
 
     //movement fields
-    private Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField]
     private float movement_Force = 1f;
     [SerializeField]
