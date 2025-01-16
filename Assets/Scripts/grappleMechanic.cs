@@ -29,13 +29,9 @@ public class grappleMechanic : MonoBehaviour
     [SerializeField]
     private bool useGrapple;
 
-    private void Awake()
+    private void Start()
     {
         AssignComponents();
-    }
-
-    private void OnEnable()
-    {
         thirdPersonActionAsset.Player.UseItem.started += UseGrapple;
         pulling = false;
         useGrapple = false;

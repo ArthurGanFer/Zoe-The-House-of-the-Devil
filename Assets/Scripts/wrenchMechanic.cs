@@ -14,13 +14,9 @@ public class wrenchMechanic : MonoBehaviour
     [SerializeField]
     private ThirdPersonActionsAsset thirdPersonActionAsset;
 
-    private void Awake()
+    private void Start()
     {
         AssignComponents();
-    }
-
-    private void OnEnable()
-    {
         thirdPersonActionAsset.Player.UseItem.started += UseWrench;
     }
 
