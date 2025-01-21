@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool Controllers_Enabled;
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         player_Action_Asset.Player.Jump.started += Do_Jump;
         player_Action_Asset.Player.UseItem.started += Use_Item;
+        player_Action_Asset.Player.Possess.started += Do_Possess;
         move = player_Action_Asset.Player.Move;
         player_Action_Asset.Player.Enable();
     }
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         player_Action_Asset.Player.Jump.started -= Do_Jump;
         player_Action_Asset.Player.UseItem.started -= Use_Item;
+        player_Action_Asset.Player.Possess.started -= Do_Possess;
         player_Action_Asset.Player.Disable();
     }
 
@@ -92,6 +96,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Not used");
         }
     }
+    
+    private void Do_Possess(InputAction.CallbackContext obj)
+    {
+        Possess(Check_Avatar_Doll());
+    }
 
     IEnumerator Enable_Movement(float delay = 0f)
     {
@@ -101,7 +110,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //LogRigidbodySpeed();
+        Check_Avatar_Doll();
+        if (!Controllers_Enabled)
+            return;
 
         Ledge_Grab();
 
@@ -251,30 +262,28 @@ public class PlayerController : MonoBehaviour
                 
             }
         }
-
-
     }
 
-    //private void LogRigidbodySpeed()
-    //{
-    //    if (rb != null)
-    //    {
-    //        // Log Rigidbody velocity
-    //        Vector3 velocity = rb.velocity;
-    //        Debug.Log($"Rigidbody Velocity: X={velocity.x}, Z={velocity.z}, Magnitude={velocity.magnitude}");
+    private PlayerController Check_Avatar_Doll()
+    {
+        Collider[] dolls = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("Player"));
+        foreach (var doll in dolls)
+        {
+            if (doll.GetComponent<PlayerController>().Controllers_Enabled == false)
+            {
+                return doll.GetComponent<PlayerController>();
+            }
+        }
+        return null;
+    }
 
-    //        // Calculate horizontal speed
-    //        float horizontalSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
-
-    //        Debug.Log("Corrected Horizontal Speed: " + horizontalSpeed);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("Rigidbody is null!");
-    //    }
-    //}
-
-
-
+    private void Possess(PlayerController avatar)
+    {
+        avatar.Controllers_Enabled = true;
+        this.Controllers_Enabled = false;
+        CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
+        cinemachine.Follow = avatar.transform;
+        cinemachine.LookAt = avatar.transform;
+    }
 
 }
