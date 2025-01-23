@@ -12,7 +12,7 @@ public class grappleMechanic : MonoBehaviour
     [SerializeField]
     private GameObject hookPrefab;
     [SerializeField]
-    private Transform shootTransform;
+    public Transform shootTransform;
     [SerializeField]
     private hookMechanic hookMechanic;
     [SerializeField]
@@ -67,7 +67,7 @@ public class grappleMechanic : MonoBehaviour
             else
             {
                 playerRB.AddForce((hookMechanic.transform.position - transform.position).normalized * pullSpeed, ForceMode.VelocityChange);
-                //GrappleToGrapplePoint();
+                GrappleToGrapplePoint();
             }
         }
         else if (useGrapple && hookMechanic != null)
@@ -133,6 +133,6 @@ public class grappleMechanic : MonoBehaviour
     private void GrappleToGrapplePoint()
     {
         Transform target = hookMechanic.hookLocs[0].transform;
-        transform.position = Vector3.Lerp(transform.position, target.position, 500 * Time.deltaTime);
+        playerController.transform.position = Vector3.Lerp(transform.position, target.position, 500 * Time.deltaTime);
     }
 }
