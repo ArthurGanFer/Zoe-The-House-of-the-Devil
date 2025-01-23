@@ -67,6 +67,7 @@ public class grappleMechanic : MonoBehaviour
             else
             {
                 playerRB.AddForce((hookMechanic.transform.position - transform.position).normalized * pullSpeed, ForceMode.VelocityChange);
+                //GrappleToGrapplePoint();
             }
         }
         else if (useGrapple && hookMechanic != null)
@@ -127,5 +128,11 @@ public class grappleMechanic : MonoBehaviour
         yield return new WaitForSeconds(8f);
 
         DestroyHook();
+    }
+
+    private void GrappleToGrapplePoint()
+    {
+        Transform target = hookMechanic.hookLocs[0].transform;
+        transform.position = Vector3.Lerp(transform.position, target.position, 500 * Time.deltaTime);
     }
 }

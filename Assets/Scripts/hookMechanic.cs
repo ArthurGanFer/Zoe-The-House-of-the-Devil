@@ -17,6 +17,10 @@ public class hookMechanic : MonoBehaviour
     private LayerMask grapplePoint;
     [SerializeField]
     private float hookForce = 25f;
+    [SerializeField]
+    public Transform[] hookLocs;
+    [SerializeField]
+    private bool foundTarget;
 
     public void InitializeGrapple(grappleMechanic grapple, Transform shootTransform)
     {
@@ -42,9 +46,13 @@ public class hookMechanic : MonoBehaviour
 
     private void Update()
     {
+        
         Vector3[] positions = new Vector3[] {transform.position, grappleMechanic.transform.position};
 
         hookLR.SetPositions(positions);
+        
+       
+        //FindTarget();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,5 +64,22 @@ public class hookMechanic : MonoBehaviour
 
             grappleMechanic.StartPull();
         }
+    }
+
+    public void FindTarget()
+    {
+        Collider[] hooksCol = Physics.OverlapSphere(transform.position, 5000, grapplePoint);
+        for (int i = 0; i < hooksCol.Length; i++)
+        {
+
+            hookLocs[i] = hooksCol[i].transform;
+        }
+        Debug.Log(hooksCol);
+
+        if (hookLocs.Length > 0)
+        {
+            foundTarget = true;
+        }
+
     }
 }
