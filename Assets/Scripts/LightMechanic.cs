@@ -7,7 +7,8 @@ public class LightMechanic : MonoBehaviour
     [Header("Components")]
     [SerializeField]
     private Animator lightAnim;
-    public Collider lightCol;
+    public SphereCollider lightCol;
+    private Light lightComponent;
 
     [Space(10)]
     [Header("Properties")]
@@ -27,6 +28,7 @@ public class LightMechanic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateLightRange();
         if (lightOn)
         {
             RunTimer();
@@ -44,13 +46,23 @@ public class LightMechanic : MonoBehaviour
         {
             Debug.Log($"There is no Animator Component on {this} GameObject!");
         }
-        lightCol = GetComponent<Collider>();
+        lightCol = GetComponent<SphereCollider>();
         if (lightCol == null)
         {
             Debug.Log($"There is no Collider Component on {this} GameObject!");
         }
+        lightComponent = GetComponent<Light>();
+        if (lightComponent == null)
+        {
+            Debug.Log($"There is no Light Component on {this} GameObject!");
+        }
 
         timer = deltaTimer;
+    }
+
+    private void UpdateLightRange()
+    {
+        lightComponent.range = lightCol.radius;
     }
 
     private void RunTimer()

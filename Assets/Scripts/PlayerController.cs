@@ -9,7 +9,7 @@ using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool Controllers_Enabled;
+    public bool Main_Character;
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
@@ -40,7 +40,16 @@ public class PlayerController : MonoBehaviour
     private float ledge_grab_cooldown = 0.3f;
     private float ledge_grab_timer;
     public Animator animator;
+    
+    private WaitForSeconds possession_timer = new WaitForSeconds(10f);
 
+    [SerializeField] private GameObject match_obj;
+    [SerializeField]
+    private int matches_available = 0;
+    [SerializeField]
+    private bool is_using_match = false;
+    private WaitForSeconds match_timer = new WaitForSeconds(18f);
+    
     private void Awake()
     {
         ledge_grab_timer = 0;
@@ -50,6 +59,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        EnableControllers();
+        if (!Main_Character)
+        {
+            DisableControllers();
+        }
+    }
+
+    private void EnableControllers()
+    {
         player_Action_Asset.Player.Jump.started += Do_Jump;
         player_Action_Asset.Player.UseItem.started += Use_Item;
         player_Action_Asset.Player.Possess.started += Do_Possess;
@@ -58,6 +76,11 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnDisable()
+    {
+        DisableControllers();
+    }
+
+    private void DisableControllers()
     {
         player_Action_Asset.Player.Jump.started -= Do_Jump;
         player_Action_Asset.Player.UseItem.started -= Use_Item;
@@ -81,15 +104,13 @@ public class PlayerController : MonoBehaviour
             force_Direction += Vector3.up * jump_Force;
             animator.SetBool("Jump", true);
         }
-
-        
     }
     
     private void Use_Item(InputAction.CallbackContext obj)
     {
         if (move.enabled)
         {
-            Debug.Log("UseItem");
+            StartCoroutine(LightMatch());
         }
         else
         {
@@ -99,7 +120,7 @@ public class PlayerController : MonoBehaviour
     
     private void Do_Possess(InputAction.CallbackContext obj)
     {
-        Possess(Check_Avatar_Doll());
+        StartCoroutine(PossessionCycle(Check_Avatar_Doll()));
     }
 
     IEnumerator Enable_Movement(float delay = 0f)
@@ -111,13 +132,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Check_Avatar_Doll();
-        if (!Controllers_Enabled)
-            return;
-
         Ledge_Grab();
 
-        force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
-        force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
+        if (move.enabled)
+        {
+            force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
+            force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
+        }
 
         rb.AddForce(force_Direction, ForceMode.Impulse);
         force_Direction = Vector3.zero;
@@ -154,9 +175,6 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Run", false);  // Character is idle
             animator.SetBool("Walk", false); // Character is idle
         }
-
-
-
 
         Is_Grounded = Check_Grounded();
 
@@ -269,21 +287,54 @@ public class PlayerController : MonoBehaviour
         Collider[] dolls = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("Player"));
         foreach (var doll in dolls)
         {
-            if (doll.GetComponent<PlayerController>().Controllers_Enabled == false)
+            if (doll.GetComponent<PlayerController>().Main_Character == false)
             {
                 return doll.GetComponent<PlayerController>();
             }
         }
         return null;
     }
-
-    private void Possess(PlayerController avatar)
+    
+    private void Possess(PlayerController targetAvatar)
     {
-        avatar.Controllers_Enabled = true;
-        this.Controllers_Enabled = false;
+        this.DisableControllers();
+        targetAvatar.EnableControllers();
         CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
-        cinemachine.Follow = avatar.transform;
-        cinemachine.LookAt = avatar.transform;
+        cinemachine.Follow = targetAvatar.transform;
+        cinemachine.LookAt = targetAvatar.transform;
+    }
+
+    IEnumerator PossessionCycle(PlayerController targetAvatar)
+    {
+        CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
+        
+        this.DisableControllers();
+        targetAvatar.EnableControllers();
+        cinemachine.Follow = targetAvatar.transform;
+        cinemachine.LookAt = targetAvatar.transform;
+        yield return possession_timer;
+        targetAvatar.DisableControllers();
+        this.EnableControllers();
+        cinemachine.Follow = this.transform;
+        cinemachine.LookAt = this.transform;
+    }
+    
+    IEnumerator LightMatch()
+    {
+        if (matches_available > 0 && !is_using_match)
+        {
+            matches_available -= 1;
+            is_using_match = true;
+            match_obj.SetActive(true);
+            yield return match_timer;
+            match_obj.SetActive(false);
+            is_using_match = false;
+        }
+    }
+
+    public void AddMatch()
+    {
+        matches_available += 1;
     }
 
 }

@@ -69,12 +69,12 @@ public class FootstepScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Detect surface type using tags
+        /* Detect surface type using tags
         if (other.CompareTag("Ground"))
         {
             currentSurface = "Default";
-
         }
+        */
     }
 
     private bool IsGrounded()
