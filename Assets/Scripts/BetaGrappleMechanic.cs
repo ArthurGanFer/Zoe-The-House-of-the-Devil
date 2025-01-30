@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,22 +7,18 @@ public class BetaGrappleMechanic : MonoBehaviour
     [SerializeField]
     [Tooltip ("A list of Transforms representing possible grapple points")]
     private List<Transform> hookLocs = new List<Transform>();
-    [SerializeField]
     [Tooltip("Our target grapple point")]
-    private Transform target;
+    public Transform target;
     [SerializeField]
-    [Tooltip ("A reference to our RigidBody")]
+    [Tooltip ("A reference to our RigidBody Component")]
     private Rigidbody rigidBody;
     [SerializeField]
-    [Tooltip("A reference to our LineRenderer")]
+    [Tooltip ("A reference to our LineRenderer Component")]
     private LineRenderer lineRenderer;
 
     [Space(10)]
 
-    [Header("Properties")]
-    [SerializeField]
-    [Tooltip ("A flag for if there is a possible grapple target")]
-    private bool foundTarget;
+    [Header ("Properties")]
     [SerializeField]
     [Tooltip ("The LayerMask where we keep our grapple points")]
     private LayerMask grapplePoint;
@@ -34,13 +29,12 @@ public class BetaGrappleMechanic : MonoBehaviour
     [Tooltip ("The distance needed to successfully grapple")]
     private float stopDistance;
     [SerializeField]
-    [Tooltip("The speed of the GameObject heading to the target")]
+    [Tooltip ("The speed of the GameObject heading to the target")]
     private float grappleSpeed;
+    [Tooltip ("A flag for if the grapple mechanic is being used")]
+    public bool grappling;    
     [SerializeField]
-    [Tooltip("A flag for if the grapple mechanic is being used")]
-    private bool grappling;    
-    [SerializeField]
-    [Tooltip("A flag for if the gameObject is grounded")]
+    [Tooltip ("A flag for if the gameObject is grounded")]
     private bool grounded;
 
 
@@ -62,7 +56,7 @@ public class BetaGrappleMechanic : MonoBehaviour
 
         if (Input.GetKeyDown (KeyCode.Space))
         {
-            if (foundTarget && grounded)
+            if (target != null && grounded)
             {
                 grappling = true;
             }
@@ -75,7 +69,6 @@ public class BetaGrappleMechanic : MonoBehaviour
         if (Input.GetKeyUp (KeyCode.Space))
         {
             grappling = false;
-            
         }
 
         if (grappling)
@@ -118,15 +111,6 @@ public class BetaGrappleMechanic : MonoBehaviour
 
         if (hookLocs.Count > 0)
         {
-            foundTarget = true;
-        }
-        else
-        {
-            foundTarget = false;
-        }
-
-        if (foundTarget)
-        {
             target = hookLocs[0].transform;
         }
         else
@@ -137,7 +121,7 @@ public class BetaGrappleMechanic : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (foundTarget)
+        if (target != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, searchRadius);
@@ -159,13 +143,13 @@ public class BetaGrappleMechanic : MonoBehaviour
         else
         {
             grappling = false;
-            Debug.Log($"{Vector3.Distance(transform.position, target.position)}");
+            //Debug.Log($"{Vector3.Distance(transform.position, target.position)}");
         }
     }
 
     private void CreateLine()
     {
-        if (foundTarget && grappling)
+        if (target != null && grappling)
         {
             Vector3[] positions = new Vector3[] { target.transform.position, transform.position };
 

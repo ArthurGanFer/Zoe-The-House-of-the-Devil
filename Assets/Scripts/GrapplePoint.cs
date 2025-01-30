@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public class GrapplePoint : MonoBehaviour
 {
-    [Header("Components")]
+    [Header ("Components")]
     [SerializeField]
+    [Tooltip ("A reference to our Camera Component")]
     private Camera mainCamera;
-
-    [Header("Properties")]
     [SerializeField]
+    [Tooltip("A reference to our BetaGrappleMechanic Component")]
+    private BetaGrappleMechanic grappleMechanic;
+
+    [Header ("Properties")]
+    [SerializeField]
+    [Tooltip ("A flag for if this GameObject is a viable grapple point")]
     private bool isActive;
+
 
 
     // Start is called before the first frame update
@@ -24,17 +27,25 @@ public class GrapplePoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isVisible())
+        if (grappleMechanic != null)
         {
-            isActive = true;
-            this.gameObject.layer = LayerMask.NameToLayer("GrapplePoint");
-            Debug.Log($"{this} is seen by camera");
+            if (isVisible() || (grappleMechanic.grappling == true && this.gameObject == grappleMechanic.target))
+            {
+                isActive = true;
+                this.gameObject.layer = LayerMask.NameToLayer("GrapplePoint");
+                //Debug.Log($"{this} is seen by camera");
+            }
+            else
+            {
+                isActive = false;
+                this.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
         }
         else
         {
-            isActive = false;
-            this.gameObject.layer = LayerMask.NameToLayer("Default");
+            CheckForGrappleMechanic();
         }
+
     }
 
     private void AssignComponents()
@@ -44,11 +55,29 @@ public class GrapplePoint : MonoBehaviour
         {
             Debug.Log("There is no GameObject with a Camera Component in the scene!");
         }
+
+        grappleMechanic = FindObjectOfType<BetaGrappleMechanic>();
+        if (grappleMechanic == null)
+        {
+            Debug.Log("There is no GameObject with a BetaGrappleMechanic Component in the scene!");
+        }
     }
 
     private bool isVisible()
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
         return planes.All(plane => plane.GetDistanceToPoint(this.transform.position) >= 0);
+    }
+
+    private void CheckForGrappleMechanic()
+    {
+        if (grappleMechanic == null)
+        {
+            grappleMechanic = FindObjectOfType<BetaGrappleMechanic>();
+        }
+        else
+        {
+            return;
+        }
     }
 }
