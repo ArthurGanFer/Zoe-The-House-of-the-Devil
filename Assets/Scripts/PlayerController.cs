@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private bool is_hanging;
+    
+    [SerializeField]
+    private bool is_crouching = false;
 
     [SerializeField]
     private float ledge_grab_cooldown = 0.3f;
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         player_Action_Asset.Player.Jump.started += Do_Jump;
         player_Action_Asset.Player.UseItem.started += Use_Item;
+        player_Action_Asset.Player.Crouch.started += Do_Crouch;
         player_Action_Asset.Player.Possess.started += Do_Possess;
         move = player_Action_Asset.Player.Move;
         player_Action_Asset.Player.Enable();
@@ -84,6 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         player_Action_Asset.Player.Jump.started -= Do_Jump;
         player_Action_Asset.Player.UseItem.started -= Use_Item;
+        player_Action_Asset.Player.Crouch.started -= Do_Crouch;
         player_Action_Asset.Player.Possess.started -= Do_Possess;
         player_Action_Asset.Player.Disable();
     }
@@ -115,6 +120,20 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.Log("Not used");
+        }
+    }
+    
+    private void Do_Crouch(InputAction.CallbackContext obj)
+    {
+        if (!is_crouching && move.enabled)
+        {
+            is_crouching = true;
+            Debug.Log("Crouching");
+        }
+        else
+        {
+            is_crouching = false;
+            Debug.Log("Standing");
         }
     }
     
