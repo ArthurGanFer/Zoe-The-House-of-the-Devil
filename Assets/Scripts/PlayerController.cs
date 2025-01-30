@@ -120,7 +120,10 @@ public class PlayerController : MonoBehaviour
     
     private void Do_Possess(InputAction.CallbackContext obj)
     {
-        StartCoroutine(PossessionCycle(Check_Avatar_Doll()));
+        if (Check_Avatar_Doll() != null)
+        {
+            StartCoroutine(PossessionCycle(Check_Avatar_Doll()));
+        }
     }
 
     IEnumerator Enable_Movement(float delay = 0f)
@@ -131,7 +134,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Check_Avatar_Doll();
         Ledge_Grab();
 
         if (move.enabled)
