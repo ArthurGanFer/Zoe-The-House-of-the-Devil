@@ -358,4 +358,9 @@ public class PlayerController : MonoBehaviour
         matches_available += 1;
     }
 
+    public void TeleportToPosition(Transform target)
+    {
+        this.transform.position = target.position;
+    }
+
 }
