@@ -54,7 +54,7 @@ public class BetaGrappleMechanic : MonoBehaviour
     {
         FindTarget();
 
-        if (Input.GetKeyDown (KeyCode.Space))
+        if (Input.GetKeyDown (KeyCode.Q))
         {
             if (target != null && grounded)
             {
@@ -66,7 +66,7 @@ public class BetaGrappleMechanic : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp (KeyCode.Space))
+        if (Input.GetKeyUp (KeyCode.Q))
         {
             grappling = false;
         }
