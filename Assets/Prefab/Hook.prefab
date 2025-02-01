@@ -256,7 +256,5 @@ MonoBehaviour:
   hookLR: {fileID: 0}
   grapplePoint:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
   hookForce: 25
-  hookLocs: []
-  foundTarget: 0

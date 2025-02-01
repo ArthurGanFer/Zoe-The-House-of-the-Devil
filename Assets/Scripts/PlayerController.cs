@@ -116,7 +116,12 @@ public class PlayerController : MonoBehaviour
         if (move.enabled)
         {
             StartCoroutine(LightMatch());
+            animator.SetBool("Attack", true);
+            StartCoroutine(ResetAttackAnimation());
         }
+
+      
+
         else
         {
             Debug.Log("Not used");
@@ -153,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Ledge_Grab();
+        //Ledge_Grab();
 
         if (move.enabled)
         {
@@ -361,6 +366,14 @@ public class PlayerController : MonoBehaviour
     public void TeleportToPosition(Transform target)
     {
         this.transform.position = target.position;
+    }
+
+    private IEnumerator ResetAttackAnimation()
+    {
+        yield return new WaitForSeconds(0.6f);
+
+
+        animator.SetBool("Attack", false);
     }
 
 }

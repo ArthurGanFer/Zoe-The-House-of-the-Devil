@@ -2,73 +2,137 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class wrenchMechanic : MonoBehaviour
+public class WrenchMechanic : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField]
-    private PlayerController playerController;
-    [SerializeField]
-    private Collider attackCollider;
-    [SerializeField]
-    private Animator wrenchAnim;
-    [SerializeField]
-    private ThirdPersonActionsAsset thirdPersonActionAsset;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Collider attackCollider;
+    [SerializeField] private Animator wrenchAnim;
+    [SerializeField] private ThirdPersonActionsAsset thirdPersonActionAsset;
 
     private void Start()
     {
         AssignComponents();
-        thirdPersonActionAsset.Player.UseItem.started += UseWrench;
+
+        // Ensure Input System is properly handled
+        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+
+        if (thirdPersonActionAsset != null)
+        {
+            thirdPersonActionAsset.Player.UseItem.started += UseWrench;
+        }
+        else
+        {
+            Debug.LogError("[WrenchMechanic] ThirdPersonActionsAsset is not assigned!");
+        }
+
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = false;
+            Debug.Log("[WrenchMechanic] Collider disabled at start.");
+        }
+        else
+        {
+            Debug.LogError("[WrenchMechanic] Attack Collider is missing! Assign it in the Inspector.");
+        }
     }
 
     private void OnDisable()
     {
-        thirdPersonActionAsset.Player.UseItem.started -= UseWrench;
+        if (thirdPersonActionAsset != null)
+        {
+            thirdPersonActionAsset.Player.UseItem.started -= UseWrench;
+        }
     }
 
     private void AssignComponents()
     {
-        playerController = FindObjectOfType<PlayerController>();
-        if (playerController == null )
+        if (playerController == null)
         {
-            Debug.Log("There is no object with a PlayerController Component in the scene!");
+            playerController = FindObjectOfType<PlayerController>();
+        }
+        if (playerController == null)
+        {
+            Debug.LogError("[WrenchMechanic] No PlayerController found in the scene!");
         }
         else
         {
             thirdPersonActionAsset = playerController.player_Action_Asset;
-            if (thirdPersonActionAsset == null)
-            {
-                Debug.Log($"There is no thirdPersonActionAsset Component on {this} GameObject!");
-            }
         }
-        
-        wrenchAnim = GetComponent<Animator>();
-        if ( wrenchAnim == null )
+
+        if (wrenchAnim == null)
         {
-            Debug.Log($"There is no Animator Component on {this} GameObject!");
+            wrenchAnim = GetComponent<Animator>();
         }
-        
+        if (wrenchAnim == null)
+        {
+            Debug.LogError("[WrenchMechanic] No Animator component found!");
+        }
     }
 
     private void UseWrench(InputAction.CallbackContext obj)
     {
+        if (wrenchAnim != null)
+        {
+            wrenchAnim.SetBool("Attack", true);
+        }
+
         StartCoroutine(WrenchCoroutine());
     }
 
-    IEnumerator WrenchCoroutine()
+    private IEnumerator WrenchCoroutine()
     {
-        wrenchAnim.SetBool("WrenchAttack", true);
+        Debug.Log("[WrenchMechanic] Wrench attack started!");
 
-        yield return new WaitForSeconds(0.5f);
-        
-        wrenchAnim.SetBool("WrenchAttack", false);
+        if (wrenchAnim != null)
+        {
+            wrenchAnim.SetBool("WrenchAttack", true);
+        }
 
-        yield return null;
+        yield return new WaitForSeconds(0.4f); // Wait time before enabling collider
 
-        StopCoroutine();
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = true;
+            Debug.Log("[WrenchMechanic] ATTACK COLLIDER ENABLED");
+        }
+        else
+        {
+            Debug.LogError("[WrenchMechanic] Attack Collider is NULL! Make sure it is assigned.");
+        }
+
+        yield return new WaitForSeconds(0.2f); // Duration of the attack
+
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = false;
+            Debug.Log("[WrenchMechanic] ATTACK COLLIDER DISABLED");
+        }
+
+        if (wrenchAnim != null)
+        {
+            wrenchAnim.SetBool("WrenchAttack", false);
+        }
+
+        Debug.Log("[WrenchMechanic] Wrench attack finished.");
     }
 
-    private void StopCoroutine()
+    // Optional: Use an animation event to enable the collider at the right time.
+    public void EnableAttackCollider()
     {
-        StopCoroutine(WrenchCoroutine());
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = true;
+            Debug.Log("[WrenchMechanic] ATTACK COLLIDER ENABLED (via animation event)");
+        }
+    }
+
+    public void DisableAttackCollider()
+    {
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = false;
+            Debug.Log("[WrenchMechanic] ATTACK COLLIDER DISABLED (via animation event)");
+        }
     }
 }
