@@ -21,9 +21,12 @@ public class FootstepScript : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;  // LayerMask for ground
     [SerializeField] private float groundCheckDistance = 0.2f; // Distance for ground check
 
+    private PlayerController playerController; // Reference to PlayerController
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerController = GetComponent<PlayerController>(); // Get the PlayerController component
     }
 
     private void Update()
@@ -37,16 +40,13 @@ public class FootstepScript : MonoBehaviour
             if (stepTimer <= 0f)
             {
                 PlayFootstep(horizontalSpeed);
-                stepTimer = stepInterval; // Reset timer
+                stepTimer = GetStepInterval(horizontalSpeed); // Reset timer based on crouch state
             }
         }
     }
 
     private void PlayFootstep(float speed)
     {
-        // Adjust step interval based on walking or running
-        stepInterval = speed > runSpeedThreshold ? 0.3f : 0.5f;
-
         AudioClip clip = GetFootstepClip();
 
         // Set random pitch and volume
@@ -67,20 +67,24 @@ public class FootstepScript : MonoBehaviour
         return footstepSounds[Random.Range(0, footstepSounds.Count)];
     }
 
-    private void OnTriggerEnter(Collider other)
+    private float GetStepInterval(float speed)
     {
-        /* Detect surface type using tags
-        if (other.CompareTag("Ground"))
+        // Adjust step interval based on crouch state and speed
+        if (playerController != null && playerController.is_crouching)
         {
-            currentSurface = "Default";
+            // Slower footsteps when crouching
+            return speed > runSpeedThreshold ? 0.6f : 0.9f; // Longer interval for crouching
         }
-        */
+        else
+        {
+            // Normal footsteps when not crouching
+            return speed > runSpeedThreshold ? 0.3f : 0.5f;
+        }
     }
 
     private bool IsGrounded()
     {
         // Check if the player is on the ground layer using Raycast
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
-
     }
 }

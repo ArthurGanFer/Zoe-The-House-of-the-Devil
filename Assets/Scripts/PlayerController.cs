@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     public float walkThreshold = 0.1f; // Speed threshold for walking
     public float runThreshold = 6f;  // Speed threshold for running 
 
+    public float crouchMovementForce = 0.5f;
+    public float crouchMaxSpeed = 2f;
+
     [SerializeField]
     private Camera player_Camera;
 
@@ -35,15 +38,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private bool is_hanging;
-    
+
     [SerializeField]
-    private bool is_crouching = false;
+    public bool is_crouching = false;
 
     [SerializeField]
     private float ledge_grab_cooldown = 0.3f;
     private float ledge_grab_timer;
     public Animator animator;
-    
+
     private WaitForSeconds possession_timer = new WaitForSeconds(10f);
 
     [SerializeField] private GameObject match_obj;
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool is_using_match = false;
     private WaitForSeconds match_timer = new WaitForSeconds(18f);
-    
+
     private void Awake()
     {
         ledge_grab_timer = 0;
@@ -103,14 +106,15 @@ public class PlayerController : MonoBehaviour
             ledge_grab_timer = 0;
             StartCoroutine(Enable_Movement(0.25f));
             animator.SetBool("Jump", true);
-        } else
+        }
+        else
         if (Check_Grounded())
         {
             force_Direction += Vector3.up * jump_Force;
             animator.SetBool("Jump", true);
         }
     }
-    
+
     private void Use_Item(InputAction.CallbackContext obj)
     {
         if (move.enabled)
@@ -120,28 +124,32 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(ResetAttackAnimation());
         }
 
-      
+
 
         else
         {
             Debug.Log("Not used");
         }
     }
-    
-    private void Do_Crouch(InputAction.CallbackContext obj)
+
+    public void Do_Crouch(InputAction.CallbackContext obj)
     {
         if (!is_crouching && move.enabled)
         {
             is_crouching = true;
             Debug.Log("Crouching");
+            animator.SetBool("Crouch", true);
+
         }
         else
         {
             is_crouching = false;
             Debug.Log("Standing");
+            animator.SetBool("Crouch", false);
+
         }
     }
-    
+
     private void Do_Possess(InputAction.CallbackContext obj)
     {
         if (Check_Avatar_Doll() != null)
@@ -162,44 +170,47 @@ public class PlayerController : MonoBehaviour
 
         if (move.enabled)
         {
-            force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * movement_Force;
-            force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * movement_Force;
-        }
+            float current_Movement_Force = is_crouching ? crouchMovementForce : movement_Force;
+            float current_Max_Speed = is_crouching ? crouchMaxSpeed : max_Speed;
 
-        rb.AddForce(force_Direction, ForceMode.Impulse);
-        force_Direction = Vector3.zero;
+            force_Direction += move.ReadValue<Vector2>().x * Get_Camera_Right(player_Camera) * current_Movement_Force;
+            force_Direction += move.ReadValue<Vector2>().y * Get_Camera_Forward(player_Camera) * current_Movement_Force;
 
-        if (rb.velocity.y < 0f)
-            rb.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
+            rb.AddForce(force_Direction, ForceMode.Impulse);
+            force_Direction = Vector3.zero;
 
-        Vector3 horizontalVelocity = rb.velocity;
-        horizontalVelocity.y = 0;
+            if (rb.velocity.y < 0f)
+                rb.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
 
-        // Clamp horizontal velocity if it exceeds max speed
-        if (horizontalVelocity.sqrMagnitude > max_Speed * max_Speed)
-            horizontalVelocity = horizontalVelocity.normalized * max_Speed;
+            Vector3 horizontalVelocity = rb.velocity;
+            horizontalVelocity.y = 0;
 
-        // Apply the clamped horizontal velocity while preserving vertical velocity
-        rb.velocity = horizontalVelocity + Vector3.up * rb.velocity.y;
+            // Clamp horizontal velocity if it exceeds max speed
+            if (horizontalVelocity.sqrMagnitude > current_Max_Speed * current_Max_Speed)
+                horizontalVelocity = horizontalVelocity.normalized * current_Max_Speed;
 
-        // Use the already clamped horizontal velocity for speed calculations
-        float horizontalSpeed = horizontalVelocity.magnitude;
+            // Apply the clamped horizontal velocity while preserving vertical velocity
+            rb.velocity = horizontalVelocity + Vector3.up * rb.velocity.y;
 
-        // Check speed thresholds for animations
-        if (horizontalSpeed >= runThreshold)
-        {
-            animator.SetBool("Run", true);  // Character is running
-            animator.SetBool("Walk", false); // Character is not walking
-        }
-        else if (horizontalSpeed >= walkThreshold)
-        {
-            animator.SetBool("Run", false); // Character is not running
-            animator.SetBool("Walk", true); // Character is walking
-        }
-        else
-        {
-            animator.SetBool("Run", false);  // Character is idle
-            animator.SetBool("Walk", false); // Character is idle
+            // Use the already clamped horizontal velocity for speed calculations
+            float horizontalSpeed = horizontalVelocity.magnitude;
+
+            // Check speed thresholds for animations
+            if (horizontalSpeed >= runThreshold)
+            {
+                animator.SetBool("Run", true);  // Character is running
+                animator.SetBool("Walk", false); // Character is not walking
+            }
+            else if (horizontalSpeed >= walkThreshold)
+            {
+                animator.SetBool("Run", false); // Character is not running
+                animator.SetBool("Walk", true); // Character is walking
+            }
+            else
+            {
+                animator.SetBool("Run", false);  // Character is idle
+                animator.SetBool("Walk", false); // Character is idle
+            }
         }
 
         Is_Grounded = Check_Grounded();
@@ -208,12 +219,11 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Jump", false);
         }
-        
+
         if (!Is_Grounded)
         {
             animator.SetBool("Jump", true);
         }
-
 
         if (!is_hanging && animator.GetBool("Climb"))
         {
@@ -224,8 +234,6 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         ledge_grab_timer += Time.fixedDeltaTime;
-
-        
     }
 
     private bool Check_Grounded()
@@ -277,12 +285,12 @@ public class PlayerController : MonoBehaviour
             Physics.Linecast(line_down_start, line_down_end, out down_hit, LayerMask.GetMask("Ground"));
             Debug.DrawLine(line_down_start, line_down_end, Color.green);
 
-            
+
             if (down_hit.collider != null)
             {
                 RaycastHit forward_hit;
-                Vector3 line_forward_start = new Vector3(transform.position.x, down_hit.point.y-0.1f, transform.position.z);
-                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y-0.4f, transform.position.z) + transform.forward * 0.5f;
+                Vector3 line_forward_start = new Vector3(transform.position.x, down_hit.point.y - 0.1f, transform.position.z);
+                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y - 0.4f, transform.position.z) + transform.forward * 0.5f;
                 Physics.Linecast(line_forward_start, line_forward_end, out forward_hit, LayerMask.GetMask("Ground"));
                 Debug.DrawLine(line_forward_start, line_forward_end, Color.red);
 
@@ -294,7 +302,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetBool("Climb", true);
 
                     animator.SetBool("Jump", false);
-                    
+
                     is_hanging = true;
                     move.Disable();
                     // hanging animation
@@ -303,7 +311,7 @@ public class PlayerController : MonoBehaviour
                     hang_position += offset;
                     transform.position = hang_position;
                 }
-                
+
             }
         }
     }
@@ -320,7 +328,7 @@ public class PlayerController : MonoBehaviour
         }
         return null;
     }
-    
+
     private void Possess(PlayerController targetAvatar)
     {
         this.DisableControllers();
@@ -333,7 +341,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator PossessionCycle(PlayerController targetAvatar)
     {
         CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
-        
+
         this.DisableControllers();
         targetAvatar.EnableControllers();
         cinemachine.Follow = targetAvatar.transform;
@@ -344,7 +352,7 @@ public class PlayerController : MonoBehaviour
         cinemachine.Follow = this.transform;
         cinemachine.LookAt = this.transform;
     }
-    
+
     IEnumerator LightMatch()
     {
         if (matches_available > 0 && !is_using_match)
