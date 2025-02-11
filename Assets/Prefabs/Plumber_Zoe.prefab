@@ -7669,12 +7669,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5188158745111430078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26091a79c470eaa4b8c19b6cf9e437ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 8456002445551218601}
+  playerController: {fileID: 0}
   attackCollider: {fileID: 3259574399132727577}
   lineRenderer: {fileID: 5467507623296081822}
   wrenchAnim: {fileID: 0}
@@ -8088,7 +8088,7 @@ GameObject:
   - component: {fileID: 3013916180115027861}
   - component: {fileID: 8051698199654076806}
   - component: {fileID: 6937823947302861788}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Cube_Trail
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -8338,9 +8338,9 @@ GameObject:
   - component: {fileID: 3458750283085315305}
   - component: {fileID: 2782628537461855338}
   - component: {fileID: 4427246581720481212}
-  - component: {fileID: 8456002445551218601}
   - component: {fileID: 1929920527821706630}
   - component: {fileID: 749269321842229752}
+  - component: {fileID: 8385303541430495714}
   m_Layer: 7
   m_Name: Plumber_Zoe
   m_TagString: Player
@@ -8356,7 +8356,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5482789906513800375}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9488479, z: -0, w: -0.31573373}
+  m_LocalRotation: {x: 0, y: 0.9488485, z: -0, w: -0.31573173}
   m_LocalPosition: {x: 71.28, y: 3.96, z: 85.74}
   m_LocalScale: {x: 0.40611565, y: 0.40611565, z: 0.40611565}
   m_ConstrainProportionsScale: 0
@@ -8469,37 +8469,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &8456002445551218601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5482789906513800375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0794c3f3bb3b2d247b29c2c66a384a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Main_Character: 1
-  rb: {fileID: 4427246581720481212}
-  movement_Force: 0.5
-  jump_Force: 5
-  max_Speed: 2
-  walkThreshold: 0.4
-  runThreshold: 1.85
-  crouchMovementForce: 0.5
-  crouchMaxSpeed: 0.5
-  player_Camera: {fileID: 0}
-  Is_Grounded: 0
-  dist_To_Ground: 0.4
-  is_hanging: 0
-  is_crouching: 0
-  ledge_grab_cooldown: 0.1
-  animator: {fileID: 1944203397730877232}
-  match_obj: {fileID: 0}
-  matches_available: 0
-  is_using_match: 0
 --- !u!114 &1929920527821706630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8622,6 +8591,39 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8385303541430495714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5482789906513800375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f616f80884208c947a1512cbb29a82e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Main_Character: 0
+  rb: {fileID: 4427246581720481212}
+  movement_Force: 0.5
+  jump_Force: 5
+  max_Speed: 2
+  walkThreshold: 0.4
+  runThreshold: 1.85
+  crouchMovementForce: 0.5
+  crouchMaxSpeed: 0.5
+  player_Camera: {fileID: 0}
+  Is_Grounded: 0
+  dist_To_Ground: 0.4
+  is_hanging: 0
+  is_crouching: 0
+  ledge_grab_cooldown: 0.1
+  animator: {fileID: 1944203397730877232}
+  match_obj: {fileID: 0}
+  matches_available: 0
+  is_using_match: 0
+  attackCollider: {fileID: 3259574399132727577}
+  wrenchAnim: {fileID: 0}
 --- !u!1 &5515035900393086709
 GameObject:
   m_ObjectHideFlags: 0
