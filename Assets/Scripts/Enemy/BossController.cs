@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -24,8 +26,8 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-        if (player != null && target != null)
-        {
+        if (player != null && player.GetComponent<PlayerController>().Main_Character && target != null)
+        {   
             IsPlayerInSight();
 
             if (playerInSight)
@@ -35,6 +37,20 @@ public class BossController : MonoBehaviour
             else
             {
                 agent.SetDestination(target.position);
+            }
+        }
+        else
+        {
+            PlayerController[] availablePlayers = FindObjectsOfType<PlayerController>();
+          
+            foreach (PlayerController availablePlayer in availablePlayers)
+            {
+                if (availablePlayer.Main_Character)
+                {
+                    player = availablePlayer.GetComponent<Transform>();
+
+                    break;
+                }
             }
         }
     }
@@ -48,8 +64,29 @@ public class BossController : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (hit.CompareTag("Player"))
+            if (hit.CompareTag("Player") && hit.GetComponent<Transform>() == player)
             {
+                if (!hit.GetComponent<HidingMechanic>().isHidden)
+                {
+                    playerInSight = true;
+                }
+                else
+                {
+                    playerInSight = false;
+                }
+                
+                return;
+            }
+
+            /*
+            if (hit.CompareTag("Player") && hit.GetComponent<PlayerController>().Main_Character != false)
+            {
+                if (hit.GetComponent<HidingMechanic>() != null && hit.GetComponent<HidingMechanic>().isHidden == true)
+                {
+                    Debug.Log("Error");
+                    return;
+                }
+
                 Vector3 directionToPlayer = (hit.transform.position - transform.position).normalized;
                 float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
@@ -59,31 +96,47 @@ public class BossController : MonoBehaviour
                     return; // Player is detected, stop checking
                 }
             }
+            */
         }
 
         playerInSight = false; // Player is not in sight
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (playerInSight)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, lookAheadDistance);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, lookAheadDistance);
+        }
+    }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = playerInSight ? Color.green : Color.red;
+    /*
+    void OnDrawGizmos()
+    {
+        Gizmos.color = playerInSight ? Color.green : Color.red;
 
-    //    float halfAngle = lookAheadAngle / 2;
-    //    Vector3 forward = transform.forward;
-    //    float[] heights = { 2.0f, 1.0f, 0.5f }; // Match the heights used in your logic
+        float halfAngle = lookAheadAngle / 2;
+        Vector3 forward = transform.forward;
+        float[] heights = { 2.0f, 1.0f, 0.5f, 0.1f }; // Match the heights used in your logic
 
-    //    foreach (float height in heights)
-    //    {
-    //        Vector3 origin = transform.position + Vector3.up * height;
+        foreach (float height in heights)
+        {
+            Vector3 origin = transform.position + Vector3.up * height;
 
-    //        for (float angle = -halfAngle; angle <= halfAngle; angle += 5.0f) // Use larger steps for visualization
-    //        {
-    //            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
-    //            Gizmos.DrawRay(origin, direction * lookAheadDistance);
-    //        }
-    //    }
-    //}
+            for (float angle = -halfAngle; angle <= halfAngle; angle += 5.0f) // Use larger steps for visualization
+            {
+                Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
+                Gizmos.DrawRay(origin, direction * lookAheadDistance);
+            }
+        }
+    }
+    */
 
 
     //private void OnCollisionEnter(Collision collision)

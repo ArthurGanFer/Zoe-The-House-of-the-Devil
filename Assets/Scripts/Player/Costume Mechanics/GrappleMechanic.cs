@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class BetaGrappleMechanic : MonoBehaviour
+public class GrappleMechanic : MonoBehaviour
 {
     [Header ("Components")]
     [SerializeField]
@@ -220,7 +220,7 @@ public class BetaGrappleMechanic : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer($"Ground"))
         {
             grounded = true;
         }       
