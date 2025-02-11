@@ -122,6 +122,8 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(LightMatch());
             animator.SetBool("Attack", true);
             StartCoroutine(ResetAttackAnimation());
+            animator.SetBool("Match", true);
+
         }
 
 
@@ -363,6 +365,7 @@ public class PlayerController : MonoBehaviour
             yield return match_timer;
             match_obj.SetActive(false);
             is_using_match = false;
+
         }
     }
 
