@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,7 @@ public class WrenchMechanic : MonoBehaviour
     [Header("Components")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Collider attackCollider;
+    [SerializeField] private GameObject lineRenderer;
     [SerializeField] private Animator wrenchAnim;
     [SerializeField] private ThirdPersonActionsAsset thirdPersonActionAsset;
 
@@ -16,6 +18,7 @@ public class WrenchMechanic : MonoBehaviour
 
         // Ensure Input System is properly handled
         InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+
 
         if (thirdPersonActionAsset != null)
         {
@@ -35,6 +38,13 @@ public class WrenchMechanic : MonoBehaviour
         {
             Debug.LogError("[WrenchMechanic] Attack Collider is missing! Assign it in the Inspector.");
         }
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.GetComponent<TrailRenderer>().enabled = false;
+
+        }
+
     }
 
     private void OnDisable()
@@ -77,6 +87,9 @@ public class WrenchMechanic : MonoBehaviour
             wrenchAnim.SetBool("Attack", true);
         }
 
+        StartCoroutine(WrenchTrail());
+
+
         StartCoroutine(WrenchCoroutine());
     }
 
@@ -87,6 +100,7 @@ public class WrenchMechanic : MonoBehaviour
         if (wrenchAnim != null)
         {
             wrenchAnim.SetBool("WrenchAttack", true);
+
         }
 
         yield return new WaitForSeconds(0.4f); // Wait time before enabling collider
@@ -94,6 +108,8 @@ public class WrenchMechanic : MonoBehaviour
         if (attackCollider != null)
         {
             attackCollider.enabled = true;
+
+
             Debug.Log("[WrenchMechanic] ATTACK COLLIDER ENABLED");
         }
         else
@@ -106,16 +122,21 @@ public class WrenchMechanic : MonoBehaviour
         if (attackCollider != null)
         {
             attackCollider.enabled = false;
+
+
             Debug.Log("[WrenchMechanic] ATTACK COLLIDER DISABLED");
         }
 
         if (wrenchAnim != null)
         {
             wrenchAnim.SetBool("WrenchAttack", false);
+
         }
 
         Debug.Log("[WrenchMechanic] Wrench attack finished.");
     }
+
+
 
     // Optional: Use an animation event to enable the collider at the right time.
     public void EnableAttackCollider()
@@ -123,6 +144,7 @@ public class WrenchMechanic : MonoBehaviour
         if (attackCollider != null)
         {
             attackCollider.enabled = true;
+
             Debug.Log("[WrenchMechanic] ATTACK COLLIDER ENABLED (via animation event)");
         }
     }
@@ -132,7 +154,31 @@ public class WrenchMechanic : MonoBehaviour
         if (attackCollider != null)
         {
             attackCollider.enabled = false;
+
+
+
             Debug.Log("[WrenchMechanic] ATTACK COLLIDER DISABLED (via animation event)");
         }
+    }
+
+
+    public IEnumerator WrenchTrail()
+    {
+        if (lineRenderer != null)
+        {
+            lineRenderer.GetComponent<TrailRenderer>().enabled = true;
+
+        }
+
+        yield return new WaitForSeconds(0.4f); // Duration of the trail
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.GetComponent<TrailRenderer>().enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.8f);
+
+
     }
 }
