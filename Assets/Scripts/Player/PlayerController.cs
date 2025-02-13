@@ -5,11 +5,16 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool Main_Character;
+    [FormerlySerializedAs("Main_Character")] [SerializeField]
+    private bool mainCharacter;
+    [SerializeField]
+    private bool isActiveCharacter;
+    
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
@@ -58,12 +63,21 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        ledge_grab_timer = 0;
+        //ledge_grab_timer = 0;
         player_Action_Asset = new ThirdPersonActionsAsset();
+        if (mainCharacter)
+        {
+            isActiveCharacter = true;
+        }
+        else
+        {
+            isActiveCharacter = false;
+        }
     }
 
     protected virtual void AssignComponents()
     {
+        
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -90,7 +104,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         AssignComponents();
-        if (Main_Character)
+        if (mainCharacter)
         {
             EnableControllers();
         }
@@ -347,7 +361,7 @@ public class PlayerController : MonoBehaviour
         {
             if (doll.GetComponent<PlumberController>() != null)
             {
-                if (doll.GetComponent<PlumberController>().Main_Character == false)
+                if (doll.GetComponent<PlumberController>().mainCharacter == false)
                 {
                     return doll.GetComponent<PlumberController>();
                 }
@@ -368,12 +382,15 @@ public class PlayerController : MonoBehaviour
     IEnumerator PossessionCycle(PlayerController targetAvatar)
     {
         CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
-
         this.DisableControllers();
         targetAvatar.EnableControllers();
         cinemachine.Follow = targetAvatar.transform;
         cinemachine.LookAt = targetAvatar.transform;
+        this.isActiveCharacter = false;
+        targetAvatar.isActiveCharacter = true;
         yield return possession_timer;
+        this.isActiveCharacter = true;
+        targetAvatar.isActiveCharacter = false;
         targetAvatar.DisableControllers();
         this.EnableControllers();
         cinemachine.Follow = this.transform;
