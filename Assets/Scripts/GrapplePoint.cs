@@ -8,9 +8,10 @@ public class GrapplePoint : MonoBehaviour
     [Tooltip ("A reference to our Camera Component")]
     private Camera mainCamera;
     [SerializeField]
-    [Tooltip("A reference to our BetaGrappleMechanic Component")]
-    private BetaGrappleMechanic grappleMechanic;
+    [Tooltip("A reference to our GrappleMechanic Component")]
+    private GrappleMechanic grappleMechanic;
 
+    [Space (10)]
     [Header ("Properties")]
     [SerializeField]
     [Tooltip ("A flag for if this GameObject is a viable grapple point")]
@@ -32,12 +33,20 @@ public class GrapplePoint : MonoBehaviour
             if (isVisible() || (grappleMechanic.grappling == true && this.gameObject == grappleMechanic.target))
             {
                 isActive = true;
-                this.gameObject.layer = LayerMask.NameToLayer("GrapplePoint");
+                
                 //Debug.Log($"{this} is seen by camera");
             }
             else
             {
                 isActive = false;
+            }
+
+            if (isActive)
+            {
+                this.gameObject.layer = LayerMask.NameToLayer("GrapplePoint");
+            }
+            else
+            {
                 this.gameObject.layer = LayerMask.NameToLayer("Default");
             }
         }
@@ -56,7 +65,7 @@ public class GrapplePoint : MonoBehaviour
             Debug.Log("There is no GameObject with a Camera Component in the scene!");
         }
 
-        grappleMechanic = FindObjectOfType<BetaGrappleMechanic>();
+        grappleMechanic = FindObjectOfType<GrappleMechanic>();
         if (grappleMechanic == null)
         {
             Debug.Log("There is no GameObject with a BetaGrappleMechanic Component in the scene!");
@@ -73,7 +82,7 @@ public class GrapplePoint : MonoBehaviour
     {
         if (grappleMechanic == null)
         {
-            grappleMechanic = FindObjectOfType<BetaGrappleMechanic>();
+            grappleMechanic = FindObjectOfType<GrappleMechanic>();
         }
         else
         {
