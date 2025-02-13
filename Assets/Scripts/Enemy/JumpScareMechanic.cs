@@ -44,7 +44,7 @@ public class JumpScareMechanic : MonoBehaviour
         }
     }
 
-    public void CreateJumpScare(EnemyController enemy, int model)
+    public void CreateJumpScare(EnemyController enemy, int model, GameObject player)
     {
         foreach (GameObject prefab in AvailablePrefabs)
         {
@@ -58,6 +58,7 @@ public class JumpScareMechanic : MonoBehaviour
 
         if (activePrefab != null)
         {
+            player.SetActive(false);
             mainCamera.SetActive(false);
 
             GameObject jumpScare = Instantiate(activePrefab, new Vector3(0, 5000, 0), Quaternion.identity);

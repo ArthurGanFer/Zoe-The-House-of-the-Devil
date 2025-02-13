@@ -150,12 +150,12 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<Transform>() == this.player)
         {
             Debug.Log($"Player touched by {enemyName}! Game Over!");
 
             JumpScareMechanic jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
-            jumpScareMechanic.CreateJumpScare(this, this.modelNumber);
+            jumpScareMechanic.CreateJumpScare(this, this.modelNumber, collision.gameObject);
 
             //SceneManager.LoadScene("Game_Scene");
         }
