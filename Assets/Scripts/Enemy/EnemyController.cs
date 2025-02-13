@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
     {
         if (!this.jumpScareAsset)
         {
-            if (this.player != null && this.player.GetComponent<PlayerController>().Main_Character && this.target != null)
+            if (this.player != null && this.player.GetComponent<PlayerController>().isActiveCharacter && this.target != null)
             {
                 IsPlayerInSight();
 
@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour
 
                 foreach (PlayerController availablePlayer in availablePlayers)
                 {
-                    if (availablePlayer.Main_Character)
+                    if (availablePlayer.isActiveCharacter)
                     {
                         this.player = availablePlayer.GetComponent<Transform>();
 

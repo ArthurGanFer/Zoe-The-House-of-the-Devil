@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [FormerlySerializedAs("Main_Character")] [SerializeField]
     private bool mainCharacter;
     [SerializeField]
-    private bool isActiveCharacter;
+    public bool isActiveCharacter;
     
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;

@@ -24,7 +24,7 @@ public class HidingMechanic : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("HidingSpot") && this.playerController.Main_Character)
+        if (other.gameObject.layer == LayerMask.NameToLayer("HidingSpot") && this.playerController.isActiveCharacter)
         {
             if (this.playerController.is_crouching)
             {
@@ -41,7 +41,7 @@ public class HidingMechanic : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer(layer) && this.playerController.Main_Character)
+        if (other.gameObject.layer == LayerMask.NameToLayer(layer) && this.playerController.isActiveCharacter)
         {
             if (this.playerController.is_crouching)
             {
