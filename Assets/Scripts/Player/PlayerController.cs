@@ -10,8 +10,7 @@ using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
-    [FormerlySerializedAs("Main_Character")] [SerializeField]
-    private bool mainCharacter;
+    public bool mainCharacter;
     [SerializeField]
     public bool isActiveCharacter;
     

@@ -26,7 +26,7 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-        if (player != null && player.GetComponent<PlayerController>().Main_Character && target != null)
+        if (player != null && player.GetComponent<PlayerController>().mainCharacter && target != null)
         {   
             IsPlayerInSight();
 
@@ -45,7 +45,7 @@ public class BossController : MonoBehaviour
           
             foreach (PlayerController availablePlayer in availablePlayers)
             {
-                if (availablePlayer.Main_Character)
+                if (availablePlayer.mainCharacter)
                 {
                     player = availablePlayer.GetComponent<Transform>();
 
