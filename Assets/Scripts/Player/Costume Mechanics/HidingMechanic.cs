@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HidingMechanic : MonoBehaviour
@@ -11,7 +8,6 @@ public class HidingMechanic : MonoBehaviour
     private PlayerController playerController;
 
     [Space(10)]
-
     [Header("Properties")]
     [SerializeField]
     [Tooltip("A string representing the layer where we keep our hiding spots")]
@@ -28,11 +24,13 @@ public class HidingMechanic : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("HidingSpot") && this.playerController.Main_Character)
+        if (other.gameObject.layer == LayerMask.NameToLayer("HidingSpot") && this.playerController.isActiveCharacter)
         {
             if (this.playerController.is_crouching)
             {
                 isHidden = true;
+
+                Debug.Log("Zoe is Hidden");
             }
             else
             {
@@ -43,11 +41,13 @@ public class HidingMechanic : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer(layer) && this.playerController.Main_Character)
+        if (other.gameObject.layer == LayerMask.NameToLayer(layer) && this.playerController.isActiveCharacter)
         {
             if (this.playerController.is_crouching)
             {
                 this.isHidden = true;
+
+                //Debug.Log("Zoe is Hidden");
             }
             else
             {

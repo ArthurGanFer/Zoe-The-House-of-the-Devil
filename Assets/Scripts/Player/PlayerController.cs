@@ -5,11 +5,15 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool Main_Character;
+    public bool mainCharacter;
+    [SerializeField]
+    public bool isActiveCharacter;
+    
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
@@ -58,33 +62,68 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        ledge_grab_timer = 0;
-        rb = GetComponent<Rigidbody>();
+        //ledge_grab_timer = 0;
         player_Action_Asset = new ThirdPersonActionsAsset();
+        if (mainCharacter)
+        {
+            isActiveCharacter = true;
+        }
+        else
+        {
+            isActiveCharacter = false;
+        }
+    }
+
+    protected virtual void AssignComponents()
+    {
+        
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.Log($"There is no RigidBody component on {this} GameObject!");
+        }
+        //player_Action_Asset = GetComponent<ThirdPersonActionsAsset>();
+        if (player_Action_Asset == null)
+        {
+            Debug.Log($"There is no ThirdPersonActionsAsset component on {gameObject} GameObject!");
+        }
+        else
+        {
+            move = player_Action_Asset.Player.Move;
+            Debug.Log("move is set to " + gameObject.name);
+        }
+    }
+
+    protected virtual void UnassignComponents()
+    {
+        rb = null;
+        player_Action_Asset = null;
     }
 
     private void OnEnable()
     {
-        EnableControllers();
-        if (!Main_Character)
+        AssignComponents();
+        if (mainCharacter)
         {
-            DisableControllers();
+            EnableControllers();
         }
     }
 
-    private void EnableControllers()
+    protected void EnableControllers()
     {
         player_Action_Asset.Player.Jump.started += Do_Jump;
         player_Action_Asset.Player.UseItem.started += Use_Item;
         player_Action_Asset.Player.Crouch.started += Do_Crouch;
         player_Action_Asset.Player.Possess.started += Do_Possess;
         move = player_Action_Asset.Player.Move;
+        move.Enable();
         player_Action_Asset.Player.Enable();
     }
 
     private void OnDisable()
     {
         DisableControllers();
+        UnassignComponents();
     }
 
     private void DisableControllers()
@@ -115,7 +154,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Use_Item(InputAction.CallbackContext obj)
+    protected virtual void Use_Item(InputAction.CallbackContext obj)
     {
         if (move.enabled)
         {
@@ -123,11 +162,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Attack", true);
             StartCoroutine(ResetAttackAnimation());
             animator.SetBool("Match", true);
-
         }
-
-
-
         else
         {
             Debug.Log("Not used");
@@ -152,7 +187,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Do_Possess(InputAction.CallbackContext obj)
+    protected virtual void Do_Possess(InputAction.CallbackContext obj)
     {
         if (Check_Avatar_Doll() != null)
         {
@@ -166,7 +201,7 @@ public class PlayerController : MonoBehaviour
         move.Enable();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         //Ledge_Grab();
 
@@ -323,9 +358,12 @@ public class PlayerController : MonoBehaviour
         Collider[] dolls = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("Player"));
         foreach (var doll in dolls)
         {
-            if (doll.GetComponent<PlayerController>().Main_Character == false)
+            if (doll.GetComponent<PlumberController>() != null)
             {
-                return doll.GetComponent<PlayerController>();
+                if (doll.GetComponent<PlumberController>().mainCharacter == false)
+                {
+                    return doll.GetComponent<PlumberController>();
+                }
             }
         }
         return null;
@@ -343,12 +381,15 @@ public class PlayerController : MonoBehaviour
     IEnumerator PossessionCycle(PlayerController targetAvatar)
     {
         CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
-
         this.DisableControllers();
         targetAvatar.EnableControllers();
         cinemachine.Follow = targetAvatar.transform;
         cinemachine.LookAt = targetAvatar.transform;
+        this.isActiveCharacter = false;
+        targetAvatar.isActiveCharacter = true;
         yield return possession_timer;
+        this.isActiveCharacter = true;
+        targetAvatar.isActiveCharacter = false;
         targetAvatar.DisableControllers();
         this.EnableControllers();
         cinemachine.Follow = this.transform;
@@ -362,7 +403,9 @@ public class PlayerController : MonoBehaviour
             matches_available -= 1;
             is_using_match = true;
             match_obj.SetActive(true);
+            
             yield return match_timer;
+            
             match_obj.SetActive(false);
             is_using_match = false;
 
