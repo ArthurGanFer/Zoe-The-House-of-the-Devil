@@ -145,7 +145,6 @@ public class WrenchMechanic : MonoBehaviour
         {
             attackCollider.enabled = true;
 
-            Debug.Log("[WrenchMechanic] ATTACK COLLIDER ENABLED (via animation event)");
         }
     }
 
@@ -155,9 +154,6 @@ public class WrenchMechanic : MonoBehaviour
         {
             attackCollider.enabled = false;
 
-
-
-            Debug.Log("[WrenchMechanic] ATTACK COLLIDER DISABLED (via animation event)");
         }
     }
 
