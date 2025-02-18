@@ -52,6 +52,9 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
 
     private WaitForSeconds possession_timer = new WaitForSeconds(10f);
+    
+    public Vector3 resetPos;
+    public Quaternion resetRotation;
 
     [SerializeField] private GameObject match_obj;
     [SerializeField]
@@ -76,7 +79,8 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void AssignComponents()
     {
-        
+        resetPos = this.transform.position;
+        resetRotation = this.transform.rotation;
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -391,9 +395,16 @@ public class PlayerController : MonoBehaviour
         this.isActiveCharacter = true;
         targetAvatar.isActiveCharacter = false;
         targetAvatar.DisableControllers();
+        targetAvatar.ResetAvatarPosition();
         this.EnableControllers();
         cinemachine.Follow = this.transform;
         cinemachine.LookAt = this.transform;
+    }
+
+    private void ResetAvatarPosition()
+    {
+        transform.position = resetPos;
+        transform.rotation = resetRotation;
     }
 
     IEnumerator LightMatch()
