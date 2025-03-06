@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SwitchToNextState(GameState next_state)
+    public void SwitchToNextState(GameState next_state)
     {
         Current_Game_State = next_state;
     }

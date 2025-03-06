@@ -8,6 +8,7 @@ public class GamePause : GameState
     public GamePlay Play_State;
     public override GameState RunCurrentGameState()
     {
+        Time.timeScale = 0;
         if (Input.GetKeyDown(KeyCode.M))
         {
             Debug.Log("Menu!");
