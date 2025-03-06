@@ -118,10 +118,10 @@ public class FisherController : PlayerController
     
     private void GrappleToGrapplePoint()
     {
-        if (Vector3.Distance(transform.position, target.position) > stopDistance)
+        if (Vector3.Distance(this.transform.position, this.target.position) > this.stopDistance)
         {
-            rb.useGravity = false;
-            transform.position = Vector3.Lerp(transform.position, target.position, grappleSpeed * Time.deltaTime);
+            this.rb.useGravity = false;
+            this.transform.position = Vector3.Lerp(this.transform.position, this.target.position, this.grappleSpeed * Time.deltaTime);
         }
         else
         {

@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public bool mainCharacter;
     [SerializeField]
     public bool isActiveCharacter;
-    
+
     //input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
 
     private WaitForSeconds possession_timer = new WaitForSeconds(10f);
 
+    public Vector3 resetPos;
+    public Quaternion resetRotation;
+
     [SerializeField] private GameObject match_obj;
     [SerializeField]
     private int matches_available = 0;
@@ -76,7 +79,8 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void AssignComponents()
     {
-        
+        resetPos = this.transform.position;
+        resetRotation = this.transform.rotation;
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -115,6 +119,8 @@ public class PlayerController : MonoBehaviour
         player_Action_Asset.Player.UseItem.started += Use_Item;
         player_Action_Asset.Player.Crouch.started += Do_Crouch;
         player_Action_Asset.Player.Possess.started += Do_Possess;
+        player_Action_Asset.Player.UseItem.performed += Use_Item;
+        player_Action_Asset.Player.UseItem.canceled += Use_Item;
         move = player_Action_Asset.Player.Move;
         move.Enable();
         player_Action_Asset.Player.Enable();
@@ -132,6 +138,8 @@ public class PlayerController : MonoBehaviour
         player_Action_Asset.Player.UseItem.started -= Use_Item;
         player_Action_Asset.Player.Crouch.started -= Do_Crouch;
         player_Action_Asset.Player.Possess.started -= Do_Possess;
+        player_Action_Asset.Player.UseItem.performed -= Use_Item;
+        player_Action_Asset.Player.UseItem.canceled -= Use_Item;
         player_Action_Asset.Player.Disable();
     }
 
@@ -391,9 +399,16 @@ public class PlayerController : MonoBehaviour
         this.isActiveCharacter = true;
         targetAvatar.isActiveCharacter = false;
         targetAvatar.DisableControllers();
+        targetAvatar.ResetAvatarPosition();
         this.EnableControllers();
         cinemachine.Follow = this.transform;
         cinemachine.LookAt = this.transform;
+    }
+
+    private void ResetAvatarPosition()
+    {
+        transform.position = resetPos;
+        transform.rotation = resetRotation;
     }
 
     IEnumerator LightMatch()
@@ -403,9 +418,9 @@ public class PlayerController : MonoBehaviour
             matches_available -= 1;
             is_using_match = true;
             match_obj.SetActive(true);
-            
+
             yield return match_timer;
-            
+
             match_obj.SetActive(false);
             is_using_match = false;
 

@@ -5,27 +5,34 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField]
-    private NavMeshAgent agent;         //A reference to our NavMeshAgent component
+    [Tooltip ("A reference to our NavMeshAgent component")]
+    private NavMeshAgent agent;         
     [SerializeField]
-    private Transform target;           //A reference to our target GameObject's Transform component
+    [Tooltip("A reference to our target GameObject's Transform component")]
+    private Transform target;           
     [SerializeField]
-    private Transform player;           //A reference to our player GameObject's Transform component
+    [Tooltip("A reference to our player GameObject's Transform component")]
+    private Transform player;          
 
     [Space(10)]
     [Header("Properties")]
     [SerializeField]
+    [Tooltip("A string reflecting who our enemy is")]
     public string enemyName;
     [SerializeField]
+    [Tooltip("An int reflecting who our enemy is")]
     public int modelNumber;
     [SerializeField]
+    [Tooltip("A flag for if this enemy is just a jump scare asset")]
     private bool jumpScareAsset;
     [SerializeField]
-    private float lookAheadDistance;    //The Boss' distance of vision 
+    [Tooltip("Our enemy's range of vision")]
+    private float detectionRadius;    
     [SerializeField]
-    private float lookAheadAngle;       //The Boss' range of vision
-    [SerializeField]
+    [Tooltip("The LayerMask representing where our character is located")]
     private LayerMask playerLayer;      //The layer the player is on
     [SerializeField]
+    [Tooltip("A flag for if the player is in vision")]
     private bool playerInSight;         //A flag for if the player is in vision
 
     private void Update()
@@ -66,49 +73,33 @@ public class EnemyController : MonoBehaviour
 
     void IsPlayerInSight()
     {
-        float detectionRadius = this.lookAheadDistance;
-
-        // Get all colliders in the detection radius
-        Collider[] hits = Physics.OverlapSphere(this.transform.position, detectionRadius, this.playerLayer);
+        Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
 
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player") && hit.GetComponent<Transform>() == this.player)
             {
-                if (!hit.GetComponent<HidingMechanic>().isHidden)
+                if (hit.GetComponent<HidingMechanic>() != null)
                 {
-                    this.playerInSight = true;
+                    if (!hit.GetComponent<HidingMechanic>().isHidden)
+                    {
+                        this.playerInSight = true;
+                    }
+                    else
+                    {
+                        this.playerInSight = false;
+                    }
                 }
                 else
                 {
-                    this.playerInSight = false;
+                    this.playerInSight = true;
                 }
                 
                 return;
             }
-
-            /*
-            if (hit.CompareTag("Player") && hit.GetComponent<PlayerController>().Main_Character != false)
-            {
-                if (hit.GetComponent<HidingMechanic>() != null && hit.GetComponent<HidingMechanic>().isHidden == true)
-                {
-                    Debug.Log("Error");
-                    return;
-                }
-
-                Vector3 directionToPlayer = (hit.transform.position - transform.position).normalized;
-                float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-
-                if (angleToPlayer <= lookAheadAngle / 2)
-                {
-                    playerInSight = true;
-                    return; // Player is detected, stop checking
-                }
-            }
-            */
         }
 
-        playerInSight = false; // Player is not in sight
+        playerInSight = false; 
     }
 
     private void OnDrawGizmosSelected()
@@ -116,37 +107,14 @@ public class EnemyController : MonoBehaviour
         if (this.playerInSight)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(this.transform.position, this.lookAheadDistance);
+            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
         }
         else
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(this.transform.position, this.lookAheadDistance);
+            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
         }
     }
-
-    /*
-    void OnDrawGizmos()
-    {
-        Gizmos.color = playerInSight ? Color.green : Color.red;
-
-        float halfAngle = lookAheadAngle / 2;
-        Vector3 forward = transform.forward;
-        float[] heights = { 2.0f, 1.0f, 0.5f, 0.1f }; // Match the heights used in your logic
-
-        foreach (float height in heights)
-        {
-            Vector3 origin = transform.position + Vector3.up * height;
-
-            for (float angle = -halfAngle; angle <= halfAngle; angle += 5.0f) // Use larger steps for visualization
-            {
-                Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
-                Gizmos.DrawRay(origin, direction * lookAheadDistance);
-            }
-        }
-    }
-    */
-
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -156,8 +124,6 @@ public class EnemyController : MonoBehaviour
 
             JumpScareMechanic jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
             jumpScareMechanic.CreateJumpScare(this, this.modelNumber, collision.gameObject);
-
-            //SceneManager.LoadScene("Game_Scene");
         }
     }
 

@@ -28,7 +28,6 @@ public class GrappleMechanic : MonoBehaviour
     private PlayerController playerController;
 
     [Space(10)]
-
     [Header ("Properties")]
     [SerializeField]
     [Tooltip ("The LayerMask where we keep our grapple points")]
@@ -68,6 +67,22 @@ public class GrappleMechanic : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (target != null && grounded)
+            {
+                grappling = true;
+            }
+            else
+            {
+                Debug.Log("Unable to find grapple target");
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            grappling = false;
+        }
+
         FindTarget();
 
         if (grappling)
@@ -129,7 +144,7 @@ public class GrappleMechanic : MonoBehaviour
         playerController = null;
         thirdPersonActionAsset = null;
 
-        thirdPersonActionAsset.Player.UseItem.started += UseGrapple;
+        thirdPersonActionAsset.Player.UseItem.started -= UseGrapple;
     }
 
     private void FindTarget()
@@ -155,7 +170,7 @@ public class GrappleMechanic : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (target != null)
+        if (this.target != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, searchRadius);
@@ -169,31 +184,31 @@ public class GrappleMechanic : MonoBehaviour
 
     private void GrappleToGrapplePoint()
     {
-        if (Vector3.Distance(transform.position, target.position) > stopDistance)
+        if (Vector3.Distance(this.transform.position, this.target.position) > this.stopDistance)
         {
-            rigidBody.useGravity = false;
-            transform.position = Vector3.Lerp(transform.position, target.position, grappleSpeed * Time.deltaTime);
+            this.rigidBody.useGravity = false;
+            this.transform.position = Vector3.Lerp(this.transform.position, this.target.position, this.grappleSpeed * Time.deltaTime);
         }
         else
         {
-            grappling = false;
+            this.grappling = false;
             //Debug.Log($"{Vector3.Distance(transform.position, target.position)}");
         }
     }
 
     private void CreateLine()
     {
-        if (target != null && grappling)
+        if (this.target != null && this.grappling)
         {
-            Vector3[] positions = new Vector3[] { shootTransform.transform.position, transform.position };
+            Vector3[] positions = new Vector3[] {this.shootTransform.transform.position, this.transform.position };
 
-            lineRenderer.enabled = true;
+            this.lineRenderer.enabled = true;
 
-            lineRenderer.SetPositions(positions);
+            this.lineRenderer.SetPositions(positions);
         }
         else
         {
-            lineRenderer.enabled = false;
+            this.lineRenderer.enabled = false;
             return;
         }
     }

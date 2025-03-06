@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4480908019575703302}
   - component: {fileID: 3975416135019914935}
   - component: {fileID: 5173927169365065425}
-  - component: {fileID: 3623550029685681266}
+  - component: {fileID: 9103157699841604791}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -108,7 +108,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3623550029685681266
+--- !u!114 &9103157699841604791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,17 +117,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 381540414933494562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19547b29d18df5d419e386a5acba0f28, type: 3}
+  m_Script: {fileID: 11500000, guid: c167ae1e95acf814782e52a410dc1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
   target: {fileID: 0}
   player: {fileID: 0}
-  enemyName: Temp1
+  enemyName: Green
   modelNumber: 2
   jumpScareAsset: 1
-  lookAheadDistance: 0
-  lookAheadAngle: 0
+  detectionRadius: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
