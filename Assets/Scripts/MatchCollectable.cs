@@ -21,8 +21,11 @@ public class MatchCollectable : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
-            other.gameObject.GetComponent<PlayerController>().AddMatch();
-            Destroy(gameObject);
+            if (other.gameObject.GetComponent<PlayerController>().mainCharacter == true)
+            {
+                other.gameObject.GetComponent<PlayerController>().AddMatch();
+                Destroy(gameObject);
+            }
         }
     }
 }
