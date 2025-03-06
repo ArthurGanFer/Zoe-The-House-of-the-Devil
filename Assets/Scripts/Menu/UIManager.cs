@@ -32,30 +32,4 @@ public class UIManager : MonoBehaviour
         //Audio Volume adjust
     }
     
-    public void LoadLevel(string nextLevel = "TestLevel")
-    {
-        if (nextLevel != null)
-        {
-            SceneManager.LoadScene(nextLevel);
-        }
-        else
-        {
-            Debug.LogError("Level is not assigned!");
-        }
-    }
-    
-    public void QuitGame(bool quit = false)
-    {
-        if (quit)
-        {
-            Application.Quit();
-            Debug.Log("Quit");
-        }
-    }
-    
-    public void MonochromeMode(bool on)
-    {
-        //Colorblind Mode
-    }
-    
 }

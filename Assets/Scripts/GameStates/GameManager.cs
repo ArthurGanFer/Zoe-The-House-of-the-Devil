@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,5 +45,27 @@ public class GameManager : MonoBehaviour
     public void SwitchToNextState(GameState next_state)
     {
         Current_Game_State = next_state;
+    }
+    
+    
+    public void LoadLevel(string nextLevel = "TestLevel")
+    {
+        if (nextLevel != null)
+        {
+            SceneManager.LoadScene(nextLevel);
+        }
+        else
+        {
+            Debug.LogError("Level is not assigned!");
+        }
+    }
+    
+    public void QuitGame(bool quit = false)
+    {
+        if (quit)
+        {
+            Application.Quit();
+            Debug.Log("Quit");
+        }
     }
 }

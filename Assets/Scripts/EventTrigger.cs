@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class EventTrigger : MonoBehaviour
 {
+    public bool changeScene = false;
+    public string sceneToLoad;
+    
     [SerializeField]
     private UnityEvent event_Action;
 
@@ -12,8 +15,14 @@ public class EventTrigger : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>() != null)
         {
-            event_Action.Invoke();
+            event_Action?.Invoke();
+            if (changeScene == true)
+            {
+                GameManager.Instance.LoadLevel(sceneToLoad);
+            }
         }
     }
+    
+    
 
 }
