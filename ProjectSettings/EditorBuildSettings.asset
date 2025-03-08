@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameOverScene.unity
     guid: dbecfb40fa5499b49b572d5435763775
   - enabled: 1
-    path: Assets/Scenes/GameScene.unity
+    path: Assets/Scenes/Girl_Bedroom.unity
     guid: f20624244403a9d43918269c839b3ffc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 683384c16d90fd244be5597dc7ce1eaa,
