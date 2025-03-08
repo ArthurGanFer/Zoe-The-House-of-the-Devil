@@ -5,35 +5,65 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField]
-    [Tooltip ("A reference to our NavMeshAgent component")]
-    private NavMeshAgent agent;         
+    [Tooltip("A reference to our NavMeshAgent component")]
+    private NavMeshAgent agent;
+
     [SerializeField]
     [Tooltip("A reference to our target GameObject's Transform component")]
-    private Transform target;           
+    private Transform target;
+
     [SerializeField]
     [Tooltip("A reference to our player GameObject's Transform component")]
-    private Transform player;          
+    private Transform player;
 
     [Space(10)]
     [Header("Properties")]
     [SerializeField]
     [Tooltip("A string reflecting who our enemy is")]
     public string enemyName;
+
     [SerializeField]
     [Tooltip("An int reflecting who our enemy is")]
     public int modelNumber;
+
     [SerializeField]
     [Tooltip("A flag for if this enemy is just a jump scare asset")]
     private bool jumpScareAsset;
+
     [SerializeField]
     [Tooltip("Our enemy's range of vision")]
-    private float detectionRadius;    
+    private float detectionRadius;
+
     [SerializeField]
     [Tooltip("The LayerMask representing where our character is located")]
-    private LayerMask playerLayer;      //The layer the player is on
+    private LayerMask playerLayer; // The layer the player is on
+
     [SerializeField]
     [Tooltip("A flag for if the player is in vision")]
-    private bool playerInSight;         //A flag for if the player is in vision
+    private bool playerInSight; // A flag for if the player is in vision
+
+    [Header("Speed Settings")]
+    [SerializeField]
+    [Tooltip("The default speed of the enemy")]
+    private float defaultSpeed = 3.5f;
+
+    [SerializeField]
+    [Tooltip("The speed of the enemy when chasing the player")]
+    private float chaseSpeed = 6f;
+
+    [Header("Animation")]
+    [SerializeField]
+    [Tooltip("A reference to the enemy's Animator component")]
+    private Animator enemyAnimator;
+
+    private bool previousPlayerInSight; // Track the previous state of playerInSight
+
+    private void Start()
+    {
+        // Initialize the agent's speed to the default speed
+        agent.speed = defaultSpeed;
+        previousPlayerInSight = false; // Initialize the previous state
+    }
 
     private void Update()
     {
@@ -63,10 +93,24 @@ public class EnemyController : MonoBehaviour
                     if (availablePlayer.isActiveCharacter)
                     {
                         this.player = availablePlayer.GetComponent<Transform>();
-
                         break;
                     }
                 }
+            }
+        }
+
+        // Update walking and idle animations
+        if (enemyAnimator != null)
+        {
+            if (this.agent.velocity.magnitude > 0)
+            {
+                enemyAnimator.SetBool("Walk", true);
+                enemyAnimator.SetBool("Idle", false);
+            }
+            else
+            {
+                enemyAnimator.SetBool("Walk", false);
+                enemyAnimator.SetBool("Idle", true);
             }
         }
     }
@@ -74,6 +118,8 @@ public class EnemyController : MonoBehaviour
     void IsPlayerInSight()
     {
         Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
+
+        this.playerInSight = false; // Assume player is not in sight initially
 
         foreach (Collider hit in hits)
         {
@@ -85,21 +131,35 @@ public class EnemyController : MonoBehaviour
                     {
                         this.playerInSight = true;
                     }
-                    else
-                    {
-                        this.playerInSight = false;
-                    }
                 }
                 else
                 {
                     this.playerInSight = true;
                 }
-                
-                return;
+
+                break; 
             }
         }
 
-        playerInSight = false; 
+        if (this.playerInSight)
+        {
+            agent.speed = chaseSpeed; 
+        }
+        else
+        {
+            agent.speed = defaultSpeed; 
+        }
+
+        if (this.playerInSight && !previousPlayerInSight)
+        {
+            StartChaseAnimation();
+        }
+        else if (!this.playerInSight && previousPlayerInSight)
+        {
+            ResetChaseTrigger();
+        }
+
+        previousPlayerInSight = this.playerInSight;
     }
 
     private void OnDrawGizmosSelected()
@@ -127,4 +187,19 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void StartChaseAnimation()
+    {
+        if (enemyAnimator != null)
+        {
+            enemyAnimator.SetTrigger("Chase");
+        }
+    }
+
+    private void ResetChaseTrigger()
+    {
+        if (enemyAnimator != null)
+        {
+            enemyAnimator.SetTrigger("Chase");
+        }
+    }
 }

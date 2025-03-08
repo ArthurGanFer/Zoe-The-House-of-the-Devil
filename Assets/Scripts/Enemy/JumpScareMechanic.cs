@@ -22,7 +22,7 @@ public class JumpScareMechanic : MonoBehaviour
     private GameObject activePrefab;
     [SerializeField]
     [Tooltip("A reference to which scene we're transitioning to")]
-    private SceneAsset destinationScene;
+    //private SceneAsset destinationScene;
 
 
 
@@ -40,7 +40,7 @@ public class JumpScareMechanic : MonoBehaviour
         if (jumpScareAnim != null && jumpScareAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
             Debug.Log("Animation has finished!");
-            SceneManager.LoadScene(destinationScene.name);
+            //SceneManager.LoadScene(destinationScene.name);
         }
     }
 

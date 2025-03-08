@@ -16,12 +16,11 @@ public class Destructable : MonoBehaviour
 
     public float pulseDistance = 1f;
 
-    public AudioSource audioSource;
+    public AudioClip breakSound;
 
     private void OnEnable()
     {
         anim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -122,9 +121,9 @@ public class Destructable : MonoBehaviour
                 StartCoroutine(DestroyPiecesAfterDelay());
             }
 
-            if (audioSource != null)
+            if (breakSound != null)
             {
-                audioSource.Play();
+                AudioSource.PlayClipAtPoint(breakSound, transform.position);
             }
 
         }

@@ -8,11 +8,13 @@ public class PlumberController : PlayerController
     [Header("Components")]
     [SerializeField] private Collider attackCollider;
     [SerializeField] private Animator wrenchAnim;
-    
+    [SerializeField] private GameObject lineRenderer;
+
+
     protected override void AssignComponents()
     {
         base.AssignComponents();
-        /*
+        
         if (wrenchAnim == null)
         {
             wrenchAnim = GetComponent<Animator>();
@@ -21,7 +23,7 @@ public class PlumberController : PlayerController
         {
             Debug.LogError("[WrenchMechanic] No Animator component found!");
         }
-        */
+        
     }
 
     protected override void UnassignComponents()
@@ -38,6 +40,8 @@ public class PlumberController : PlayerController
         }
 
         StartCoroutine(WrenchCoroutine());
+        StartCoroutine(WrenchTrail());
+        StartCoroutine(ResetAttackAnimation());
     }
 
     private IEnumerator WrenchCoroutine()
@@ -76,7 +80,35 @@ public class PlumberController : PlayerController
 
         Debug.Log("[WrenchMechanic] Wrench attack finished.");
     }
-    
+
+    private IEnumerator ResetAttackAnimation()
+    {
+        yield return new WaitForSeconds(0.6f);
+
+
+        animator.SetBool("Attack", false);
+    }
+
+    public IEnumerator WrenchTrail()
+    {
+        if (lineRenderer != null)
+        {
+            lineRenderer.GetComponent<TrailRenderer>().enabled = true;
+
+        }
+
+        yield return new WaitForSeconds(0.4f); // Duration of the trail
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.GetComponent<TrailRenderer>().enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.8f);
+
+
+    }
+
     protected override void Do_Possess(InputAction.CallbackContext obj)
     {
         Debug.Log("Not main character");
