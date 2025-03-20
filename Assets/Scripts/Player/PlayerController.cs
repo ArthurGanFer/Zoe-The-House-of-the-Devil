@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    protected void EnableControllers()
+    public void EnableControllers()
     {
         player_Action_Asset.Player.Jump.started += Do_Jump;
         player_Action_Asset.Player.UseItem.started += Use_Item;
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
         UnassignComponents();
     }
 
-    private void DisableControllers()
+    public void DisableControllers()
     {
         player_Action_Asset.Player.Jump.started -= Do_Jump;
         player_Action_Asset.Player.UseItem.started -= Use_Item;
