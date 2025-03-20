@@ -22,12 +22,16 @@ public class JumpScareMechanic : MonoBehaviour
     private GameObject activePrefab;
     [SerializeField]
     [Tooltip("A reference to which scene we're transitioning to")]
-    //private SceneAsset destinationScene;
+    private string destinationScene;
 
-
+    private void OnEnable()
+    {
+        Cursor.visible = true;
+    }
 
     private void Start()
     {
+        
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         if (mainCamera == null)
         {
@@ -40,7 +44,7 @@ public class JumpScareMechanic : MonoBehaviour
         if (jumpScareAnim != null && jumpScareAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
             Debug.Log("Animation has finished!");
-            //SceneManager.LoadScene(destinationScene.name);
+            SceneManager.LoadScene(destinationScene);
         }
     }
 
@@ -66,7 +70,7 @@ public class JumpScareMechanic : MonoBehaviour
             jumpScareAnim = jumpScare.GetComponent<Animator>();
             jumpScareAnim.SetBool("isActive", true);
             jumpScareAnim.SetFloat("modelNumber", model);
-
+            
         }
         else
         {

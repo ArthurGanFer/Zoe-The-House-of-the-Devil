@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     static GameManager instance;
+    public Vector3 playerSpawn;
 
     public static GameManager Instance
     {
@@ -13,7 +15,17 @@ public class GameManager : MonoBehaviour
     }
     
     public GameState Current_Game_State;
-     
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     void Awake()
     {
         if (instance == null)
@@ -47,7 +59,6 @@ public class GameManager : MonoBehaviour
         Current_Game_State = next_state;
     }
     
-    
     public void LoadLevel(string nextLevel = "TestLevel")
     {
         if (nextLevel != null)
@@ -69,5 +80,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-  
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (FindObjectOfType<PlayerController>().mainCharacter == true)
+        {
+            if (playerSpawn != null)
+            {
+                PlayerController[] players = FindObjectsOfType<PlayerController>();
+
+                foreach (PlayerController player in players)
+                {
+                    if (player.mainCharacter == true)
+                    {
+                        player.transform.position = playerSpawn;
+
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("There is no spawn point!");
+            }
+        }
+        
+    }
 }
