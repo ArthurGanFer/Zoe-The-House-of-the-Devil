@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using Color = UnityEngine.Color;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,11 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     public bool isActiveCharacter;
 
-    //input fields
+    // Input fields
     public ThirdPersonActionsAsset player_Action_Asset;
     private InputAction move;
 
-    //movement fields
+    // Movement fields
     public Rigidbody rb;
     [SerializeField]
     private float movement_Force = 1f;
@@ -65,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        //ledge_grab_timer = 0;
         player_Action_Asset = new ThirdPersonActionsAsset();
         if (mainCharacter)
         {
@@ -86,7 +82,6 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log($"There is no RigidBody component on {this} GameObject!");
         }
-        //player_Action_Asset = GetComponent<ThirdPersonActionsAsset>();
         if (player_Action_Asset == null)
         {
             Debug.Log($"There is no ThirdPersonActionsAsset component on {gameObject} GameObject!");
@@ -154,8 +149,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Enable_Movement(0.25f));
             animator.SetBool("Jump", true);
         }
-        else
-        if (Check_Grounded())
+        else if (Check_Grounded())
         {
             force_Direction += Vector3.up * jump_Force;
             animator.SetBool("Jump", true);
@@ -164,16 +158,17 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void Use_Item(InputAction.CallbackContext obj)
     {
-        if (move.enabled)
+        if (move.enabled && matches_available > 0 && !is_using_match) 
         {
+            Debug.Log("Using match");
             StartCoroutine(LightMatch());
             animator.SetBool("Attack", true);
             StartCoroutine(ResetAttackAnimation());
-            animator.SetBool("Match", true);
+            animator.SetTrigger("Match"); 
         }
         else
         {
-            Debug.Log("Not used");
+            Debug.Log("Cannot use match: No matches available, movement disabled, or already using a match");
         }
     }
 
@@ -184,14 +179,12 @@ public class PlayerController : MonoBehaviour
             is_crouching = true;
             Debug.Log("Crouching");
             animator.SetBool("Crouch", true);
-
         }
         else
         {
             is_crouching = false;
             Debug.Log("Standing");
             animator.SetBool("Crouch", false);
-
         }
     }
 
@@ -211,8 +204,6 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        //Ledge_Grab();
-
         if (move.enabled)
         {
             float current_Movement_Force = is_crouching ? crouchMovementForce : movement_Force;
@@ -230,31 +221,27 @@ public class PlayerController : MonoBehaviour
             Vector3 horizontalVelocity = rb.velocity;
             horizontalVelocity.y = 0;
 
-            // Clamp horizontal velocity if it exceeds max speed
             if (horizontalVelocity.sqrMagnitude > current_Max_Speed * current_Max_Speed)
                 horizontalVelocity = horizontalVelocity.normalized * current_Max_Speed;
 
-            // Apply the clamped horizontal velocity while preserving vertical velocity
             rb.velocity = horizontalVelocity + Vector3.up * rb.velocity.y;
 
-            // Use the already clamped horizontal velocity for speed calculations
             float horizontalSpeed = horizontalVelocity.magnitude;
 
-            // Check speed thresholds for animations
             if (horizontalSpeed >= runThreshold)
             {
-                animator.SetBool("Run", true);  // Character is running
-                animator.SetBool("Walk", false); // Character is not walking
+                animator.SetBool("Run", true);
+                animator.SetBool("Walk", false);
             }
             else if (horizontalSpeed >= walkThreshold)
             {
-                animator.SetBool("Run", false); // Character is not running
-                animator.SetBool("Walk", true); // Character is walking
+                animator.SetBool("Run", false);
+                animator.SetBool("Walk", true);
             }
             else
             {
-                animator.SetBool("Run", false);  // Character is idle
-                animator.SetBool("Walk", false); // Character is idle
+                animator.SetBool("Run", false);
+                animator.SetBool("Walk", false);
             }
         }
 
@@ -305,59 +292,15 @@ public class PlayerController : MonoBehaviour
         if (!move.enabled) return;
 
         Vector3 direction = rb.velocity;
-        direction.y = 0f; // Ignore vertical movement
+        direction.y = 0f;
 
-        if (direction.sqrMagnitude > 0.1f) // Only rotate when moving
+        if (direction.sqrMagnitude > 0.1f)
         {
             rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
         else
         {
-            rb.angularVelocity = Vector3.zero; // Prevent jittery rotations
-        }
-    }
-
-
-    private void Ledge_Grab()
-    {
-        if (ledge_grab_timer < ledge_grab_cooldown)
-            return;
-        if (!Is_Grounded && !is_hanging)
-        {
-            RaycastHit down_hit;
-            Vector3 line_down_start = (transform.position + Vector3.up * 0.5f) + transform.forward;
-            Vector3 line_down_end = (transform.position + Vector3.up * 0.1f) + transform.forward;
-            Physics.Linecast(line_down_start, line_down_end, out down_hit, LayerMask.GetMask("Ground"));
-            Debug.DrawLine(line_down_start, line_down_end, Color.green);
-
-
-            if (down_hit.collider != null)
-            {
-                RaycastHit forward_hit;
-                Vector3 line_forward_start = new Vector3(transform.position.x, down_hit.point.y - 0.1f, transform.position.z);
-                Vector3 line_forward_end = new Vector3(transform.position.x, down_hit.point.y - 0.4f, transform.position.z) + transform.forward * 0.5f;
-                Physics.Linecast(line_forward_start, line_forward_end, out forward_hit, LayerMask.GetMask("Ground"));
-                Debug.DrawLine(line_forward_start, line_forward_end, Color.red);
-
-                if (forward_hit.collider != null)
-                {
-                    rb.useGravity = false;
-                    rb.velocity = Vector3.zero;
-
-                    animator.SetBool("Climb", true);
-
-                    animator.SetBool("Jump", false);
-
-                    is_hanging = true;
-                    move.Disable();
-                    // hanging animation
-                    Vector3 hang_position = new Vector3(forward_hit.point.x, down_hit.point.y, forward_hit.point.z);
-                    Vector3 offset = transform.forward * -0.1f + transform.up * -0.1f;
-                    hang_position += offset;
-                    transform.position = hang_position;
-                }
-
-            }
+            rb.angularVelocity = Vector3.zero;
         }
     }
 
@@ -375,15 +318,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         return null;
-    }
-
-    private void Possess(PlayerController targetAvatar)
-    {
-        this.DisableControllers();
-        targetAvatar.EnableControllers();
-        CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
-        cinemachine.Follow = targetAvatar.transform;
-        cinemachine.LookAt = targetAvatar.transform;
     }
 
     IEnumerator PossessionCycle(PlayerController targetAvatar)
@@ -423,7 +357,7 @@ public class PlayerController : MonoBehaviour
 
             match_obj.SetActive(false);
             is_using_match = false;
-
+            animator.SetTrigger("Match");
         }
     }
 
@@ -440,9 +374,6 @@ public class PlayerController : MonoBehaviour
     private IEnumerator ResetAttackAnimation()
     {
         yield return new WaitForSeconds(0.6f);
-
-
         animator.SetBool("Attack", false);
     }
-
 }
