@@ -8,9 +8,16 @@ public class EventTrigger : MonoBehaviour
 {
     public bool changeScene = false;
     public string sceneToLoad = "Boy_Bedroom"; // Set the default scene to load
+    [SerializeField]
+    private string objectTag = "Goal";
 
     [SerializeField]
     private UnityEvent event_Action;
+
+    private void Start()
+    {
+        this.gameObject.tag = objectTag;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

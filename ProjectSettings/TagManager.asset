@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Attack
   - SpawnPoint
+  - CheckPoint
+  - Goal
   layers:
   - Default
   - TransparentFX

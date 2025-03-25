@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     static GameManager instance;
-    public Vector3 playerSpawn;
+    public Vector3 playerSpawnPosition;
+    public Quaternion playerSpawnRotation;
+    public bool spawnSet;
 
     public static GameManager Instance
     {
         get { return instance; }
     }
-    
+
     public GameState Current_Game_State;
 
     private void OnEnable()
@@ -38,7 +37,7 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
     }
-    
+
     void Update()
     {
         RunGameStateMachine();
@@ -58,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Current_Game_State = next_state;
     }
-    
+
     public void LoadLevel(string nextLevel = "TestLevel")
     {
         if (nextLevel != null)
@@ -70,7 +69,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Level is not assigned!");
         }
     }
-    
+
     public void QuitGame(bool quit = false)
     {
         if (quit)
@@ -84,25 +83,33 @@ public class GameManager : MonoBehaviour
     {
         if (FindObjectOfType<PlayerController>().mainCharacter == true)
         {
-            if (playerSpawn != null)
+            if (playerSpawnPosition != null && playerSpawnRotation != null)
             {
-                PlayerController[] players = FindObjectsOfType<PlayerController>();
-
-                foreach (PlayerController player in players)
-                {
-                    if (player.mainCharacter == true)
-                    {
-                        player.transform.position = playerSpawn;
-
-                        break;
-                    }
-                }
+                SetSpawn();
             }
             else
             {
                 Debug.Log("There is no spawn point!");
             }
         }
-        
+
+    }
+
+    public void SetSpawn()
+    {
+        PlayerController[] players = FindObjectsOfType<PlayerController>();
+
+        foreach (PlayerController player in players)
+        {
+            if (player.mainCharacter == true)
+            {
+                player.transform.position = playerSpawnPosition;
+                player.transform.rotation = playerSpawnRotation;
+
+                Debug.Log($"Player has been teleported to {playerSpawnPosition}");
+
+                break;
+            }
+        }
     }
 }
