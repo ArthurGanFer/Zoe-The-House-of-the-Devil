@@ -322,6 +322,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator PossessionCycle(PlayerController targetAvatar)
     {
+        ResetAnimator(this.animator);
         CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
         this.DisableControllers();
         targetAvatar.EnableControllers();
@@ -330,6 +331,7 @@ public class PlayerController : MonoBehaviour
         this.isActiveCharacter = false;
         targetAvatar.isActiveCharacter = true;
         yield return possession_timer;
+        ResetAnimator(targetAvatar.animator);
         this.isActiveCharacter = true;
         targetAvatar.isActiveCharacter = false;
         targetAvatar.DisableControllers();
@@ -375,5 +377,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.6f);
         animator.SetBool("Attack", false);
+    }
+
+    private void ResetAnimator(Animator animator)
+    {
+        animator.gameObject.SetActive(false);
+        animator.gameObject.SetActive(true);
     }
 }
