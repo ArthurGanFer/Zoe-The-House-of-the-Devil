@@ -108,7 +108,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Transform>() == this.player.GetComponent<Transform>() && this.player.isActiveCharacter)
+        if (collision.gameObject.GetComponent<Transform>() == this.player.GetComponent<Transform>())
         {
             Debug.Log($"Player touched by {enemyName}! Game Over!");
 
@@ -197,31 +197,48 @@ public class EnemyController : MonoBehaviour
 
     private void SearchForPlayer()
     {
-        Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
-
-        this.playerInSight = false;
-
-        foreach (Collider hit in hits)
+        if (this.player.isActiveCharacter)
         {
-            if (hit.GetComponent<Transform>() == this.player.GetComponent<Transform>() && this.player.isActiveCharacter)
+            Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
+
+            this.playerInSight = false;
+
+            foreach (Collider hit in hits)
             {
-                if (hit.GetComponent<HidingMechanic>() != null)
+                if (hit.GetComponent<Transform>() == this.player.GetComponent<Transform>())
                 {
-                    if (!hit.GetComponent<HidingMechanic>().isHidden)
+                    if (hit.GetComponent<HidingMechanic>() != null)
+                    {
+                        if (!hit.GetComponent<HidingMechanic>().isHidden)
+                        {
+                            this.playerInSight = true;
+                        }
+                    }
+                    else
                     {
                         this.playerInSight = true;
                     }
-                }
-                else
-                {
-                    this.playerInSight = true;
-                }
 
-                break;
+                    break;
+                }
+            }
+
+            this.previousPlayerInSight = this.playerInSight;
+        }
+        else
+        {
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+
+            foreach (PlayerController player in players)
+            {
+                if (player.isActive == true)
+                {
+                    this.player = player;
+
+                    break;
+                }
             }
         }
-
-        this.previousPlayerInSight = this.playerInSight;
     }
 
     private void UpdateAnimations()
