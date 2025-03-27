@@ -164,7 +164,8 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(LightMatch());
             animator.SetBool("Attack", true);
             StartCoroutine(ResetAttackAnimation());
-            animator.SetTrigger("Match"); 
+            animator.SetTrigger("Match");
+            
         }
         else
         {
@@ -354,7 +355,7 @@ public class PlayerController : MonoBehaviour
             matches_available -= 1;
             is_using_match = true;
             match_obj.SetActive(true);
-
+            match_obj.GetComponent<LightMechanic>().lightOn = true;
             yield return match_timer;
 
             match_obj.SetActive(false);

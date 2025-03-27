@@ -8,6 +8,7 @@ public class LightMechanic : MonoBehaviour
     [SerializeField]
     private Animator lightAnim;
     public SphereCollider lightCol;
+    [SerializeField]
     private Light lightComponent;
 
     [Space(10)]
@@ -51,7 +52,6 @@ public class LightMechanic : MonoBehaviour
         {
             Debug.Log($"There is no Collider Component on {this} GameObject!");
         }
-        lightComponent = GetComponent<Light>();
         if (lightComponent == null)
         {
             Debug.Log($"There is no Light Component on {this} GameObject!");
