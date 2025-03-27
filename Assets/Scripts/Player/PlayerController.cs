@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
     private bool is_using_match = false;
     private WaitForSeconds match_timer = new WaitForSeconds(18f);
 
+    public bool onCeiling = false;
+
     private void Awake()
     {
         player_Action_Asset = new ThirdPersonActionsAsset();
@@ -164,8 +166,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(LightMatch());
             animator.SetBool("Attack", true);
             StartCoroutine(ResetAttackAnimation());
-            animator.SetTrigger("Match");
-            
+            animator.SetTrigger("Match"); 
         }
         else
         {
@@ -355,7 +356,7 @@ public class PlayerController : MonoBehaviour
             matches_available -= 1;
             is_using_match = true;
             match_obj.SetActive(true);
-            match_obj.GetComponent<LightMechanic>().lightOn = true;
+
             yield return match_timer;
 
             match_obj.SetActive(false);
@@ -384,5 +385,21 @@ public class PlayerController : MonoBehaviour
     {
         animator.gameObject.SetActive(false);
         animator.gameObject.SetActive(true);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Ceiling" && this.isActiveCharacter)
+        {
+            this.onCeiling = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Ceiling" && this.isActiveCharacter)
+        {
+            this.onCeiling = false;
+        }
     }
 }

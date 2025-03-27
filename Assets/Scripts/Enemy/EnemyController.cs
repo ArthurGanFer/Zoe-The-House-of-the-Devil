@@ -1,23 +1,22 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField]
     [Tooltip("A reference to our NavMeshAgent component")]
-    private NavMeshAgent agent;
-    [SerializeField]
+    public NavMeshAgent agent;
     [Tooltip("A reference to our target GameObject's Transform component")]
-    private Transform target;
+    public Transform target;
     [SerializeField]
     [Tooltip("A reference to the player's PlayerController component")]
     private PlayerController player;
-    [SerializeField]
     [Tooltip("A reference to the our Animator component")]
-    private Animator enemyAnimator;
+    public Animator enemyAnimator;
 
     [Space(10)]
     [Header("Properties")]
@@ -51,9 +50,8 @@ public class EnemyController : MonoBehaviour
     [Header("Chase Function Settings")]
     [Tooltip("A flag for if we are chasing the player")]
     public bool chasingPlayer = false;
-    [SerializeField]
     [Tooltip("A flag representing if the current timer has been set")]
-    private bool timerSet;
+    public bool timerSet;
     [SerializeField]
     [Tooltip("A float for how long we wait before chasing the player")]
     private float baseChasingTimer = 6;
@@ -63,9 +61,8 @@ public class EnemyController : MonoBehaviour
 
     [Space(1)]
     [Header("Speed Settings")]
-    [SerializeField]
     [Tooltip("The default speed of the enemy")]
-    private float defaultSpeed = 3.5f;
+    public float defaultSpeed = 3.5f;
     [SerializeField]
     [Tooltip("The speed of the enemy when chasing the player")]
     private float chaseSpeed = 6f;
@@ -117,7 +114,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void AssignComponents()
+    public void AssignComponents()
     {
         this.agent = GetComponent<NavMeshAgent>();
         if (this.agent == null)
@@ -147,23 +144,22 @@ public class EnemyController : MonoBehaviour
                 {
                     this.player = player;
 
+                    //string playerLayerName = LayerMask.LayerToName(this.player.gameObject.GetComponent<LayerMask>());
+                    //this.playerLayer = LayerMask.GetMask(playerLayerName);
+
                     break;
                 }
             }
 
             Debug.Log($"There are no gameObjects of type PlayerController in scene: {SceneManager.GetActiveScene().name}");
         }
-        else
-        {
-            this.playerLayer = this.player.GetComponent<LayerMask>();
-        }
 
         this.previousPlayerInSight = false;
     }
 
-    private void DetectionMeter()
+    public void DetectionMeter()
     {
-        if (!this.chasingPlayer)
+        if (!this.chasingPlayer && this.player.is_crouching)
         {
             this.StartCoroutine("StartDetectionTimer", baseChasingTimer);
         }
@@ -195,7 +191,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void SearchForPlayer()
+    public void SearchForPlayer()
     {
         if (this.player.isActiveCharacter)
         {
@@ -241,7 +237,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void UpdateAnimations()
+    public void UpdateAnimations()
     {
         if (this.agent.velocity.magnitude > 0)
         {

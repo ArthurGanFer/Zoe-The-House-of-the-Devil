@@ -22,11 +22,15 @@ public class SpawnController : MonoBehaviour
 
     private void Update()
     {
-        if (gameManager.playerSpawnPosition != currentCheckpoint.position || gameManager.playerSpawnRotation != currentCheckpoint.rotation)
+        if (gameManager != null)
         {
-            gameManager.playerSpawnPosition = currentCheckpoint.position;
-            gameManager.playerSpawnRotation = currentCheckpoint.rotation;
+            if (gameManager.playerSpawnPosition != currentCheckpoint.position || gameManager.playerSpawnRotation != currentCheckpoint.rotation)
+            {
+                gameManager.playerSpawnPosition = currentCheckpoint.position;
+                gameManager.playerSpawnRotation = currentCheckpoint.rotation;
+            }
         }
+        
     }
 
     private void OnTriggerEnter(Collider other)

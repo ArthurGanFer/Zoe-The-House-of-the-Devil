@@ -6061,6 +6061,8 @@ GameObject:
   - component: {fileID: 5794157650225346035}
   - component: {fileID: 1792800487060907642}
   - component: {fileID: 5749860165290875900}
+  - component: {fileID: 2925902706850988966}
+  - component: {fileID: 6474912845774098841}
   m_Layer: 7
   m_Name: Regular_Zoe
   m_TagString: Player
@@ -6221,6 +6223,7 @@ MonoBehaviour:
   match_obj: {fileID: 8738332858940993603}
   matches_available: 0
   is_using_match: 0
+  onCeiling: 0
 --- !u!114 &1792800487060907642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6343,6 +6346,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2925902706850988966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301135945013390973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ca540e1027dfd4b91fee842324c2a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCheckpoint: {fileID: 0}
+--- !u!114 &6474912845774098841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301135945013390973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a4864b5ea7f4d48a7a665465ff3381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
+  layer: HidingSpot
+  isHidden: 0
 --- !u!1 &8302512891223451896
 GameObject:
   m_ObjectHideFlags: 0
