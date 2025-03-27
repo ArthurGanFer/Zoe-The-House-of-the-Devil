@@ -231,7 +231,7 @@ public class EnemyController : MonoBehaviour
 
             foreach (PlayerController player in players)
             {
-                if (player.isActive == true)
+                if (player.isActiveCharacter == true)
                 {
                     this.player = player;
 
