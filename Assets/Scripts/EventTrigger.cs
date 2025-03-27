@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,19 +12,33 @@ public class EventTrigger : MonoBehaviour
     [SerializeField]
     private string objectTag = "Goal";
 
+    [SerializeField] private float eventCooldown = 0;
+    public float eventTimer = 0;
+    
     [SerializeField]
     private UnityEvent event_Action;
 
-    private void Start()
+    private void Awake()
     {
         this.gameObject.tag = objectTag;
+        eventTimer = eventCooldown;
+    }
+
+    private void Update()
+    {
+        eventTimer += Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (eventTimer <= eventCooldown)
+        {
+            return;
+        }
         // Check if the collider is the player
         if (other.GetComponent<PlayerController>() != null || other.gameObject.CompareTag("Player"))
         {
+            eventTimer = 0;
             // Invoke the UnityEvent if it has subscribers
             event_Action?.Invoke();
 
