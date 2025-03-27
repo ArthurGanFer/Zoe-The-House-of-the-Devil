@@ -26540,7 +26540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 616.9309
+  m_Intensity: 446.15768
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 56.604942
@@ -26662,7 +26662,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 230.25839
+  m_Intensity: 166.52036
   m_Range: 10.891214
   m_SpotAngle: 110
   m_InnerSpotAngle: 21.80208
@@ -39669,7 +39669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 616.9309
+  m_Intensity: 446.15765
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 69.89712
@@ -39791,7 +39791,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 153.98477
+  m_Intensity: 111.3601
   m_Range: 10.891214
   m_SpotAngle: 137.5102
   m_InnerSpotAngle: 21.80208
@@ -58914,7 +58914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 616.9309
+  m_Intensity: 446.15768
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 56.604942
@@ -59036,7 +59036,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 230.25839
+  m_Intensity: 166.52036
   m_Range: 10.891214
   m_SpotAngle: 110
   m_InnerSpotAngle: 21.80208
@@ -62208,7 +62208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 616.9309
+  m_Intensity: 446.15768
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 56.604942
@@ -62330,7 +62330,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 230.25839
+  m_Intensity: 166.52036
   m_Range: 10.891214
   m_SpotAngle: 110
   m_InnerSpotAngle: 21.80208
