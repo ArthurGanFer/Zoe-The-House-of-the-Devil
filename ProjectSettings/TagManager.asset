@@ -8,6 +8,7 @@ TagManager:
   - SpawnPoint
   - CheckPoint
   - Goal
+  - DetectionIcon
   layers:
   - Default
   - TransparentFX

@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
     static GameManager instance;
     public Vector3 playerSpawnPosition;
     public Quaternion playerSpawnRotation;
+    private bool playerInScene = false;
     public bool spawnSet;
+    public Animator detectionAnim;
 
     public static GameManager Instance
     {
@@ -41,6 +44,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         RunGameStateMachine();
+
+        if (playerInScene)
+        {
+            if (FindObjectOfType<EnemyController>() != null)
+            {
+                CheckIfPlayerInSight();
+            }
+        }
     }
 
     private void RunGameStateMachine()
@@ -81,8 +92,10 @@ public class GameManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (FindObjectOfType<PlayerController>().mainCharacter == true)
+        if (FindObjectOfType<PlayerController>() != null)
         {
+            playerInScene = true;
+
             if (playerSpawnPosition != null && playerSpawnRotation != null)
             {
                 SetSpawn();
@@ -91,6 +104,12 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("There is no spawn point!");
             }
+        }
+        else
+        {
+            playerInScene = false;
+
+            Debug.Log($"There are no gameObjects of type PlayerController in scene: {SceneManager.GetActiveScene().name}");
         }
 
     }
@@ -111,5 +130,51 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void CheckIfPlayerInSight()
+    {
+        if (detectionAnim == null)
+        {
+            GameObject detectionGameObject = GameObject.FindGameObjectWithTag("DetectionIcon");
+            detectionAnim = detectionGameObject.GetComponent<Animator>();
+        }
+        else
+        {
+            EnemyController[] enemies = FindObjectsOfType<EnemyController>();
+
+            foreach (EnemyController enemy in enemies)
+            {
+                if (enemy.jumpScareAsset)
+                {
+                    detectionAnim.gameObject.SetActive(false);
+
+                    break;
+                }
+                else
+                {
+                    detectionAnim.gameObject.SetActive(true);
+
+                    if (enemy.playerInSight)
+                    {
+                        if (!enemy.chasingPlayer)
+                        {
+                            detectionAnim.SetInteger("DetectionLevel", 2);
+                        }
+                        else
+                        {
+                            detectionAnim.SetInteger("DetectionLevel", 3);
+                        }
+
+                        break;
+                    }
+                    else
+                    {
+                        detectionAnim.SetInteger("DetectionLevel", 1);
+                    }
+                }
+            }
+        }
+        
     }
 }
