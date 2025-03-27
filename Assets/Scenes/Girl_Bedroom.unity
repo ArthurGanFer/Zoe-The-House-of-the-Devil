@@ -27336,12 +27336,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2993218883075853637}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &781891740184302050 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5749860165290875900, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-    type: 3}
-  m_PrefabInstance: {fileID: 2993218883075853637}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &781891740184302052 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5794157650225346035, guid: c34cd7c345a3aaa4587067d5245ed5cf,
@@ -27362,46 +27356,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1792800487060907642, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: audioSource
-      value: 
-      objectReference: {fileID: 781891740184302050}
-    - target: {fileID: 1792800487060907642, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: defaultFootsteps.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 2a60283b19cca7545b6466d7e190513f, type: 3}
-    - target: {fileID: 2540390612144897273, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_Range
-      value: 3.9108505
-      objectReference: {fileID: 0}
-    - target: {fileID: 5749860165290875900, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_Volume
-      value: 0.518
-      objectReference: {fileID: 0}
-    - target: {fileID: 5749860165290875900, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 2a60283b19cca7545b6466d7e190513f, type: 3}
-    - target: {fileID: 5749860165290875900, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5794157650225346035, guid: c34cd7c345a3aaa4587067d5245ed5cf,
         type: 3}
       propertyPath: player_Camera
       value: 
       objectReference: {fileID: 1225965770}
-    - target: {fileID: 6161574852642454662, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6568976324051799916, guid: c34cd7c345a3aaa4587067d5245ed5cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27452,20 +27411,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6964975092932142428, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_VolumetricDimmer
-      value: 0.92
-      objectReference: {fileID: 0}
     - target: {fileID: 8301135945013390973, guid: c34cd7c345a3aaa4587067d5245ed5cf,
         type: 3}
       propertyPath: m_Name
       value: Regular_Zoe
-      objectReference: {fileID: 0}
-    - target: {fileID: 8738332858940993603, guid: c34cd7c345a3aaa4587067d5245ed5cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
