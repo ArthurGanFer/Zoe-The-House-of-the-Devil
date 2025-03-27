@@ -18,6 +18,11 @@ public class EventTrigger : MonoBehaviour
     [SerializeField]
     private UnityEvent event_Action;
 
+    [SerializeField]
+    private GameObject fadeOutCanvasPrefab;
+    [SerializeField]
+    private FadeController fadeController;
+
     private void Awake()
     {
         this.gameObject.tag = objectTag;
@@ -45,8 +50,20 @@ public class EventTrigger : MonoBehaviour
             // Change the scene if the changeScene flag is true
             if (changeScene)
             {
-                LoadScene(sceneToLoad);
+                GameObject fadeOut = Instantiate(fadeOutCanvasPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                fadeController = fadeOut.GetComponent<FadeController>();
+                
             }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (fadeOutCanvasPrefab != null && fadeController.animationFinished)
+        {
+            Debug.Log("Animation finished!");
+
+            LoadScene(sceneToLoad);
         }
     }
 
@@ -56,7 +73,7 @@ public class EventTrigger : MonoBehaviour
         if (!string.IsNullOrEmpty(sceneName))
         {
             // Load the scene using SceneManager
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName);            
         }
         else
         {

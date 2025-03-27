@@ -12,9 +12,8 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent agent;
     [Tooltip("A reference to our target GameObject's Transform component")]
     public Transform target;
-    [SerializeField]
     [Tooltip("A reference to the player's PlayerController component")]
-    private PlayerController player;
+    public PlayerController player;
     [Tooltip("A reference to the our Animator component")]
     public Animator enemyAnimator;
 
@@ -144,8 +143,8 @@ public class EnemyController : MonoBehaviour
                 {
                     this.player = player;
 
-                    //string playerLayerName = LayerMask.LayerToName(this.player.gameObject.GetComponent<LayerMask>());
-                    //this.playerLayer = LayerMask.GetMask(playerLayerName);
+                    string playerLayerName = LayerMask.LayerToName(this.player.gameObject.layer);
+                    this.playerLayer = LayerMask.GetMask(playerLayerName);
 
                     break;
                 }

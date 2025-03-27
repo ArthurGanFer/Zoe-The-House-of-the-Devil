@@ -9,6 +9,7 @@ TagManager:
   - CheckPoint
   - Goal
   - DetectionIcon
+  - Ceiling
   layers:
   - Default
   - TransparentFX

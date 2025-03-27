@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     private bool playerInScene = false;
     public bool spawnSet;
     public Animator detectionAnim;
+    [SerializeField]
+    private GameObject fadeInCanvasPrefab;
 
     public static GameManager Instance
     {
@@ -92,6 +94,8 @@ public class GameManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Instantiate(fadeInCanvasPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
         if (FindObjectOfType<PlayerController>() != null)
         {
             playerInScene = true;

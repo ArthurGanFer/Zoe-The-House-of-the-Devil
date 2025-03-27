@@ -391,7 +391,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Ceiling" && this.isActiveCharacter)
         {
-            this.onCeiling = false;
+            this.onCeiling = true;
+
+            Debug.Log("Player on Ceiling!");
         }
     }
 
@@ -400,6 +402,8 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Ceiling" && this.isActiveCharacter)
         {
             this.onCeiling = false;
+
+            Debug.Log("Player has left Ceiling!");
         }
     }
 }
