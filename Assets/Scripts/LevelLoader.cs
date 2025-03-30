@@ -9,4 +9,14 @@ public class LevelLoader : MonoBehaviour
     {
         SceneManager.LoadScene(levelName);
     }
+
+    public void LoadPreviousLevel()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager != null)
+        {
+            SceneManager.LoadScene(gameManager.previousLevelName);
+        }
+    }
 }

@@ -57,6 +57,7 @@ public class SpawnController : MonoBehaviour
 
             if (!gameManager.spawnSet)
             {
+                gameManager.previousLevelName = SceneManager.GetActiveScene().name;
                 gameManager.playerSpawnPosition = currentCheckpoint.position;
                 gameManager.playerSpawnRotation = currentCheckpoint.rotation;
                 gameManager.spawnSet = true;

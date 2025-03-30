@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public Animator detectionAnim;
     [SerializeField]
     private GameObject fadeInCanvasPrefab;
+    public string previousLevelName;
 
     public static GameManager Instance
     {
