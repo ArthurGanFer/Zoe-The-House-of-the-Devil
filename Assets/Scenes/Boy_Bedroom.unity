@@ -61317,7 +61317,7 @@ PrefabInstance:
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 8300000, guid: 4fe9c10451d85f94a81d07f0be78b4f3, type: 3}
+      objectReference: {fileID: 8300000, guid: f7c7b5abb534ae6459c3ba6528ab54ba, type: 3}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -62171,7 +62171,7 @@ PrefabInstance:
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 8300000, guid: 4fe9c10451d85f94a81d07f0be78b4f3, type: 3}
+      objectReference: {fileID: 8300000, guid: 69b9e1b03edaeca49a0d7c7af4a87b21, type: 3}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -73065,7 +73065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1667584292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74145,7 +74145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1696971323
 Transform:
   m_ObjectHideFlags: 0
