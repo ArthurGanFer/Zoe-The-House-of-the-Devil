@@ -10,7 +10,6 @@ public class Coin : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SettingsManager.Instance.ChangeCoins(coinsValue);
 
             Destroy(this.gameObject);
         }

@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Camera player_Camera;
 
+    private CinemachineFreeLook cinemachine;
+
     public bool Is_Grounded;
     [SerializeField]
     private float dist_To_Ground;
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
         player_Action_Asset = new ThirdPersonActionsAsset();
         if (mainCharacter)
         {
@@ -334,7 +337,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator PossessionCycle(PlayerController targetAvatar)
     {
         ResetAnimator(this.animator);
-        CinemachineFreeLook cinemachine = player_Camera.GetComponent<CinemachineFreeLook>();
         this.DisableControllers();
         targetAvatar.EnableControllers();
         cinemachine.Follow = targetAvatar.transform;

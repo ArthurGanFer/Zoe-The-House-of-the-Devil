@@ -33,8 +33,6 @@ public class SoundFXManager : MonoBehaviour
         
         audio_source.clip = audioClip;
         
-        audio_source.volume = 1.0f;
-        
         audio_source.Play();
         
         float clip_length = audio_source.clip.length;
