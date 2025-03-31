@@ -206,6 +206,15 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (!this.isActiveCharacter)
+        {
+            this.rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        }
+        else
+        {
+            this.rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+
         if (move.enabled)
         {
             float current_Movement_Force = is_crouching ? crouchMovementForce : movement_Force;

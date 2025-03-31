@@ -48,12 +48,12 @@ public class EventTrigger : MonoBehaviour
             event_Action?.Invoke();
 
             // Change the scene if the changeScene flag is true
-           // if (changeScene)
-            
+            if (changeScene)
+            {
                 GameObject fadeOut = Instantiate(fadeOutCanvasPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 fadeController = fadeOut.GetComponent<FadeController>();
                 
-            
+            }
         }
     }
 
@@ -63,9 +63,7 @@ public class EventTrigger : MonoBehaviour
         {
             Debug.Log("Animation finished!");
 
-            Destroy(fadeOutCanvasPrefab.gameObject);
-
-           // LoadScene(sceneToLoad);
+            LoadScene(sceneToLoad);
         }
     }
 

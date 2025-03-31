@@ -9,7 +9,7 @@ public class GrapplePoint : MonoBehaviour
     private Camera mainCamera;
     [SerializeField]
     [Tooltip("A reference to our BetaGrappleMechanic Component")]
-    private GrappleMechanic grappleMechanic;
+    private FisherController grappleMechanic;
 
     [Header ("Properties")]
     [SerializeField]
@@ -56,7 +56,7 @@ public class GrapplePoint : MonoBehaviour
             Debug.Log("There is no GameObject with a Camera Component in the scene!");
         }
 
-        grappleMechanic = FindObjectOfType<GrappleMechanic>();
+        grappleMechanic = FindObjectOfType<FisherController>();
         if (grappleMechanic == null)
         {
             Debug.Log("There is no GameObject with a BetaGrappleMechanic Component in the scene!");
@@ -73,7 +73,7 @@ public class GrapplePoint : MonoBehaviour
     {
         if (grappleMechanic == null)
         {
-            grappleMechanic = FindObjectOfType<GrappleMechanic>();
+            grappleMechanic = FindObjectOfType<FisherController>();
         }
         else
         {
