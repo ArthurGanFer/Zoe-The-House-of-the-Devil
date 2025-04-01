@@ -453,12 +453,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &62843198 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6774185063287825652, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 423350444}
-  m_PrefabAsset: {fileID: 0}
 --- !u!64 &64001597
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4262,19 +4256,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
+      propertyPath: fadeOutCanvasPrefab
+      value: 
+      objectReference: {fileID: 6944294001725173750, guid: f3d65d4df7b29b64c803c6731b5c8e72,
+        type: 3}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 62843198}
+      objectReference: {fileID: 759455183}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -4283,17 +4283,22 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: ChangeMusic
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: 
+      value: MusicHelper, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
-      propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
+      objectReference: {fileID: 8300000, guid: c9692be2cbbcf8a41838571bc009b59c, type: 3}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
+      propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8734248930378831797, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -7313,6 +7318,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &759455182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 759455184}
+  - component: {fileID: 759455183}
+  m_Layer: 0
+  m_Name: MusicHelper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &759455183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759455182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8548ed79c03354c817af2a4eda3e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &759455184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759455182}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &760975477
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10697,7 +10746,7 @@ PrefabInstance:
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
@@ -10707,7 +10756,7 @@ PrefabInstance:
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
@@ -10723,7 +10772,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1225965781}
+      objectReference: {fileID: 781891740184302052}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -10752,7 +10801,7 @@ PrefabInstance:
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Move_To_Spot
+      value: DisableControllers
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
@@ -10772,7 +10821,7 @@ PrefabInstance:
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CameraController, Assembly-CSharp
+      value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
@@ -10793,7 +10842,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1083331541}
+      objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
@@ -10802,7 +10851,7 @@ PrefabInstance:
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
       propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
@@ -10831,12 +10880,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ae2ac4a0e334546903a927333fb409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1083331541 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1060931864400763307, guid: 105e71caa26d2b94c888c8c4417cd96b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1083331539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!64 &1086873372
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15095,6 +15138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb6d2be4b668204980ea0f9ddf48391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeInPrefab: {fileID: 6944294001725173750, guid: 7a5e55bb18a24534ebbf7349842954e0,
+    type: 3}
+  fadeOutPrefab: {fileID: 6944294001725173750, guid: f3d65d4df7b29b64c803c6731b5c8e72,
+    type: 3}
 --- !u!64 &1226719647
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26855,6 +26902,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fisher_Zoe
       objectReference: {fileID: 0}
+    - target: {fileID: 8301135945013390973, guid: c34cd7c345a3aaa4587067d5245ed5cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2761655362923554349, guid: c34cd7c345a3aaa4587067d5245ed5cf, type: 3}
@@ -31480,3 +31532,4 @@ SceneRoots:
   - {fileID: 385376559}
   - {fileID: 376636016}
   - {fileID: 1878826072}
+  - {fileID: 759455184}

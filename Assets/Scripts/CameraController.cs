@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
+    public GameObject fadeInPrefab;
+    public GameObject fadeOutPrefab;
+    
     private CinemachineBrain brain;
     private CinemachineFreeLook freeLook;
     private SettingsManager settingsManager;
@@ -28,6 +30,7 @@ public class CameraController : MonoBehaviour
 
     public void Move_To_Spot(Transform spot)
     {
+        Instantiate(fadeInPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         brain.enabled = false;
         transform.position = spot.position;
         transform.rotation = spot.rotation;
@@ -35,6 +38,7 @@ public class CameraController : MonoBehaviour
 
     public void Move_To_Third_Person()
     {
+        Instantiate(fadeInPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         brain.enabled = true;
     }
 

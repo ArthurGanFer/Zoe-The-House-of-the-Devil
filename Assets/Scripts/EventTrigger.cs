@@ -73,7 +73,7 @@ public class EventTrigger : MonoBehaviour
         if (!string.IsNullOrEmpty(sceneName))
         {
             // Load the scene using SceneManager
-            SceneManager.LoadScene(sceneName);            
+            SceneManager.LoadScene(sceneName);
         }
         else
         {
