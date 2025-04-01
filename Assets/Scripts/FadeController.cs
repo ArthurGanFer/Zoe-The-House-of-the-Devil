@@ -11,7 +11,7 @@ public class FadeController : MonoBehaviour
     public bool animationFinished = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         fadeAnim = GetComponentInChildren<Animator>();
         
@@ -36,7 +36,7 @@ public class FadeController : MonoBehaviour
             animationFinished = true;
         }
         
-        if (animationFinished && fadeIn)
+        if (animationFinished)
         {
             Destroy();
         }

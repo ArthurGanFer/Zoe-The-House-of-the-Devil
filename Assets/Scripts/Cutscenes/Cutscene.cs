@@ -23,4 +23,5 @@ public class Cutscene : MonoBehaviour
         onFinish?.Invoke();
         cameraController.Move_To_Third_Person();
     }
+
 }
