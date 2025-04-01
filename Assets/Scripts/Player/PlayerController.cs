@@ -330,6 +330,13 @@ public class PlayerController : MonoBehaviour
                     return doll.GetComponent<PlumberController>();
                 }
             }
+            if (doll.GetComponent<FisherController>() != null)
+            {
+                if (doll.GetComponent<FisherController>().mainCharacter == false)
+                {
+                    return doll.GetComponent<FisherController>();
+                }
+            }
         }
         return null;
     }
