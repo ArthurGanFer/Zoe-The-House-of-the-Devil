@@ -10400,6 +10400,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
         type: 3}
+      propertyPath: duration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833948341721949078, guid: 105e71caa26d2b94c888c8c4417cd96b,
+        type: 3}
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 1225965781}
@@ -14804,6 +14809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb6d2be4b668204980ea0f9ddf48391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeInPrefab: {fileID: 0}
+  fadeOutPrefab: {fileID: 0}
 --- !u!64 &1226719647
 MeshCollider:
   m_ObjectHideFlags: 0
