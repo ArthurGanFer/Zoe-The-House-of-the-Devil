@@ -8,17 +8,22 @@ public class CameraController : MonoBehaviour
 
     private CinemachineBrain brain;
     private CinemachineFreeLook freeLook;
+    private SettingsManager settingsManager;
     // Start is called before the first frame update
     void Awake()
     {
         freeLook = GetComponent<CinemachineFreeLook>();
         brain = GetComponent<CinemachineBrain>();
+        settingsManager = FindFirstObjectByType<SettingsManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        freeLook.m_YAxis.m_InvertInput = SettingsManager.Instance.invertedCamera;
+        if (settingsManager != null)
+        {
+            freeLook.m_YAxis.m_InvertInput = SettingsManager.Instance.invertedCamera;
+        }
     }
 
     public void Move_To_Spot(Transform spot)

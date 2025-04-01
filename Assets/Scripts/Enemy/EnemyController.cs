@@ -165,6 +165,7 @@ public class EnemyController : MonoBehaviour
         else
         {
             this.StopCoroutine("StartDetectionTimer");
+            this.chasingPlayer = true;
             this.agent.SetDestination(this.player.GetComponent<Transform>().position);
             this.timerSet = false;
             this.agent.speed = chaseSpeed;
@@ -240,12 +241,12 @@ public class EnemyController : MonoBehaviour
     {
         if (this.agent.velocity.magnitude > 0)
         {
-            this.enemyAnimator.SetBool("Walk", true);
+            this.enemyAnimator.SetBool("Walking", true);
             this.enemyAnimator.SetBool("Idle", false);
         }
         else
         {
-            this.enemyAnimator.SetBool("Walk", false);
+            this.enemyAnimator.SetBool("Walking", false);
             this.enemyAnimator.SetBool("Idle", true);
         }
 
