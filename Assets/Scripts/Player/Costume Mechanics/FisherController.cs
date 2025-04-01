@@ -47,10 +47,14 @@ public class FisherController : PlayerController
         if (grappling)
         {
             GrappleToGrapplePoint();
+            animator.SetBool("Attack", true);
+
         }
         else
         {
             rb.useGravity = true;
+            animator.SetBool("Attack", false);
+
         }
 
         CreateLine();
