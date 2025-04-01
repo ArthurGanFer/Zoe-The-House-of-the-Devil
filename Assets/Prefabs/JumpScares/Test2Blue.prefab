@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 70146e1cf7ba0534bbd0c9441ca3ad76, type: 2}
+  - {fileID: 2100000, guid: 0b1d8201238dd1048b4dd19aa597fbfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,14 +123,22 @@ MonoBehaviour:
   agent: {fileID: 0}
   target: {fileID: 0}
   player: {fileID: 0}
-  enemyName: Green
-  modelNumber: 2
+  enemyAnimator: {fileID: 0}
+  enemyName: Blue
+  modelNumber: 0
   jumpScareAsset: 1
   detectionRadius: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
   playerInSight: 0
+  previousPlayerInSight: 0
+  chasingPlayer: 0
+  timerSet: 0
+  baseChasingTimer: 6
+  currentChasingTimer: 0
+  defaultSpeed: 3.5
+  chaseSpeed: 6
 --- !u!1001 &2048180598085366186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,7 +150,7 @@ PrefabInstance:
     - target: {fileID: 551077192826533274, guid: ec06d1e13d14a56488e9b34dff3b60a5,
         type: 3}
       propertyPath: m_Name
-      value: JumpScarePrefabBase Variant Temp1
+      value: Test2Blue
       objectReference: {fileID: 0}
     - target: {fileID: 3978289024270656852, guid: ec06d1e13d14a56488e9b34dff3b60a5,
         type: 3}

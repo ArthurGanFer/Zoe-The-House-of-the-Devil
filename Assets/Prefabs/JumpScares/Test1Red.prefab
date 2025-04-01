@@ -123,14 +123,22 @@ MonoBehaviour:
   agent: {fileID: 0}
   target: {fileID: 0}
   player: {fileID: 0}
-  enemyName: Red
-  modelNumber: 1
+  enemyAnimator: {fileID: 0}
+  enemyName: Boss Red
+  modelNumber: 0
   jumpScareAsset: 1
   detectionRadius: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
   playerInSight: 0
+  previousPlayerInSight: 0
+  chasingPlayer: 0
+  timerSet: 0
+  baseChasingTimer: 6
+  currentChasingTimer: 0
+  defaultSpeed: 3.5
+  chaseSpeed: 6
 --- !u!1001 &2048180598085366186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,7 +150,7 @@ PrefabInstance:
     - target: {fileID: 551077192826533274, guid: ec06d1e13d14a56488e9b34dff3b60a5,
         type: 3}
       propertyPath: m_Name
-      value: JumpScarePrefabBase Variant Temp
+      value: Test1Red
       objectReference: {fileID: 0}
     - target: {fileID: 3978289024270656852, guid: ec06d1e13d14a56488e9b34dff3b60a5,
         type: 3}

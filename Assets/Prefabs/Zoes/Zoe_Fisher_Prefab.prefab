@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCharacter: 1
   isActiveCharacter: 1
-  rb: {fileID: 0}
+  rb: {fileID: 2049346076605940256}
   movement_Force: 0.5
   jump_Force: 5
   max_Speed: 2
@@ -278,6 +278,12 @@ LineRenderer:
 --- !u!1 &855377475867210045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7877515477000570210, guid: 2714db662393c0b4dba03f335a4cb48e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7389395294517834847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2049346076605940256 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8862198653643503231, guid: 2714db662393c0b4dba03f335a4cb48e,
     type: 3}
   m_PrefabInstance: {fileID: 7389395294517834847}
   m_PrefabAsset: {fileID: 0}

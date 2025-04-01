@@ -1064,7 +1064,7 @@ MonoBehaviour:
   target: {fileID: 0}
   player: {fileID: 0}
   enemyAnimator: {fileID: 0}
-  enemyName: boy
+  enemyName: Boy
   modelNumber: 0
   jumpScareAsset: 1
   detectionRadius: 1

@@ -44,7 +44,15 @@ public class JumpScareMechanic : MonoBehaviour
         if (jumpScareAnim != null && jumpScareAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
             Debug.Log("Animation has finished!");
-            SceneManager.LoadScene(destinationScene);
+
+            if (destinationScene != null)
+            {
+                SceneManager.LoadScene(destinationScene);
+            }
+            else
+            {
+                Debug.Log("destinationScene has not been set!");
+            }
         }
     }
 

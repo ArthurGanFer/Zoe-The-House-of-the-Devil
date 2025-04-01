@@ -202,6 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3354376034932826518}
   - component: {fileID: 1417701960348823372}
+  - component: {fileID: 8718521913488595327}
   m_Layer: 0
   m_Name: DollJumpscarePrefab Variant
   m_TagString: Untagged
@@ -250,6 +251,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8718521913488595327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169972203834274136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c167ae1e95acf814782e52a410dc1f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  target: {fileID: 0}
+  player: {fileID: 0}
+  enemyAnimator: {fileID: 0}
+  enemyName: Doll1
+  modelNumber: 0
+  jumpScareAsset: 1
+  detectionRadius: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerInSight: 0
+  previousPlayerInSight: 0
+  chasingPlayer: 0
+  timerSet: 0
+  baseChasingTimer: 6
+  currentChasingTimer: 0
+  defaultSpeed: 3.5
+  chaseSpeed: 6
 --- !u!1 &3395247112075910605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1146,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   target: {fileID: 0}
   player: {fileID: 0}
+  enemyAnimator: {fileID: 0}
   enemyName: 
   modelNumber: 0
   jumpScareAsset: 1
@@ -1122,7 +1155,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   playerInSight: 0
-  enemyAnimator: {fileID: 0}
+  previousPlayerInSight: 0
+  chasingPlayer: 0
+  timerSet: 0
+  baseChasingTimer: 6
+  currentChasingTimer: 0
+  defaultSpeed: 3.5
+  chaseSpeed: 6
 --- !u!1 &7757598236112372186
 GameObject:
   m_ObjectHideFlags: 0
