@@ -27,6 +27,17 @@ public class UIManager : MonoBehaviour
         }
     }
     
+    public void LoadLevel(string nextLevel = "TestLevel")
+    {
+        if (nextLevel != null)
+        {
+            GameManager.Instance.LoadLevel(nextLevel); }
+        else
+        {
+            Debug.LogError("Level is not assigned!");
+        }
+    }
+    
     public void SetVolume (float volume)
     {
         //Audio Volume adjust
