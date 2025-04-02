@@ -67,8 +67,8 @@ Material:
     - _AlphaSrcBlend: 1
     - _BlendMode: 1
     - _ConservativeDepthOffsetEnable: 0
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 1
+    - _CullModeForward: 1
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
@@ -79,7 +79,7 @@ Material:
     - _ExcludeFromTUAndAA: 0
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
-    - _Scale: 1.1
+    - _Scale: 0
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 1
@@ -91,7 +91,7 @@ Material:
     - _StencilWriteMaskMV: 43
     - _SurfaceType: 1
     - _TransparentBackfaceEnable: 0
-    - _TransparentCullMode: 2
+    - _TransparentCullMode: 1
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
@@ -105,5 +105,5 @@ Material:
     - _Color: {r: 0.25, g: 0.25, b: 0.25, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Power: {r: 0.5, g: 0.1, b: 0, a: 0}
+    - _Power: {r: 0.8, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
