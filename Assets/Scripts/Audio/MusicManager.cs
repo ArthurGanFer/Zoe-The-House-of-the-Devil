@@ -51,5 +51,10 @@ public class MusicManager : MonoBehaviour
         }
         audioSource.volume = currentVolume;
     }
+
+    public void PauseMusic()
+    {
+        audioSource.Pause();
+    }
     
 }
