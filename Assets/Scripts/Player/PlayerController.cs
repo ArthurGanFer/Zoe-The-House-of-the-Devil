@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     private float ledge_grab_timer;
     public Animator animator;
 
-    private WaitForSeconds possession_timer = new WaitForSeconds(10f);
+    private WaitForSeconds possession_timer = new WaitForSeconds(30f);
 
     public Vector3 resetPos;
     public Quaternion resetRotation;
