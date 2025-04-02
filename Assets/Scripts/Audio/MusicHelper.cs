@@ -9,4 +9,9 @@ public class MusicHelper : MonoBehaviour
     {
         MusicManager.Instance.ChangeMusic(nextMusic);
     }
+
+    public void PauseMusic()
+    {
+        MusicManager.Instance.PauseMusic();
+    }
 }
