@@ -52882,7 +52882,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -52902,7 +52902,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -52928,7 +52928,7 @@ PrefabInstance:
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 279904073}
+      objectReference: {fileID: 972416380}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[4].m_Target
@@ -52972,7 +52972,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: StartDialog
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -52997,7 +52997,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: Dialog, Assembly-CSharp
+      value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -53017,7 +53017,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -62008,6 +62008,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: End Game Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6774185063287825652, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
