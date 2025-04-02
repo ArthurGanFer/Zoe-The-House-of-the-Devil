@@ -7,6 +7,7 @@ using UnityEngine;
 public class BossController : EnemyController
 {
     [Header("Components")]
+    [SerializeField]
     private Animator targetAnim;
 
     [Space(10)]
@@ -30,8 +31,8 @@ public class BossController : EnemyController
         {
             AssignComponents();
 
-            this.targetAnim = this.target.GetComponent<Animator>();
-            this.targetAnim.SetInteger("Route", 1);
+            this.targetAnim = GetComponentInParent<Animator>();
+            this.targetAnim.SetInteger("Route", 2);
 
         }
     }
@@ -51,7 +52,14 @@ public class BossController : EnemyController
             {
                 this.chasingPlayer = false;
                 this.timerSet = false;
-                this.agent.speed = this.defaultSpeed;
+                if (this.targetAnim.GetComponent<PathScript>() != null && this.targetAnim.GetComponent<PathScript>().stopped)
+                {
+                    this.agent.speed = 0;
+                }
+                else
+                {
+                    this.agent.speed = this.defaultSpeed;
+                }
                 this.agent.SetDestination(this.target.position);
             }
         }
@@ -69,6 +77,18 @@ public class BossController : EnemyController
 
     private void BossUpdateAnimations()
     {
+        if (this.target.GetComponent<PathScript>() != null)
+        {
+            if (this.target.GetComponent<PathScript>().stopped)
+            {
+                this.enemyAnimator.SetBool("Walk", false);
+            }
+            else
+            {
+                this.enemyAnimator.SetBool("Walk", true);
+            }
+        }
+
         if (this.player.onCeiling)
         {
             this.StopCoroutine("AnimationSwitchTimer");
@@ -80,14 +100,14 @@ public class BossController : EnemyController
         {
             this.targetAnim.SetBool("Loop", false);
 
-            if (this.targetAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f && this.targetAnim.GetInteger("Route") != 0)
+            if (this.targetAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f && this.targetAnim.GetInteger("Route") != 0)
             {
                 this.previousRoute = this.targetAnim.GetInteger("Route");
                 this.animSwitched = false;
                 this.targetAnim.SetInteger("Route", 0);
             }
 
-            if (!this.animSwitched)
+            if (!this.animSwitched && this.previousRoute == this.targetAnim.GetInteger("Route"))
             {
                 this.StartCoroutine("AnimationSwitchTimer", baseAnimSwitchTimer);
             }
