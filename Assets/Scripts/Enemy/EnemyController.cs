@@ -233,19 +233,21 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
         // Check if the enemy touched the player
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemy touched the player!");
 
             // Trigger the jump scare when the enemy touches the player
             if (jumpScareMechanic != null)
             {
-                jumpScareMechanic.CreateJumpScare(this, modelNumber, other.gameObject);
+                jumpScareMechanic.CreateJumpScare(this, modelNumber, collision.gameObject);
             }
         }
+
     }
 
     private void OnDrawGizmosSelected()
