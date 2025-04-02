@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -45,9 +46,6 @@ public class EnemyController : MonoBehaviour
             AssignComponents();
             StartCoroutine(Patrol());
         }
-
-        // Get the JumpScareMechanic instance in the scene
-        jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
     }
 
     void Update()
@@ -58,7 +56,7 @@ public class EnemyController : MonoBehaviour
 
             if (playerInSight)
             {
-                agent.SetDestination(player.transform.position);
+                //agent.SetDestination(player.transform.position);
                 DetectionMeter();
             }
             else
@@ -128,6 +126,14 @@ public class EnemyController : MonoBehaviour
             agent.speed = defaultSpeed;
         }
 
+        if (this.jumpScareAsset)
+        {
+            if (this.target == null)
+            {
+                Debug.LogError($"There is no Transform component on the child of {this.gameObject.name} gameObject!");
+            }
+        }
+
         if (player == null)
         {
             PlayerController[] players = FindObjectsOfType<PlayerController>();
@@ -148,64 +154,90 @@ public class EnemyController : MonoBehaviour
             }
         }
 
+        jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
+        if (jumpScareMechanic == null)
+        {
+            Debug.Log($"There are no gameObjects of type JumpScareMechanic in scene");
+        }
+
         previousPlayerInSight = false;
     }
 
     public void SearchForPlayer()
     {
-        if (player == null || !player.isActiveCharacter) return;
-
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
-        playerInSight = false;
-
-        foreach (Collider hit in hits)
+        if (this.player.isActiveCharacter)
         {
-            if (hit.transform == player.transform)
-            {
-                if (hit.TryGetComponent(out HidingMechanic hiding) && hiding.isHidden)
-                {
-                    Debug.Log("Player is hidden. Not detected.");
-                    continue;
-                }
+            Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
 
-                playerInSight = true;
-                Debug.Log("Player detected!");
-                break;
+            this.playerInSight = false;
+
+            foreach (Collider hit in hits)
+            {
+                if (hit.GetComponent<Transform>() == this.player.GetComponent<Transform>())
+                {
+                    if (hit.GetComponent<HidingMechanic>() != null)
+                    {
+                        if (!hit.GetComponent<HidingMechanic>().isHidden)
+                        {
+                            this.playerInSight = true;
+                        }
+                    }
+                    else
+                    {
+                        this.playerInSight = true;
+                    }
+
+                    break;
+                }
+            }
+
+            this.previousPlayerInSight = this.playerInSight;
+        }
+        else
+        {
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+
+            foreach (PlayerController player in players)
+            {
+                if (player.isActiveCharacter == true)
+                {
+                    this.player = player;
+
+                    break;
+                }
             }
         }
-
-        if (!playerInSight)
-        {
-            Debug.Log("No player detected.");
-        }
-
-        previousPlayerInSight = playerInSight;
     }
 
     public void DetectionMeter()
     {
-        if (!chasingPlayer && playerInSight)
+        if (!chasingPlayer && player.is_crouching)
         {
-            chasingPlayer = true;
-            agent.speed = chaseSpeed;
-
-            Debug.Log("Chasing player!");
-
-            if (enemyAnimator != null)
-            {
-                enemyAnimator.SetTrigger("Chase");
-            }
+            this.StartCoroutine("StartDetectionTimer", baseChasingTimer);
         }
-        else if (chasingPlayer && !playerInSight)
+        else
         {
-            chasingPlayer = false;
-            agent.speed = defaultSpeed;
+            this.StopCoroutine("StartDetectionTimer");
+            this.agent.SetDestination(this.player.GetComponent<Transform>().position);
+            this.timerSet = false;
+            this.agent.speed = chaseSpeed;
+        }
+    }
 
-            Debug.Log("Player lost! Stopping chase.");
+    IEnumerator StartDetectionTimer(float baseTimer)
+    {
+        if (!this.timerSet)
+        {
+            this.currentChasingTimer = baseTimer;
+            this.timerSet = true;
+        }
+        else
+        {
+            this.currentChasingTimer -= Time.deltaTime;
 
-            if (enemyAnimator != null)
+            if (this.currentChasingTimer <= 0)
             {
-                enemyAnimator.SetTrigger("Idle");
+                yield return this.chasingPlayer = true;
             }
         }
     }
@@ -237,7 +269,7 @@ public class EnemyController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the enemy touched the player
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.GetComponent<Transform>() == this.player.GetComponent<Transform>())
         {
             Debug.Log("Enemy touched the player!");
 
@@ -250,9 +282,22 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        if (this.playerInSight && this.chasingPlayer)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
+        }
+        else if (this.playerInSight && !this.chasingPlayer)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
+        }
     }
 }

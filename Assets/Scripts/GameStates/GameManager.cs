@@ -99,6 +99,11 @@ public class GameManager : MonoBehaviour
 
         if (FindObjectOfType<PlayerController>() != null)
         {
+            if (SceneManager.GetActiveScene().name != previousLevelName)
+            {
+                previousLevelName = SceneManager.GetActiveScene().name;
+            }
+
             playerInScene = true;
 
             if (playerSpawnPosition != null && playerSpawnRotation != null)

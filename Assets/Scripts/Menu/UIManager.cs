@@ -37,7 +37,17 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Level is not assigned!");
         }
     }
-    
+
+    public void LoadPreviousLevel()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager != null)
+        {
+            SceneManager.LoadScene(gameManager.previousLevelName);
+        }
+    }
+
     public void SetVolume (float volume)
     {
         //Audio Volume adjust

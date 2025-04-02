@@ -19,4 +19,24 @@ public class LevelLoader : MonoBehaviour
             SceneManager.LoadScene(gameManager.previousLevelName);
         }
     }
+
+    public void SwitchToNextState(GameState next_state)
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager != null)
+        {
+            gameManager.SwitchToNextState(next_state);
+        }
+    }
+
+    public void Quit()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager != null)
+        {
+            gameManager.QuitGame(true);
+        }
+    }
 }
