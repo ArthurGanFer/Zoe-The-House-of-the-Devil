@@ -2794,6 +2794,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
+      propertyPath: objectTag
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
       propertyPath: eventCooldown
       value: 120
       objectReference: {fileID: 0}
@@ -2860,7 +2865,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialog
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -23470,7 +23475,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetTrigger
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -33240,6 +33245,84 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3726600731690639171, guid: 67e8438fcb361314780d2b6c8c3f1040, type: 3}
+--- !u!1001 &603718124
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3701264743505054875, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2993218883075853638}
+    - target: {fileID: 3701264743505054875, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 781891740184302049}
+    - target: {fileID: 4145737705550427135, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyDoll1 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 79.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.401
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 66.257
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601020635409600781, guid: 98fa2c34c8982f044befecbe7c3fd25c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 98fa2c34c8982f044befecbe7c3fd25c, type: 3}
 --- !u!1 &603950845
 GameObject:
   m_ObjectHideFlags: 0
@@ -43106,7 +43189,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -44514,7 +44597,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeMusic
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -51789,6 +51872,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
+      propertyPath: objectTag
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
       propertyPath: eventCooldown
       value: 120
       objectReference: {fileID: 0}
@@ -52577,7 +52665,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -62427,6 +62515,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
+      propertyPath: objectTag
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -77345,7 +77438,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlaySoundFromPosition
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -78378,6 +78471,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Radio Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
+        type: 3}
+      propertyPath: objectTag
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -84891,6 +84989,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1017805393944431858, guid: caa2e2230ea062543ab4f00b61be9287,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4941960036344424187, guid: caa2e2230ea062543ab4f00b61be9287,
         type: 3}
       propertyPath: lineRenderer
@@ -95774,6 +95877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d566cd30905d3498a103b1dbc41cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stopped: 0
 --- !u!1 &1767259631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5604131585038892380, guid: dae7a7df532a6ee4a98d49b702f0e419,
@@ -111803,7 +111907,7 @@ PrefabInstance:
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
       propertyPath: event_Action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: PlayCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 8546547642983494613, guid: f346c2f27ca3bda48bd7dbc2c66cc2a7,
         type: 3}
@@ -119447,6 +119551,7 @@ SceneRoots:
   - {fileID: 1510804346}
   - {fileID: 454927583}
   - {fileID: 1423939811}
+  - {fileID: 603718124}
   - {fileID: 1706168703}
   - {fileID: 1987008295}
   - {fileID: 1088070043}
