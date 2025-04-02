@@ -686,7 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c57d2444423df7d4182db89c144ceded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Girl_Bedroom
+  sceneToLoad: 1_Cutscene
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

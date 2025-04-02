@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Drawing Cutscene.unity
     guid: 9c0ea6657620e25488921b4be44615da
+  - enabled: 1
+    path: Assets/Scenes/1_Cutscene.unity
+    guid: 4a58887007903ec4f9d53d7ea3b9931e
   - enabled: 0
     path: Assets/Scenes/TestingSpace.unity
     guid: ba0e8164af3c7af449b03da4b41024ab
