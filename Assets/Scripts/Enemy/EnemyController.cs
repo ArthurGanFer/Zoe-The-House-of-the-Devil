@@ -1,280 +1,256 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyController : MonoBehaviour
 {
     [Header("Components")]
-    [Tooltip("A reference to our NavMeshAgent component")]
     public NavMeshAgent agent;
-    [Tooltip("A reference to our target GameObject's Transform component")]
     public Transform target;
-    [Tooltip("A reference to the player's PlayerController component")]
     public PlayerController player;
-    [Tooltip("A reference to the our Animator component")]
     public Animator enemyAnimator;
 
-    [Space(10)]
     [Header("Properties")]
-    [Space(1)]
-    [Header("Detail Settings")]
-    [SerializeField]
-    [Tooltip("A string reflecting who our enemy is")]
     public string enemyName;
-    [SerializeField]
-    [Tooltip("An int reflecting who our enemy is")]
     public int modelNumber;
-    [SerializeField]
-    [Tooltip("A flag for if this enemy is just a jump scare asset")]
     public bool jumpScareAsset = false;
+    private JumpScareMechanic jumpScareMechanic;
 
-    [Space(1)]
     [Header("Player Detection Settings")]
-    [SerializeField]
-    [Tooltip("Our enemy's range of vision")]
-    private float detectionRadius = 1;
-    [SerializeField]
-    [Tooltip("The LayerMask representing where our character is located")]
-    private LayerMask playerLayer;
-    [Tooltip("A flag for if the player is in vision")]
+    [SerializeField] private float detectionRadius = 5f;
+    [SerializeField] private LayerMask playerLayer;
     public bool playerInSight;
-    [Tooltip("A flag that tracks the previous state of playerInSight")]
-    [SerializeField]
     private bool previousPlayerInSight = false;
 
-    [Space(1)]
     [Header("Chase Function Settings")]
-    [Tooltip("A flag for if we are chasing the player")]
     public bool chasingPlayer = false;
-    [Tooltip("A flag representing if the current timer has been set")]
     public bool timerSet;
-    [SerializeField]
-    [Tooltip("A float for how long we wait before chasing the player")]
-    private float baseChasingTimer = 6;
-    [SerializeField]
-    [Tooltip("A float for how long we currently have before chasing the player")]
+    private float baseChasingTimer = 6f;
     private float currentChasingTimer;
 
-    [Space(1)]
     [Header("Speed Settings")]
-    [Tooltip("The default speed of the enemy")]
     public float defaultSpeed = 3.5f;
-    [SerializeField]
-    [Tooltip("The speed of the enemy when chasing the player")]
-    private float chaseSpeed = 6f;
+    public float chaseSpeed = 6f;
 
+    [Header("Patrolling Settings")]
+    public float patrolRadius = 10f;
+    public float patrolWaitTime = 3f;
+    private Vector3 randomDestination;
+    private bool isPatrolling = true;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (!this.jumpScareAsset)
+        if (!jumpScareAsset)
         {
             AssignComponents();
+            StartCoroutine(Patrol());
         }
+
+        // Get the JumpScareMechanic instance in the scene
+        jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!this.jumpScareAsset && this.target != null)
+        if (!jumpScareAsset && target != null)
         {
             SearchForPlayer();
 
-            if (this.playerInSight)
+            if (playerInSight)
             {
+                agent.SetDestination(player.transform.position);
                 DetectionMeter();
             }
             else
             {
-                this.chasingPlayer = false;
-                this.timerSet = false;
-                this.agent.speed = this.defaultSpeed;
-                this.agent.SetDestination(this.target.position);
+                chasingPlayer = false;
+                timerSet = false;
+                agent.speed = defaultSpeed;
+
+                if (!isPatrolling)
+                {
+                    StartCoroutine(Patrol());
+                }
             }
         }
 
-        if (this.enemyAnimator != null)
+        if (enemyAnimator != null)
         {
             UpdateAnimations();
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    IEnumerator Patrol()
     {
-        if (collision.gameObject.GetComponent<Transform>() == this.player.GetComponent<Transform>())
-        {
-            Debug.Log($"Player touched by {enemyName}! Game Over!");
+        isPatrolling = true;
 
-            JumpScareMechanic jumpScareMechanic = FindObjectOfType<JumpScareMechanic>();
-            jumpScareMechanic.CreateJumpScare(this, this.modelNumber, collision.gameObject);
+        while (!playerInSight)
+        {
+            randomDestination = GetRandomPoint(transform.position, patrolRadius);
+            agent.SetDestination(randomDestination);
+
+            yield return new WaitUntil(() => agent.remainingDistance < 0.5f);
+
+            enemyAnimator.SetBool("Walk", false);
+            enemyAnimator.SetBool("Idle", true);
+
+            yield return new WaitForSeconds(patrolWaitTime);
+
+            enemyAnimator.SetBool("Walk", true);
+            enemyAnimator.SetBool("Idle", false);
         }
+
+        isPatrolling = false;
+    }
+
+    Vector3 GetRandomPoint(Vector3 center, float radius)
+    {
+        Vector3 randomPos = center + new Vector3(Random.Range(-radius, radius), 0, Random.Range(-radius, radius));
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(randomPos, out hit, radius, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        return center;
     }
 
     public void AssignComponents()
     {
-        this.agent = GetComponent<NavMeshAgent>();
-        if (this.agent == null)
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
         {
-            Debug.Log($"There is no NavMeshAgent component on {this.gameObject.name} gameObject!");
+            Debug.LogError("There is no NavMeshAgent component on " + gameObject.name + "!");
         }
         else
         {
-            this.agent.speed = this.defaultSpeed;
+            agent.speed = defaultSpeed;
         }
 
-        if (this.jumpScareAsset)
-        {
-            if (this.target == null)
-            {
-                Debug.LogError($"There is no Transform component on the child of {this.gameObject.name} gameObject!");
-            }
-        }
-
-        if (this.player == null)
+        if (player == null)
         {
             PlayerController[] players = FindObjectsOfType<PlayerController>();
 
-            foreach (PlayerController player in players)
+            foreach (PlayerController p in players)
             {
-                if (player.mainCharacter == true)
+                if (p.mainCharacter)
                 {
-                    this.player = player;
-
-                    string playerLayerName = LayerMask.LayerToName(this.player.gameObject.layer);
-                    this.playerLayer = LayerMask.GetMask(playerLayerName);
-
+                    player = p;
+                    playerLayer = LayerMask.GetMask(LayerMask.LayerToName(player.gameObject.layer));
                     break;
                 }
             }
 
-            Debug.Log($"There are no gameObjects of type PlayerController in scene: {SceneManager.GetActiveScene().name}");
+            if (player == null)
+            {
+                Debug.LogError("No PlayerController found in the scene.");
+            }
         }
 
-        this.previousPlayerInSight = false;
-    }
-
-    public void DetectionMeter()
-    {
-        if (!this.chasingPlayer && this.player.is_crouching)
-        {
-            this.StartCoroutine("StartDetectionTimer", baseChasingTimer);
-        }
-        else
-        {
-            this.StopCoroutine("StartDetectionTimer");
-            this.chasingPlayer = true;
-            this.agent.SetDestination(this.player.GetComponent<Transform>().position);
-            this.timerSet = false;
-            this.agent.speed = chaseSpeed;
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (this.playerInSight && this.chasingPlayer)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
-        }
-        else if (this.playerInSight && !this.chasingPlayer)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
-        }
+        previousPlayerInSight = false;
     }
 
     public void SearchForPlayer()
     {
-        if (this.player.isActiveCharacter)
+        if (player == null || !player.isActiveCharacter) return;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+        playerInSight = false;
+
+        foreach (Collider hit in hits)
         {
-            Collider[] hits = Physics.OverlapSphere(this.transform.position, this.detectionRadius, this.playerLayer);
-
-            this.playerInSight = false;
-
-            foreach (Collider hit in hits)
+            if (hit.transform == player.transform)
             {
-                if (hit.GetComponent<Transform>() == this.player.GetComponent<Transform>())
+                if (hit.TryGetComponent(out HidingMechanic hiding) && hiding.isHidden)
                 {
-                    if (hit.GetComponent<HidingMechanic>() != null)
-                    {
-                        if (!hit.GetComponent<HidingMechanic>().isHidden)
-                        {
-                            this.playerInSight = true;
-                        }
-                    }
-                    else
-                    {
-                        this.playerInSight = true;
-                    }
-
-                    break;
+                    Debug.Log("Player is hidden. Not detected.");
+                    continue;
                 }
+
+                playerInSight = true;
+                Debug.Log("Player detected!");
+                break;
             }
-
-            this.previousPlayerInSight = this.playerInSight;
         }
-        else
+
+        if (!playerInSight)
         {
-            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            Debug.Log("No player detected.");
+        }
 
-            foreach (PlayerController player in players)
+        previousPlayerInSight = playerInSight;
+    }
+
+    public void DetectionMeter()
+    {
+        if (!chasingPlayer && playerInSight)
+        {
+            chasingPlayer = true;
+            agent.speed = chaseSpeed;
+
+            Debug.Log("Chasing player!");
+
+            if (enemyAnimator != null)
             {
-                if (player.isActiveCharacter == true)
-                {
-                    this.player = player;
+                enemyAnimator.SetTrigger("Chase");
+            }
+        }
+        else if (chasingPlayer && !playerInSight)
+        {
+            chasingPlayer = false;
+            agent.speed = defaultSpeed;
 
-                    break;
-                }
+            Debug.Log("Player lost! Stopping chase.");
+
+            if (enemyAnimator != null)
+            {
+                enemyAnimator.SetTrigger("Idle");
             }
         }
     }
 
     public void UpdateAnimations()
     {
-        if (this.agent.velocity.magnitude > 0)
+        if (agent.velocity.magnitude > 0.1f)
         {
-            this.enemyAnimator.SetBool("Walking", true);
-            this.enemyAnimator.SetBool("Idle", false);
+            enemyAnimator.SetBool("Walk", true);
+            enemyAnimator.SetBool("Idle", false);
         }
         else
         {
-            this.enemyAnimator.SetBool("Walking", false);
-            this.enemyAnimator.SetBool("Idle", true);
+            enemyAnimator.SetBool("Walk", false);
+            enemyAnimator.SetBool("Idle", true);
         }
 
-        if (this.playerInSight && !this.previousPlayerInSight)
+        if (chasingPlayer && enemyAnimator != null)
         {
-            enemyAnimator.SetTrigger("Chase");
+            enemyAnimator.SetBool("Chase", true);
         }
-        else if (!this.playerInSight && this.previousPlayerInSight)
+        else
         {
-            enemyAnimator.SetTrigger("Chase");
+            enemyAnimator.SetBool("Chase", false);
         }
     }
 
-    IEnumerator StartDetectionTimer(float baseTimer)
+    private void OnTriggerEnter(Collider other)
     {
-        if (!this.timerSet)
+        // Check if the enemy touched the player
+        if (other.CompareTag("Player"))
         {
-            this.currentChasingTimer = baseTimer;
-            this.timerSet = true;
-        }
-        else
-        {
-            this.currentChasingTimer -= Time.deltaTime;
+            Debug.Log("Enemy touched the player!");
 
-            if (this.currentChasingTimer <= 0)
+            // Trigger the jump scare when the enemy touches the player
+            if (jumpScareMechanic != null)
             {
-                yield return this.chasingPlayer = true;
+                jumpScareMechanic.CreateJumpScare(this, modelNumber, other.gameObject);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

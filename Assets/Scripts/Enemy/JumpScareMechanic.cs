@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,7 +30,6 @@ public class JumpScareMechanic : MonoBehaviour
 
     private void Start()
     {
-        
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         if (mainCamera == null)
         {
@@ -63,7 +61,6 @@ public class JumpScareMechanic : MonoBehaviour
             if (prefab.GetComponentInChildren<EnemyController>().enemyName == enemy.enemyName)
             {
                 activePrefab = prefab;
-
                 break;
             }
         }
@@ -74,16 +71,13 @@ public class JumpScareMechanic : MonoBehaviour
             mainCamera.SetActive(false);
 
             GameObject jumpScare = Instantiate(activePrefab, new Vector3(0, 5000, 0), Quaternion.identity);
-
             jumpScareAnim = jumpScare.GetComponent<Animator>();
             jumpScareAnim.SetBool("isActive", true);
             jumpScareAnim.SetFloat("modelNumber", model);
-            
         }
         else
         {
             Debug.Log($"There is no prefab containing an enemy named {enemy.enemyName}");
         }
-
     }
 }

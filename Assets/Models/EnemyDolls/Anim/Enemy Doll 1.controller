@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1107 &-3087618119384752514
+--- !u!1107 &-3550895742584343556
 AnimatorStateMachine:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -10,8 +10,8 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: -1194876468831805377}
-    m_Position: {x: 270, y: 60, z: 0}
+    m_State: {fileID: -3183854629352332189}
+    m_Position: {x: 260, y: 70, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -21,15 +21,15 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -1194876468831805377}
---- !u!1102 &-1194876468831805377
+  m_DefaultState: {fileID: -3183854629352332189}
+--- !u!1102 &-3183854629352332189
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DollJumpscare
+  m_Name: Armature_Armature_Armature_Jumpscare
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -54,13 +54,13 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnemyDollJumpscareAsset
+  m_Name: Enemy Doll 1
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: -3087618119384752514}
+    m_StateMachine: {fileID: -3550895742584343556}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
