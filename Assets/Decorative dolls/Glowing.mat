@@ -79,7 +79,7 @@ Material:
     - _ExcludeFromTUAndAA: 0
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
-    - _Scale: 0
+    - _Scale: 1
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 1
