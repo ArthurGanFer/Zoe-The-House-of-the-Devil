@@ -4,36 +4,27 @@ using UnityEngine.SceneManagement;
 public class JumpScareMechanic : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField]
-    [Tooltip("A reference to our array of prefab GameObjects")]
-    private GameObject[] AvailablePrefabs;
-    [SerializeField]
-    [Tooltip("A reference to our main camera")]
-    private GameObject mainCamera;
-    [SerializeField]
-    [Tooltip("A reference to our Animator")]
-    private Animator jumpScareAnim;
+    [SerializeField] private GameObject[] AvailablePrefabs;
+    [SerializeField] private GameObject mainCamera;
+    [SerializeField] private Animator jumpScareAnim;
+    private AudioSource audioSource;
 
-    [Space(10)]
     [Header("Properties")]
-    [SerializeField]
-    [Tooltip("A flag for which of our prefabs is active")]
-    private GameObject activePrefab;
-    [SerializeField]
-    [Tooltip("A reference to which scene we're transitioning to")]
-    private string destinationScene;
+    [SerializeField] private GameObject activePrefab;
+    [SerializeField] private string destinationScene;
 
-    private void OnEnable()
-    {
-        Cursor.visible = true;
-    }
+    [Header("Jumpscare Sounds")]
+    [SerializeField] private AudioClip dollJumpScareSound;
+    [SerializeField] private AudioClip boyJumpScareSound;
 
     private void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        if (mainCamera == null)
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
         {
-            Debug.Log("There is no GameObject tagged as MainCamera in the scene!");
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add if missing
         }
     }
 
@@ -41,15 +32,13 @@ public class JumpScareMechanic : MonoBehaviour
     {
         if (jumpScareAnim != null && jumpScareAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
-            Debug.Log("Animation has finished!");
-
-            if (destinationScene != null)
+            if (!string.IsNullOrEmpty(destinationScene))
             {
                 SceneManager.LoadScene(destinationScene);
             }
             else
             {
-                Debug.Log("destinationScene has not been set!");
+                Debug.LogWarning("destinationScene has not been set!");
             }
         }
     }
@@ -74,10 +63,38 @@ public class JumpScareMechanic : MonoBehaviour
             jumpScareAnim = jumpScare.GetComponent<Animator>();
             jumpScareAnim.SetBool("isActive", true);
             jumpScareAnim.SetFloat("modelNumber", model);
+
+            // **Play Jumpscare Sound Based on Enemy**
+            PlayJumpscareSound(enemy.enemyName);
         }
         else
         {
-            Debug.Log($"There is no prefab containing an enemy named {enemy.enemyName}");
+            Debug.LogWarning($"No prefab found for enemy: {enemy.enemyName}");
+        }
+    }
+
+    private void PlayJumpscareSound(string enemyName)
+    {
+        if (audioSource == null) return;
+
+        AudioClip clip = null;
+
+        if (enemyName == "Doll1")
+        {
+            clip = dollJumpScareSound;
+        }
+        else if (enemyName == "Boy")
+        {
+            clip = boyJumpScareSound;
+        }
+
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogWarning($"No jumpscare sound assigned for enemy: {enemyName}");
         }
     }
 }

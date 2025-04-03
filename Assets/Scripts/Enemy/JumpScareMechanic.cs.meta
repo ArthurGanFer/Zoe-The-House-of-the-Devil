@@ -3,7 +3,13 @@ guid: b8297a073d46da74c9f16de6cca21513
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - mainCamera: {instanceID: 0}
+  - jumpScareAnim: {instanceID: 0}
+  - activePrefab: {instanceID: 0}
+  - dollJumpScareSound: {fileID: 8300000, guid: f9bfac2d1b5ca504a8943071ee9b4d44,
+      type: 3}
+  - boyJumpScareSound: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

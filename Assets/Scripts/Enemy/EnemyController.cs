@@ -39,12 +39,21 @@ public class EnemyController : MonoBehaviour
     private Vector3 randomDestination;
     private bool isPatrolling = true;
 
+    [Header("Idle Sounds")]
+    public AudioClip[] idleSounds;
+    public AudioSource audioSource;
+    public float minIdleInterval = 3f;
+    public float maxIdleInterval = 8f;
+
+
+
     void Start()
     {
         if (!jumpScareAsset)
         {
             AssignComponents();
             StartCoroutine(Patrol());
+            StartCoroutine(PlayIdleSounds());
         }
     }
 
@@ -158,6 +167,12 @@ public class EnemyController : MonoBehaviour
         if (jumpScareMechanic == null)
         {
             Debug.Log($"There are no gameObjects of type JumpScareMechanic in scene");
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("No AudioSource found on " + gameObject.name);
         }
 
         previousPlayerInSight = false;
@@ -298,6 +313,20 @@ public class EnemyController : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(this.transform.position, this.detectionRadius);
+        }
+    }
+
+    IEnumerator PlayIdleSounds()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(minIdleInterval, maxIdleInterval));
+
+            if (!playerInSight && idleSounds.Length > 0) // Only play if player is NOT in sight
+            {
+                AudioClip randomClip = idleSounds[Random.Range(0, idleSounds.Length)];
+                audioSource.PlayOneShot(randomClip);
+            }
         }
     }
 }
