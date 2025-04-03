@@ -40,12 +40,7 @@ public class UIManager : MonoBehaviour
 
     public void LoadPreviousLevel()
     {
-        GameManager gameManager = FindObjectOfType<GameManager>();
-
-        if (gameManager != null)
-        {
-            SceneManager.LoadScene(gameManager.previousLevelName);
-        }
+        GameManager.Instance.LoadLevel(GameManager.Instance.previousLevelName);
     }
 
     public void SetVolume (float volume)
