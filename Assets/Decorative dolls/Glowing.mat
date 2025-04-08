@@ -29,12 +29,13 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3010
+  m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
@@ -67,19 +68,19 @@ Material:
     - _AlphaSrcBlend: 1
     - _BlendMode: 1
     - _ConservativeDepthOffsetEnable: 0
-    - _CullMode: 1
-    - _CullModeForward: 1
+    - _CullMode: 2
+    - _CullModeForward: 2
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 1
     - _EnableBlendModePreserveSpecularLighting: 0
-    - _EnableFogOnTransparent: 0
+    - _EnableFogOnTransparent: 1
     - _ExcludeFromTUAndAA: 0
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
-    - _Scale: 1
+    - _Scale: 1.04
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 1
@@ -91,15 +92,15 @@ Material:
     - _StencilWriteMaskMV: 43
     - _SurfaceType: 1
     - _TransparentBackfaceEnable: 0
-    - _TransparentCullMode: 1
+    - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
-    - _TransparentSortPriority: 10
+    - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 5
-    - _ZTestTransparent: 5
+    - _ZTestDepthEqualForOpaque: 4
+    - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.25, g: 0.25, b: 0.25, a: 0}
