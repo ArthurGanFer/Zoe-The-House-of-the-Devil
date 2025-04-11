@@ -3152,7 +3152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 200000
+  m_Intensity: 400000
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 88.2
@@ -3273,8 +3273,8 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.8817862, b: 0.58679235, a: 1}
-  m_Intensity: 186187.08
+  m_Color: {r: 0.94716984, g: 0.7787973, b: 0.3055963, a: 1}
+  m_Intensity: 372374.16
   m_Range: 5000
   m_SpotAngle: 68
   m_InnerSpotAngle: 21.80208
@@ -3317,7 +3317,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 4799
+  m_ColorTemperature: 4091
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
