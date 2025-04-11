@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class SettingsManager : MonoBehaviour
@@ -12,6 +13,8 @@ public class SettingsManager : MonoBehaviour
     public bool invertedCamera = true;
     public GameObject settingsPanel;
     public GameObject buttonsObj;
+    private EventSystem myEventSystem;
+    public GameObject mainButton;
     
     private static SettingsManager instance;
     
@@ -39,6 +42,7 @@ public class SettingsManager : MonoBehaviour
     private void OnEnable()
     {
         ui_Action_Asset.UI.Cancel.started += Do_Cancel;
+        myEventSystem = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
     }
 
     private void OnDisable()
@@ -50,8 +54,13 @@ public class SettingsManager : MonoBehaviour
     {
         settingsPanel.SetActive(false);
         buttonsObj.SetActive(true);
+        MakeButtonSelected(mainButton);
     }
 
+    public void MakeButtonSelected(GameObject button)
+    {
+        myEventSystem.SetSelectedGameObject(button);
+    }
     
     public void ActiveInvertCamera(bool value)
     {

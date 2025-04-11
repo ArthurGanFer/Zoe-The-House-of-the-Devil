@@ -3694,6 +3694,7 @@ MonoBehaviour:
   invertedCamera: 1
   settingsPanel: {fileID: 1258730709}
   buttonsObj: {fileID: 1656428625}
+  mainButton: {fileID: 1151788022}
 --- !u!114 &806659918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9286,7 +9287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1777117689
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9370,6 +9371,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 806659917}
+        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
+        m_MethodName: MakeButtonSelected
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 162955542}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
