@@ -197,6 +197,7 @@ MonoBehaviour:
   - {fileID: 1117791773937583616}
   - {fileID: 6786492857092735894}
   - {fileID: -3579827041758845189}
+  - {fileID: 4068345107382772499}
 --- !u!114 &1117791773937583616
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -217,14 +218,14 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: -19
   colorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 0.9297324, b: 0.18553454, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.8113208, g: 0.7210039, b: 0.7388296, a: 1}
   hueShift:
     m_OverrideState: 0
     m_Value: -180
   saturation:
     m_OverrideState: 1
-    m_Value: -33
+    m_Value: -30.9
 --- !u!114 &1142777632297148762
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -256,6 +257,87 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &4068345107382772499
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9008a067f4d626c4d8bc4bc48f04bb89, type: 3}
+  m_Name: ScreenSpaceAmbientOcclusion
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 3
+  rayTracing:
+    m_OverrideState: 0
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1.85
+  directLightingStrength:
+    m_OverrideState: 1
+    m_Value: 0.743
+  radius:
+    m_OverrideState: 1
+    m_Value: 0.76
+  spatialBilateralAggressiveness:
+    m_OverrideState: 0
+    m_Value: 0.189
+  temporalAccumulation:
+    m_OverrideState: 0
+    m_Value: 1
+  ghostingReduction:
+    m_OverrideState: 0
+    m_Value: 0.362
+  blurSharpness:
+    m_OverrideState: 0
+    m_Value: 0.1
+  layerMask:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 2
+      m_Bits: 4294967295
+  specularOcclusion:
+    m_OverrideState: 0
+    m_Value: 0.5
+  occluderMotionRejection:
+    m_OverrideState: 0
+    m_Value: 1
+  receiverMotionRejection:
+    m_OverrideState: 0
+    m_Value: 1
+  m_StepCount:
+    m_OverrideState: 1
+    m_Value: 32
+  m_FullResolution:
+    m_OverrideState: 1
+    m_Value: 1
+  m_MaximumRadiusInPixels:
+    m_OverrideState: 1
+    m_Value: 100
+  m_BilateralUpsample:
+    m_OverrideState: 1
+    m_Value: 1
+  m_DirectionCount:
+    m_OverrideState: 1
+    m_Value: 2
+  m_RayLength:
+    m_OverrideState: 1
+    m_Value: 3
+  m_SampleCount:
+    m_OverrideState: 1
+    m_Value: 2
+  m_Denoise:
+    m_OverrideState: 1
+    m_Value: 1
+  m_DenoiserRadius:
+    m_OverrideState: 1
+    m_Value: 0.5
 --- !u!114 &6202787536528309924
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -590,7 +672,7 @@ MonoBehaviour:
     m_Value: 0.328
   tint:
     m_OverrideState: 1
-    m_Value: {r: 0.7015373, g: 0.74213827, b: 0.24971315, a: 1}
+    m_Value: {r: 0.66491985, g: 0.6981132, b: 0.28319684, a: 1}
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
