@@ -6235,20 +6235,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee3419c9aedd98d43bfe2a529e20e380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 7944317023655446869}
   defaultFootsteps:
-  - {fileID: 8300000, guid: 2a60283b19cca7545b6466d7e190513f, type: 3}
+  - {fileID: 8300000, guid: 0dd4518c613a2c94ca8021240903b413, type: 3}
   stepInterval: 0.5
   walkSpeedThreshold: 0.1
   runSpeedThreshold: 5
   minPitch: 0.9
   maxPitch: 1.1
-  minVolume: 1.5
-  maxVolume: 2
+  minVolume: 0.3
+  maxVolume: 0.5
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  groundCheckDistance: 0.4
+    m_Bits: 64
+  groundCheckDistance: 0.44
 --- !u!114 &2925902706850988966
 MonoBehaviour:
   m_ObjectHideFlags: 0
