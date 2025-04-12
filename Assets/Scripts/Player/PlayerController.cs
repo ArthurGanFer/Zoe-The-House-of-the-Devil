@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool is_using_match = false;
     private WaitForSeconds match_timer = new WaitForSeconds(18f);
+    public AudioClip matchSoundFX;
 
     public bool onCeiling = false;
 
@@ -371,6 +372,7 @@ public class PlayerController : MonoBehaviour
     {
         if (matches_available > 0 && !is_using_match)
         {
+            SoundFXManager.Instance.PlaySoundFX(matchSoundFX);
             matches_available -= 1;
             is_using_match = true;
             match_obj.SetActive(true);
