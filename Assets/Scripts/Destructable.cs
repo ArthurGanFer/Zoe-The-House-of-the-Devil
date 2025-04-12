@@ -123,7 +123,7 @@ public class Destructable : MonoBehaviour
 
             if (breakSound != null)
             {
-                AudioSource.PlayClipAtPoint(breakSound, transform.position);
+                SoundFXManager.instance.PlaySoundFX(breakSound, transform.position);
             }
 
         }

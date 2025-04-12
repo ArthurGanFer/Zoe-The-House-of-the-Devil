@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class GameOverController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject yesButton;
+    
+    void OnEnable()
     {
-        
+        SettingsManager.Instance.MakeButtonSelected(yesButton);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -9,6 +9,8 @@ public class PlumberController : PlayerController
     [SerializeField] private Collider attackCollider;
     [SerializeField] private Animator wrenchAnim;
     [SerializeField] private GameObject lineRenderer;
+    [SerializeField] private AudioClip wrenchSFX;
+    private bool isAttacking = false;
 
 
     protected override void AssignComponents()
@@ -38,7 +40,7 @@ public class PlumberController : PlayerController
         {
             wrenchAnim.SetBool("Attack", true);
         }
-
+        
         StartCoroutine(WrenchCoroutine());
         StartCoroutine(WrenchTrail());
         StartCoroutine(ResetAttackAnimation());
@@ -48,6 +50,11 @@ public class PlumberController : PlayerController
     {
         Debug.Log("[WrenchMechanic] Wrench attack started!");
 
+        if (!isAttacking)
+        {
+            SoundFXManager.instance.PlaySoundFX(wrenchSFX, transform.position);
+        }
+        isAttacking = true;
         if (wrenchAnim != null)
         {
             wrenchAnim.SetBool("WrenchAttack", true);
@@ -77,7 +84,7 @@ public class PlumberController : PlayerController
         {
             wrenchAnim.SetBool("WrenchAttack", false);
         }
-
+        isAttacking = false;
         Debug.Log("[WrenchMechanic] Wrench attack finished.");
     }
 
